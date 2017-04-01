@@ -1,0 +1,9 @@
+{
+   "mysql_database": {
+      "username":"root",
+      "password":"",
+      "host":"localhost",
+      "database":"sys"
+   },
+   "port":3306
+}

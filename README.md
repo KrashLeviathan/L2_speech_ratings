@@ -147,3 +147,25 @@ I will leave it up to you to decide what to do with the quality
 assurance information. The point is, we can track that stuff, and
 you can weed out any lazy participants that might pollute the test
 data.
+
+## Development Notes
+
+### Start the PHP Server:
+
+`cd dist; php7.0 -S localhost:8000`
+
+### To start MySql server:
+
+`/etc/init.d/mysql start`
+
+### To stop MySql server:
+
+`/etc/init.d/mysql stop`
+
+### To restart MySql server:
+
+`/etc/init.d/mysql restart`
+
+### To check the status of  MySql server:
+
+`/etc/init.d/mysql status`
