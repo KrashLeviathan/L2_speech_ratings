@@ -1,5 +1,7 @@
 <?php
 
+// Login derived from http://phpclicks.com/php-token-based-authentication/
+
 require_once('../vendor/autoload.php');
 use \Firebase\JWT\JWT;
 
