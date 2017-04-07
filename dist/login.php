@@ -5,7 +5,7 @@
 require_once('../vendor/autoload.php');
 use \Firebase\JWT\JWT;
 
-include "_includes/base.php";
+include "_includes/database_config.php";
 
 // Connect to the mysql database
 $link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);

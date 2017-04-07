@@ -1,7 +1,7 @@
 {
    "mysql_database": {
       "username":"root",
-      "password":"",
+      "password":"root",
       "host":"localhost",
       "database":"sys"
    },
