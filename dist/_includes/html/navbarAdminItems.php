@@ -15,10 +15,10 @@
     } else {
         print '<li><a href="/files">Files</a></li>';
     }
-    if ($_SERVER['REQUEST_URI'] == '/settings') {
+    if ($_SERVER['REQUEST_URI'] == '/admin_settings') {
         print '<li class="active"><a href="#">Settings <span class="sr-only">(current)</span></a></li>';
     } else {
-        print '<li><a href="/settings">Settings</a></li>';
+        print '<li><a href="/admin_settings">Settings</a></li>';
     }
     ?>
 </ul>
