@@ -2,10 +2,10 @@
 
 // Login derived from http://phpclicks.com/php-token-based-authentication/
 
-require_once('../vendor/autoload.php');
+require_once('../../vendor/autoload.php');
 use \Firebase\JWT\JWT;
 
-include "_includes/database_config.php";
+include "database_config.php";
 
 // Connect to the mysql database
 $link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
