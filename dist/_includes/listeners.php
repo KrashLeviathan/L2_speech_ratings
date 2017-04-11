@@ -1,6 +1,6 @@
 <?php
 
-include '_includes/database_config.php';
+include '_includes/config.php';
 include '_includes/database_api.php';
 
 $mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName);

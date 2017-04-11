@@ -1,8 +1,4 @@
-<?php @include '../_includes/html/head.php'; ?>
-
-<body>
-
-<?php @include '../_includes/html/navbar.php'; ?>
+<?php @include '../_includes/pageSetup.php'; ?>
 
 <div class="container">
 

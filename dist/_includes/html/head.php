@@ -20,11 +20,15 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/reset.css" type="text/css">
     <link rel="stylesheet" href="/css/superhero/bootstrap.min.css" type="text/css">
+    <!-- BEGIN INJECTS-->
     <?php
-    if (isset($injectedStylesheets)) {
-        foreach ($injectedStylesheets as $stylesheet) {
-            print '<link rel="stylesheet" href="' . $stylesheet . '" type="text/css">';
+    if (isset($injectedHeadElements)) {
+        foreach ($injectedHeadElements as $headElement) {
+            print $headElement;
         }
     }
     ?>
+    <!-- END INJECTS-->
 </head>
+<body>
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" type="text/javascript" async defer></script>

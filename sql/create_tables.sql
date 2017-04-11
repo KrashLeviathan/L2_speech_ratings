@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS Listeners (
   listener_id     INT(10)      NOT NULL AUTO_INCREMENT,
+  google_id       VARCHAR(255) NOT NULL UNIQUE KEY,
   first_name      VARCHAR(255) NOT NULL,
   last_name       VARCHAR(255) NOT NULL,
   email           VARCHAR(255) NOT NULL,

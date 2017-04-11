@@ -20,6 +20,9 @@ $dbPass = $json->{'mysql_database'}->{'password'};
 
 $port = $json->{'port'};
 
+$googleClientId = $json->{'googleClientId'};
+$injectedHeadElements = array('<meta name="google-signin-client_id" content="' . $googleClientId . '">');
+
 // Uncomment this section for your local database.
 // #############################################
 $dbHost = 'localhost';
