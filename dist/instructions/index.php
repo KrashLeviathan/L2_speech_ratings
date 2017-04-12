@@ -10,9 +10,68 @@
         </div>
     </div>
 
-    <div class="bs-docs-section">
+    <div class="bs-docs-section text-justify">
         <div class="row">
             <div class="col-lg-12">
+                <h3>Overview</h3>
+                <p>You will hear audio clips spoken by both second language learners and native speakers
+                    of (Spanish/French). What we would like you to do is make three judgments about each sample.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <h3>Comprehensibility</h3>
+                <p>First, we will ask you to say how easy or difficult the sample is to understand, using a
+                    9-point scale. You might be able to understand everything but it may require a lot of
+                    effort on your part&mdash;so what we are interested in is the effort you put in. Can you
+                    understand it without even thinking about it, or do you have to work at it?</p>
+                <p class="text-center" style="font-weight: 700;">
+                    1 = Very easy to understand<br>
+                    9 = Very difficult to understand</p>
+            </div>
+            <div class="col-sm-4">
+                <h3>Fluency</h3>
+                <p>Second, we will ask you to rate fluency. This is the flow of the language&mdash;does the
+                    person have problems finding words, pausing often, or do the words come easily? Do not worry
+                    about grammar mistakes&mdash;that does not matter for this rating. Someone who is very
+                    fluent&mdash;that is, the words just flow with no struggle&mdash;would be at the left end of
+                    the scale, while someone who has a hard time expressing him or herself would be closer to
+                    the right end of the scale.</p>
+                <p class="text-center" style="font-weight: 700;">
+                    1 = Extremely fluent<br>
+                    9 = Extremely disfluent</p>
+            </div>
+            <div class="col-sm-4">
+                <h3>Accentedness</h3>
+                <p>Third, we are interested in accent. We all have accents, but we are interested in knowing
+                    how different the speakers’ accents are from a native speaker of (Spanish/French) of any
+                    dialect or region. Accent is different from comprehensibility&mdash;you might be able to
+                    understand somebody easily and still hear a heavy accent.</p>
+                <p class="text-center" style="font-weight: 700;">
+                    1 = Very strong foreign accent<br>
+                    9 = No foreign accent whatsoever</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Scale</h3>
+                <div class="btn-group center-block clearfix" role="group" aria-label="Nine-point scale"
+                     style="width:380px;margin-bottom:1em;">
+                    <button type="button" class="btn btn-default">1</button>
+                    <button type="button" class="btn btn-default">2</button>
+                    <button type="button" class="btn btn-default">3</button>
+                    <button type="button" class="btn btn-default">4</button>
+                    <button type="button" class="btn btn-default">5</button>
+                    <button type="button" class="btn btn-default">6</button>
+                    <button type="button" class="btn btn-default">7</button>
+                    <button type="button" class="btn btn-default">8</button>
+                    <button type="button" class="btn btn-default">9</button>
+                </div>
+                <div style="margin-bottom:4em;">
+                    <p>We would like you to try to use the whole scale over the course of the experiment. A tone
+                        will sound before each clip. Please listen to the whole speech sample before making your
+                        decisions. Once you have rated the clip, the program will automatically advance.</p>
+                </div>
             </div>
         </div>
     </div>
