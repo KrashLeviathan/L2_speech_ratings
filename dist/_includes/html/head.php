@@ -32,3 +32,6 @@
 </head>
 <body>
 <script src="https://apis.google.com/js/platform.js?onload=onLoad" type="text/javascript" async defer></script>
+<script src="/js/jquery-3.2.1.min.js" type="text/javascript" defer></script>
+<script src="/js/tether.min.js" type="text/javascript" defer></script>
+<script src="/js/bootstrap.min.js" type="text/javascript" defer></script>

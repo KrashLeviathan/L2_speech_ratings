@@ -2,7 +2,10 @@
 
 $domain = 'http://localhost:5000';
 
-session_start();
+// 7 day expiration
+session_start([
+    'cookie_lifetime' => 604800
+]);
 if (isset($_SESSION['user_id'])) {
     $listener = array(
         'listener_id' => $_SESSION['user_id'],
@@ -13,7 +16,8 @@ if (isset($_SESSION['user_id'])) {
         'university_id' => $_SESSION['university_id'],
         'user_is_admin' => $_SESSION['user_is_admin']
     );
-} else {
+} else if ($_SERVER['REQUEST_URI'] !== '/' && $_SERVER['REQUEST_URI'] !== '/about') {
+    // User can only visit the homepage and the about page when logged out
     session_abort();
     header('Location: ' . $domain);
     die();

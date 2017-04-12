@@ -1,3 +1,6 @@
 <?php
-session_abort();
-$listener = null;
+session_start([
+    'cookie_lifetime' => 10
+]);
+session_destroy();
+unset($listener);

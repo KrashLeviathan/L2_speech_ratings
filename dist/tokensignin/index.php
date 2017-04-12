@@ -89,8 +89,10 @@ mysqli_free_result($result);
 
 mysqli_close($link);
 
-// SUCCESS! Create a session for this verified user
-session_start();
+// SUCCESS! Create a session for this verified user (7 day expiration)
+session_start([
+    'cookie_lifetime' => 604800
+]);
 $_SESSION['user_id'] = $listener['listener_id'];
 $_SESSION['first_name'] = $listener['first_name'];
 $_SESSION['last_name'] = $listener['last_name'];

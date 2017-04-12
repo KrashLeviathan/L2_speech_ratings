@@ -27,7 +27,6 @@
                     print '<li><a href="/about">About</a></li>';
                 }
                 if (isset($listener)) {
-                    // If $userIsAdmin is set, then user must be able to log out
                     print '<li><a href="#" onclick="signOut()">Log out</a></li>';
                 }
                 ?>
@@ -35,14 +34,40 @@
         </div>
     </div>
 </div>
-<script>
+<script defer>
+    var gapiReady = false;
+    var attemptedSignOut = false;
+    var timer;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        timer = setTimeout(function() {
+            // Sometimes the google api fails to load for some reason. If so, this will time
+            // out and display in the console.
+            console.log("Google authentication API failed to load! Try refreshing the page.");
+            // TODO: Present a popup or toast of some sort in the future?
+        }, 5000);
+    });
+
     function onLoad() {
         gapi.load('auth2', function () {
-            gapi.auth2.init();
+            gapi.auth2.init().then(function () {
+                console.log("Google authentication API ready!");
+                clearTimeout(timer);
+                gapiReady = true;
+                if (attemptedSignOut) {
+                    signOut();
+                }
+            });
         });
     }
 
     function signOut() {
+        if (!gapiReady) {
+            // Can't sign out before Google API is ready, but now once it's
+            // ready it will call signOut() again
+            attemptedSignOut = true;
+            return;
+        }
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
             var xhr = new XMLHttpRequest();
