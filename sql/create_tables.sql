@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS Listeners (
   first_name      VARCHAR(255) NOT NULL,
   last_name       VARCHAR(255) NOT NULL,
   email           VARCHAR(255) NOT NULL,
-  phone           VARCHAR(16)  NOT NULL,
+  phone           VARCHAR(16),
   date_signed_up  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   payment_info_id INT(10),
   university_id   VARCHAR(12),
@@ -228,6 +228,7 @@ CREATE TABLE IF NOT EXISTS Invites (
   invite_id   INT(10)      NOT NULL AUTO_INCREMENT,
   access_code VARCHAR(255) NOT NULL,
   email       VARCHAR(255) NOT NULL,
+  validation  VARCHAR(255),
 
   PRIMARY KEY (invite_id)
 );

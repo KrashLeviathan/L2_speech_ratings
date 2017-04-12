@@ -33,6 +33,9 @@ $client = new Google_Client(['client_id' => $googleClientId]);
 $payload = $client->verifyIdToken($id_token);
 if ($payload) {
     $google_id = $payload['sub'];
+    $firstName = $payload['given_name'];
+    $lastName = $payload['family_name'];
+    $email = $payload['email'];
 } else {
     // Invalid ID token
     $response = array(
@@ -43,31 +46,64 @@ if ($payload) {
     die();
 }
 
-// Verify user's id with the application
 // Connect to the mysql database
 $link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
 // Check connection
 if ($link->connect_error) {
-    die("Connection failed: " . $link->connect_error);
+    $response = array(
+        'success' => false,
+        'errmsg' => 'Database connection failure!'
+    );
+    print json_encode($response);
+    die();
 }
 mysqli_set_charset($link, 'utf8');
 
-function checkSqlSuccess($result)
+function checkSqlSuccess($result, $link)
 {
     if (!$result) {
         $response = array(
             'success' => false,
-            'errmsg' => 'Database connection failure!'
+            'errmsg' => 'Database connection failure!',
+            'mysql_errno' => mysqli_errno($link),
+            'mysql_error' => mysqli_error($link)
         );
         print json_encode($response);
         die();
     }
 }
 
-// Check if it's a valid user
+// Create new account if needed
+$newAccount = false;
+if (isset($_POST['validation']) && $_POST['validation'] !== 'NONE') {
+    // Check validation matches
+    $sql = "SELECT email FROM Invites WHERE validation='" . $_POST['validation'] . "'";
+    $result = $link->query($sql);
+    checkSqlSuccess($result, $link);
+
+    if (mysqli_num_rows($result) != 0) {
+        mysqli_free_result($result);
+
+        // The invite is validated, so create a new user for that code
+        $sql = "INSERT INTO Listeners (google_id, first_name, last_name, email, date_signed_up) " .
+            "VALUES ('$google_id','$firstName','$lastName','$email',NOW())";
+        $result = $link->query($sql);
+        checkSqlSuccess($result, $link);
+        mysqli_free_result($result);
+
+        // Then remove the invite
+        $sql = "DELETE FROM Invites WHERE validation='" . $_POST['validation'] . "'";
+        $result = $link->query($sql);
+        checkSqlSuccess($result, $link);
+        $newAccount = true;
+    }
+    mysqli_free_result($result);
+}
+
+// Verify user's id with the application
 $sql = "SELECT * FROM Listeners WHERE Listeners.google_id = $google_id";
 $result = $link->query($sql);
-checkSqlSuccess($result);
+checkSqlSuccess($result, $link);
 if (mysqli_num_rows($result) == 0) {
     $response = array(
         'success' => false,
@@ -83,7 +119,7 @@ mysqli_free_result($result);
 $lid = $listener['listener_id'];
 $sql = "SELECT * FROM Admins WHERE Admins.listener_id = $lid";
 $result = $link->query($sql);
-checkSqlSuccess($result);
+checkSqlSuccess($result, $link);
 $userIsAdmin = (mysqli_num_rows($result) != 0);
 mysqli_free_result($result);
 
@@ -101,8 +137,6 @@ $_SESSION['phone'] = $listener['phone'];
 $_SESSION['university_id'] = $listener['university_id'];
 $_SESSION['user_is_admin'] = $userIsAdmin;
 
-$domain = 'http://localhost:5000';
-
 if ($userIsAdmin) {
     // User is admin.
     $response = array(
@@ -115,7 +149,7 @@ if ($userIsAdmin) {
     // User is NOT admin.
     $response = array(
         'success' => true,
-        'redirectTo' => '/instructions'
+        'redirectTo' => ($newAccount) ? '/listener_settings' : '/instructions'
     );
     print json_encode($response);
     die();
