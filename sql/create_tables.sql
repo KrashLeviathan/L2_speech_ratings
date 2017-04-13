@@ -1,5 +1,5 @@
-CREATE TABLE IF NOT EXISTS Listeners (
-  listener_id     INT(10)      NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS Users (
+  user_id         INT(10)      NOT NULL AUTO_INCREMENT,
   google_id       VARCHAR(255) NOT NULL UNIQUE KEY,
   first_name      VARCHAR(255) NOT NULL,
   last_name       VARCHAR(255) NOT NULL,
@@ -9,33 +9,33 @@ CREATE TABLE IF NOT EXISTS Listeners (
   payment_info_id INT(10),
   university_id   VARCHAR(12),
 
-  PRIMARY KEY (listener_id)
+  PRIMARY KEY (user_id)
 );
 
 CREATE TABLE IF NOT EXISTS Demographics (
   demographic_id INT(10) NOT NULL AUTO_INCREMENT,
-  listener_id    INT(10) NOT NULL,
+  user_id        INT(10) NOT NULL,
   race           VARCHAR(64),
   etc            VARCHAR(255),
 
   PRIMARY KEY (demographic_id),
 
-  CONSTRAINT demographic_listener_id_fk
-  FOREIGN KEY (listener_id)
-  REFERENCES Listeners (listener_id)
+  CONSTRAINT fk_Demographics_1
+  FOREIGN KEY (user_id)
+  REFERENCES Users (user_id)
     ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS PaymentInformation (
   payment_info_id INT(10) NOT NULL AUTO_INCREMENT,
-  listener_id     INT(10) NOT NULL,
+  user_id         INT(10) NOT NULL,
   payment_info    VARCHAR(255),
 
   PRIMARY KEY (payment_info_id),
 
-  CONSTRAINT pi_listener_fk
-  FOREIGN KEY (listener_id)
-  REFERENCES Listeners (listener_id)
+  CONSTRAINT fk_PaymentInformation_1
+  FOREIGN KEY (user_id)
+  REFERENCES Users (user_id)
     ON DELETE CASCADE
 );
 
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS AudioSamples (
 
   PRIMARY KEY (audio_sample_id),
 
-  CONSTRAINT category_id_fk
+  CONSTRAINT fk_AudioSamples_1
   FOREIGN KEY (category_id)
   REFERENCES AudioCategories (audio_category_id)
     ON DELETE CASCADE
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS RatingScores (
 
   PRIMARY KEY (rating_score_id),
 
-  CONSTRAINT rating_property_fk
+  CONSTRAINT fk_RatingScores_1
   FOREIGN KEY (property)
   REFERENCES RatingProperties (rating_property_id)
     ON DELETE CASCADE
@@ -92,17 +92,17 @@ CREATE TABLE IF NOT EXISTS RatingEvents (
 
   PRIMARY KEY (rating_event_id),
 
-  CONSTRAINT performed_by_fk
+  CONSTRAINT fk_RatingEvents_1
   FOREIGN KEY (performed_by_id)
-  REFERENCES Listeners (listener_id)
+  REFERENCES Users (user_id)
     ON DELETE CASCADE,
 
-  CONSTRAINT score_fk
+  CONSTRAINT fk_RatingEvents_2
   FOREIGN KEY (score_id)
   REFERENCES RatingScores (rating_score_id)
     ON DELETE CASCADE,
 
-  CONSTRAINT audio_sample_fk
+  CONSTRAINT fk_RatingEvents_3
   FOREIGN KEY (audio_sample_id)
   REFERENCES AudioSamples (audio_sample_id)
     ON DELETE CASCADE
@@ -110,17 +110,17 @@ CREATE TABLE IF NOT EXISTS RatingEvents (
 
 CREATE TABLE IF NOT EXISTS ControlFlags (
   control_flag_id INT(10) NOT NULL AUTO_INCREMENT,
-  listener_id     INT(10) NOT NULL,
+  user_id         INT(10) NOT NULL,
   rating_event_id INT(10) NOT NULL,
 
   PRIMARY KEY (control_flag_id),
 
-  CONSTRAINT control_flags_listener_id_fk
-  FOREIGN KEY (listener_id)
-  REFERENCES Listeners (listener_id)
+  CONSTRAINT fk_ControlFlags_1
+  FOREIGN KEY (user_id)
+  REFERENCES Users (user_id)
     ON DELETE CASCADE,
 
-  CONSTRAINT control_flags_rating_id_fk
+  CONSTRAINT fk_ControlFlags_2
   FOREIGN KEY (rating_event_id)
   REFERENCES RatingEvents (rating_event_id)
     ON DELETE CASCADE
@@ -134,12 +134,12 @@ CREATE TABLE IF NOT EXISTS ControlRatings (
 
   PRIMARY KEY (control_rating_id),
 
-  CONSTRAINT expected_score_fk
+  CONSTRAINT fk_ControlRatings_1
   FOREIGN KEY (expected_score_id)
   REFERENCES RatingScores (rating_score_id)
     ON DELETE CASCADE,
 
-  CONSTRAINT cr_audio_sample_fk
+  CONSTRAINT fk_ControlRatings_2
   FOREIGN KEY (audio_sample_id)
   REFERENCES AudioSamples (audio_sample_id)
     ON DELETE CASCADE
@@ -154,12 +154,12 @@ CREATE TABLE IF NOT EXISTS CorruptFiles (
 
   PRIMARY KEY (corrupt_file_id),
 
-  CONSTRAINT reported_by_fk
+  CONSTRAINT fk_CorruptFiles_1
   FOREIGN KEY (reported_by)
-  REFERENCES Listeners (listener_id)
+  REFERENCES Users (user_id)
     ON DELETE CASCADE,
 
-  CONSTRAINT corrupt_audio_fk
+  CONSTRAINT fk_CorruptFiles_2
   FOREIGN KEY (audio_sample_id)
   REFERENCES AudioSamples (audio_sample_id)
     ON DELETE CASCADE
@@ -195,12 +195,12 @@ CREATE TABLE IF NOT EXISTS SurveyBlocks (
 
   PRIMARY KEY (survey_block_id),
 
-  CONSTRAINT survey_id_fk
+  CONSTRAINT fk_SurveyBlocks_1
   FOREIGN KEY (survey_id)
   REFERENCES Surveys (survey_id)
     ON DELETE CASCADE,
 
-  CONSTRAINT sample_block_fk
+  CONSTRAINT fk_SurveyBlocks_2
   FOREIGN KEY (sample_block_id)
   REFERENCES SampleBlocks (sample_block_id)
     ON DELETE CASCADE
@@ -213,12 +213,12 @@ CREATE TABLE IF NOT EXISTS BlockAudioSamples (
 
   PRIMARY KEY (block_audio_id),
 
-  CONSTRAINT bas_sample_block_fk
+  CONSTRAINT fk_BlockAudioSamples_1
   FOREIGN KEY (sample_block_id)
   REFERENCES SampleBlocks (sample_block_id)
     ON DELETE CASCADE,
 
-  CONSTRAINT bas_audio_sample_fk
+  CONSTRAINT fk_BlockAudioSamples_2
   FOREIGN KEY (audio_sample_id)
   REFERENCES AudioSamples (audio_sample_id)
     ON DELETE CASCADE
@@ -235,7 +235,7 @@ CREATE TABLE IF NOT EXISTS Invites (
   PRIMARY KEY (invite_id),
   CONSTRAINT fk_Invites_1
   FOREIGN KEY (accepted_by)
-  REFERENCES Listeners (listener_id)
+  REFERENCES Users (user_id)
     ON DELETE SET NULL
 );
 
@@ -243,26 +243,26 @@ CREATE TABLE IF NOT EXISTS Sessions (
   session_id   INT(10) NOT NULL AUTO_INCREMENT,
   date_created DATETIME         DEFAULT CURRENT_TIMESTAMP(),
   date_expires DATETIME,
-  listener_id  INT(10) NOT NULL,
+  user_id      INT(10) NOT NULL,
 
   PRIMARY KEY (session_id),
 
-  CONSTRAINT sessions_listener_fk
-  FOREIGN KEY (listener_id)
-  REFERENCES Listeners (listener_id)
+  CONSTRAINT fk_Sessions_1
+  FOREIGN KEY (user_id)
+  REFERENCES Users (user_id)
     ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Admins (
-  admin_id    INT(10) NOT NULL AUTO_INCREMENT,
-  listener_id INT(10) NOT NULL,
-  privileges  VARCHAR(16)      DEFAULT 'NONE',
+  admin_id   INT(10) NOT NULL AUTO_INCREMENT,
+  user_id    INT(10) NOT NULL,
+  privileges VARCHAR(16)      DEFAULT 'NONE',
 
   PRIMARY KEY (admin_id),
 
-  CONSTRAINT admin_listener_fk
-  FOREIGN KEY (listener_id)
-  REFERENCES Listeners (listener_id)
+  CONSTRAINT fk_Admins_1
+  FOREIGN KEY (user_id)
+  REFERENCES Users (user_id)
     ON DELETE CASCADE
 );
 
