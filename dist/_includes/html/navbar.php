@@ -10,12 +10,12 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
             <?php
-            if (isset($listener)) {
+            if (isset($user)) {
                 // Set left navbar items based on user type
-                if ($listener['user_is_admin'] == true) {
+                if ($user['user_is_admin'] == true) {
                     @include 'navbarAdminItems.php';
                 } else {
-                    @include 'navbarListenerItems.php';
+                    @include 'navbarUserItems.php';
                 }
             }
             ?>
@@ -26,7 +26,7 @@
                 } else {
                     print '<li><a href="/about">About</a></li>';
                 }
-                if (isset($listener)) {
+                if (isset($user)) {
                     print '<li><a href="#" onclick="signOut()">Log out</a></li>';
                 }
                 ?>

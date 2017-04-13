@@ -17,7 +17,7 @@ if ($mysqli->connect_errno) {
 }
 
 // TODO
-$arr = getAllListeners($mysqli);
+$arr = getAllUsers($mysqli);
 var_dump($arr);
 
 $mysqli->close();

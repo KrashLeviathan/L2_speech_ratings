@@ -4,7 +4,7 @@
 
 The goal is to create a web application that facilitates Dr. Nagle’s
 research on second language pronunciation development. It will feature
-the ability for users (“listeners”) to log in to the system with a
+the ability for users to log in to the system with a
 unique access code and rate a sampling of audio files on a scale of
 1 to 10. The results can then be downloaded as a CSV file by the
 administrator for use in language research.
@@ -42,15 +42,15 @@ samples by John Doe, or all samples from March 2017).
 We can discuss how you would like to go about creating different blocks
 of files for the users to rate. Maybe create a few different strategies
 that you can switch between in the administrative settings. For example,
-you could have files presented at random to the listeners, or maybe
+you could have files presented at random to the users, or maybe
 present all samples from one subset chosen at random (e.g. all John
 Doe’s samples, then all Jane Doe’s samples...), or maybe present samples
 from John Doe in date chronological order.
 
 ### Other Administrative Features
 
-The admin user to the system will have access to an admin settings page
-that the “listener” users don’t have access to. It will feature some
+The admin to the system will have access to an admin settings page
+that the other users don’t have access to. It will feature some
 or all of the following:
 
 - Audio file management (upload, delete, etc)

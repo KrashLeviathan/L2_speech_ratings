@@ -18,20 +18,20 @@ function onSqlFail($mysqli, $sql)
     exit;
 }
 
-function getListener(mysqli $mysqli, $listener_id)
+function getUser(mysqli $mysqli, $user_id)
 {
-    $sql = "SELECT * FROM Listeners WHERE listener_id = $listener_id";
+    $sql = "SELECT * FROM Users WHERE user_id = $user_id";
     if (!$result = $mysqli->query($sql)) {
         onSqlFail($mysqli, $sql);
     }
-    $listener = $result->fetch_assoc();
+    $user = $result->fetch_assoc();
     mysqli_free_result($result);
-    return $listener;
+    return $user;
 }
 
-function getAllListeners(mysqli $mysqli)
+function getAllUsers(mysqli $mysqli)
 {
-    $sql = "SELECT * FROM Listeners";
+    $sql = "SELECT * FROM Users";
     if (!$result = $mysqli->query($sql)) {
         onSqlFail($mysqli, $sql);
     }

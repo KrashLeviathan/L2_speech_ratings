@@ -5,7 +5,7 @@
     <div class="page-header" id="banner">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Listeners</h1>
+                <h1>Users</h1>
             </div>
         </div>
     </div>

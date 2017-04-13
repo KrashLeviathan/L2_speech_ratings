@@ -12,7 +12,7 @@ function handleSqlError()
 // Handle POST form data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Make updates to database
-    $sql = "UPDATE Listeners SET ";
+    $sql = "UPDATE Users SET ";
     $foundParams = false;
 
     // Prep connection
@@ -55,8 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($foundParams) {
-        $lid = $listener['listener_id'];
-        $sql = $sql . "WHERE listener_id=$lid";
+        $uid = $user['user_id'];
+        $sql = $sql . "WHERE user_id=$uid";
         $result = $link->query($sql);
         if (!$result) {
             print $sql;
@@ -69,15 +69,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Reload page to refresh session data (that populates the form as well)
     $domain = 'http://localhost:5000';
-    print '<script type="text/javascript">window.location = "' . $domain . '/listener_settings";</script>';
+    print '<script type="text/javascript">window.location = "' . $domain . '/user_settings";</script>';
     die();
 }
 
-$firstName = $listener['first_name'];
-$lastName = $listener['last_name'];
-$univId = $listener['university_id'];
-$email = $listener['email'];
-$phone = $listener['phone'];
+$firstName = $user['first_name'];
+$lastName = $user['last_name'];
+$univId = $user['university_id'];
+$email = $user['email'];
+$phone = $user['phone'];
 // TODO
 $dateStarted = '2017-04-11';
 ?>
@@ -87,7 +87,7 @@ $dateStarted = '2017-04-11';
     <div class="page-header" id="banner">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Listener Settings</h1>
+                <h1>User Settings</h1>
             </div>
         </div>
     </div>
@@ -158,7 +158,7 @@ $dateStarted = '2017-04-11';
                 <h3>Demographics</h3>
                 <p>If you haven't already filled out the demographics form, please click the button below and
                     complete before taking a survey.</p>
-                <a type="button" class="btn btn-primary" href="/listener_settings/demographics" style="margin:1em 0;">
+                <a type="button" class="btn btn-primary" href="/user_settings/demographics" style="margin:1em 0;">
                     Complete Demographics Form</a>
             </div>
         </div>

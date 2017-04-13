@@ -5,10 +5,10 @@
     } else {
         print '<li><a href="/results">Results</a></li>';
     }
-    if ($_SERVER['REQUEST_URI'] == '/listeners') {
-        print '<li class="active"><a href="#">Listeners <span class="sr-only">(current)</span></a></li>';
+    if ($_SERVER['REQUEST_URI'] == '/users') {
+        print '<li class="active"><a href="#">Users <span class="sr-only">(current)</span></a></li>';
     } else {
-        print '<li><a href="/listeners">Listeners</a></li>';
+        print '<li><a href="/users">Users</a></li>';
     }
     if ($_SERVER['REQUEST_URI'] == '/files') {
         print '<li class="active"><a href="#">Files <span class="sr-only">(current)</span></a></li>';

@@ -85,7 +85,7 @@ if (isset($_POST['validation']) && $_POST['validation'] !== 'NONE') {
         mysqli_free_result($result);
 
         // The invite is validated, so create a new user for that code
-        $sql = "INSERT INTO Listeners (google_id, first_name, last_name, email, date_signed_up) " .
+        $sql = "INSERT INTO Users (google_id, first_name, last_name, email, date_signed_up) " .
             "VALUES ('$google_id','$firstName','$lastName','$email',NOW())";
         $result = $link->query($sql);
         checkSqlSuccess($result, $link);
@@ -101,7 +101,7 @@ if (isset($_POST['validation']) && $_POST['validation'] !== 'NONE') {
 }
 
 // Verify user's id with the application
-$sql = "SELECT * FROM Listeners WHERE Listeners.google_id = $google_id";
+$sql = "SELECT * FROM Users WHERE Users.google_id = $google_id";
 $result = $link->query($sql);
 checkSqlSuccess($result, $link);
 if (mysqli_num_rows($result) == 0) {
@@ -112,12 +112,12 @@ if (mysqli_num_rows($result) == 0) {
     print json_encode($response);
     die();
 }
-$listener = $result->fetch_assoc();
+$user = $result->fetch_assoc();
 mysqli_free_result($result);
 
 // Check if that user is an admin
-$lid = $listener['listener_id'];
-$sql = "SELECT * FROM Admins WHERE Admins.listener_id = $lid";
+$lid = $user['user_id'];
+$sql = "SELECT * FROM Admins WHERE Admins.user_id = $lid";
 $result = $link->query($sql);
 checkSqlSuccess($result, $link);
 $userIsAdmin = (mysqli_num_rows($result) != 0);
@@ -129,12 +129,12 @@ mysqli_close($link);
 session_start([
     'cookie_lifetime' => 604800
 ]);
-$_SESSION['user_id'] = $listener['listener_id'];
-$_SESSION['first_name'] = $listener['first_name'];
-$_SESSION['last_name'] = $listener['last_name'];
-$_SESSION['email'] = $listener['email'];
-$_SESSION['phone'] = $listener['phone'];
-$_SESSION['university_id'] = $listener['university_id'];
+$_SESSION['user_id'] = $user['user_id'];
+$_SESSION['first_name'] = $user['first_name'];
+$_SESSION['last_name'] = $user['last_name'];
+$_SESSION['email'] = $user['email'];
+$_SESSION['phone'] = $user['phone'];
+$_SESSION['university_id'] = $user['university_id'];
 $_SESSION['user_is_admin'] = $userIsAdmin;
 
 if ($userIsAdmin) {
@@ -149,7 +149,7 @@ if ($userIsAdmin) {
     // User is NOT admin.
     $response = array(
         'success' => true,
-        'redirectTo' => ($newAccount) ? '/listener_settings' : '/instructions'
+        'redirectTo' => ($newAccount) ? '/user_settings' : '/instructions'
     );
     print json_encode($response);
     die();
