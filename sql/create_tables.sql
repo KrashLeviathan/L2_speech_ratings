@@ -225,12 +225,18 @@ CREATE TABLE IF NOT EXISTS BlockAudioSamples (
 );
 
 CREATE TABLE IF NOT EXISTS Invites (
-  invite_id   INT(10)      NOT NULL AUTO_INCREMENT,
-  access_code VARCHAR(255) NOT NULL,
-  email       VARCHAR(255) NOT NULL,
-  validation  VARCHAR(255),
+  invite_id     INT(10)      NOT NULL AUTO_INCREMENT,
+  access_code   VARCHAR(255) NOT NULL,
+  email         VARCHAR(255) NOT NULL,
+  validation    VARCHAR(255),
+  accepted_by   INT(10),
+  accepted_date DATETIME,
 
-  PRIMARY KEY (invite_id)
+  PRIMARY KEY (invite_id),
+  CONSTRAINT fk_Invites_1
+  FOREIGN KEY (accepted_by)
+  REFERENCES Listeners (listener_id)
+    ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS Sessions (
