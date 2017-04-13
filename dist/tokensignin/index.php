@@ -76,6 +76,9 @@ function checkSqlSuccess($result, $link)
 // Create new account if needed
 $newAccount = false;
 if (isset($_POST['validation']) && $_POST['validation'] !== 'NONE') {
+    // Slow down bots with brute force attempts to guess validation codes
+    sleep(2);
+
     // Check validation matches
     $sql = "SELECT email FROM Invites WHERE validation='" . $_POST['validation'] . "'";
     $result = $link->query($sql);

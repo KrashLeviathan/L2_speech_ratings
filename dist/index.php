@@ -142,10 +142,21 @@ $injectedHeadElements = array($style);
 
     function onFail(response) {
         console.log(response);
+
+        // If Google sign-in is successful but user isn't authorized in our application,
+        // he should be logged back out
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
-            console.log('User signed out.');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:5000/logout');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // This just makes sure the session is destroyed (if there was one)
+            };
+            xhr.send();
         });
+
+        // Display an error message alert
         if (response.mysql_errno === 1062) {
             var msg = "That user account has already been created!";
         } else {

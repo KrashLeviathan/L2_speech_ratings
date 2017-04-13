@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Slow down bots with brute force attempts to guess access codes
-sleep(3);
+sleep(2);
 
 // Gets the MySQL config
 @include '../_includes/config.php';
