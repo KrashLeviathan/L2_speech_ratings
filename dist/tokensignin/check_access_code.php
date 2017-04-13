@@ -46,7 +46,7 @@ if ($link->connect_error) {
 }
 mysqli_set_charset($link, 'utf8');
 
-$sql = "SELECT email FROM Invites WHERE Invites.access_code = '$accessCode'";
+$sql = "SELECT email FROM Invites WHERE access_code = '$accessCode' AND validation != 'COMPLETE'";
 $result = $link->query($sql);
 if (!$result) {
     dbConnectionFailure();

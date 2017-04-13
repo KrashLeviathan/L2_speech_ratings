@@ -91,8 +91,16 @@ if (isset($_POST['validation']) && $_POST['validation'] !== 'NONE') {
         checkSqlSuccess($result, $link);
         mysqli_free_result($result);
 
-        // Then remove the invite
-        $sql = "DELETE FROM Invites WHERE validation='" . $_POST['validation'] . "'";
+        // Get user id
+        $sql = "SELECT user_id FROM Users WHERE google_id='" . $google_id . "'";
+        $result = $link->query($sql);
+        checkSqlSuccess($result, $link);
+        $userId = ($result->fetch_assoc())['user_id'];
+        mysqli_free_result($result);
+
+        // Then update the invite
+        $sql = "UPDATE Invites SET accepted_by=" . $userId . ", validation='COMPLETE'" .
+            ", accepted_date=NOW() WHERE validation='" . $_POST['validation'] . "'";
         $result = $link->query($sql);
         checkSqlSuccess($result, $link);
         $newAccount = true;
