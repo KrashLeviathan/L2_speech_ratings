@@ -5,16 +5,12 @@ function handleSqlError()
 {
     print '<div class="alert alert-danger alert-dismissible text-center" role="alert" style="position:fixed;bottom:0;left:0;right:0;margin:1em;">
 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-<strong>Database Operation Error!</strong> Try again later, or contact IT.';
+<strong>Error!</strong> Try again later, or contact IT.';
     die();
 }
 
 // Handle POST form data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Make updates to database
-    $sql = "UPDATE Users SET ";
-    $foundParams = false;
-
     // Prep connection
     $link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
     if ($link->connect_error) {
@@ -22,49 +18,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     mysqli_set_charset($link, 'utf8');
 
+    $firstName = substr(mysqli_real_escape_string($link, $_POST['firstName']), 0, 255);
+    $_SESSION['first_name'] = $firstName;
 
-    if (isset($_POST['firstName'])) {
-        $firstName = substr(mysqli_real_escape_string($link, $_POST['firstName']), 0, 255);
-        $_SESSION['first_name'] = $firstName;
-        $sql = $sql . "first_name='$firstName', ";
-        $foundParams = true;
-    }
-    if (isset($_POST['lastName'])) {
-        $lastName = substr(mysqli_real_escape_string($link, $_POST['lastName']), 0, 255);
-        $_SESSION['last_name'] = $lastName;
-        $sql = $sql . "last_name='$lastName', ";
-        $foundParams = true;
-    }
-    if (isset($_POST['universityId'])) {
-        $univId = substr(mysqli_real_escape_string($link, $_POST['universityId']), 0, 12);
-        $_SESSION['university_id'] = $univId;
-        $sql = $sql . "university_id='$univId', ";
-        $foundParams = true;
-    }
-    if (isset($_POST['email'])) {
-        $email = substr(mysqli_real_escape_string($link, $_POST['email']), 0, 255);
-        $_SESSION['email'] = $email;
-        $sql = $sql . "email='$email', ";
-        $foundParams = true;
-    }
-    if (isset($_POST['phone'])) {
-        $phone = substr(mysqli_real_escape_string($link, $_POST['phone']), 0, 16);
-        $_SESSION['phone'] = $phone;
-        $sql = $sql . "phone='$phone' ";
-        $foundParams = true;
-    }
+    $lastName = substr(mysqli_real_escape_string($link, $_POST['lastName']), 0, 255);
+    $_SESSION['last_name'] = $lastName;
 
-    if ($foundParams) {
-        $uid = $user['user_id'];
-        $sql = $sql . "WHERE user_id=$uid";
-        $result = $link->query($sql);
-        if (!$result) {
-            print $sql;
-            handleSqlError();
-        }
-        mysqli_free_result($result);
-    }
+    $univId = substr(mysqli_real_escape_string($link, $_POST['universityId']), 0, 12);
+    $_SESSION['university_id'] = $univId;
 
+    $email = substr(mysqli_real_escape_string($link, $_POST['email']), 0, 255);
+    $_SESSION['email'] = $email;
+
+    $phone = substr(mysqli_real_escape_string($link, $_POST['phone']), 0, 16);
+    $_SESSION['phone'] = $phone;
+
+    $uid = $user['user_id'];
+    $sql = "UPDATE Users SET first_name='$firstName', last_name='$lastName', university_id='$univId', " .
+        "email='$email', phone='$phone' WHERE user_id=$uid";
+    $result = $link->query($sql);
+    if (!$result) {
+        print $sql;
+        handleSqlError();
+    }
+    mysqli_free_result($result);
     mysqli_close($link);
 
     // Reload page to refresh session data (that populates the form as well)
@@ -138,11 +115,16 @@ $dateStarted = '2017-04-11';
                                 <label for="inputDateStarted" class="control-label">Date Started</label>
                                 <div>
                                     <input type="date" class="form-control" id="inputDateStarted"
-                                           value="<?= $dateStarted ?>" disabled>
+                                           value="<?= $dateStarted ?>" readonly>
                                 </div>
                             </div>
+                        </fieldset>
+
+                        <!-- Submission Buttons -->
+                        <fieldset>
                             <div class="form-group col-lg-12">
-                                <button id="edit-btn" type="button" class="btn btn-primary" onclick="onEditClicked()">Edit
+                                <button id="edit-btn" type="button" class="btn btn-primary" onclick="onEditClicked()">
+                                    Edit
                                 </button>
                                 <button id="cancel-btn" type="reset" class="btn btn-default hidden"
                                         onclick="onCancelClicked()">Cancel
