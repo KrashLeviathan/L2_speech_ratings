@@ -14,6 +14,7 @@ sleep(2);
 
 // Gets the MySQL config and database API
 @include '../_includes/database_api.php';
+$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
 // Get $accessCode via HTTPS POST.
 if (isset($_POST['accessCode'])) {
@@ -27,34 +28,12 @@ if (isset($_POST['accessCode'])) {
     die();
 }
 
-
 // Verify access code
+$email = $databaseApi->accessCodeToInviteEmail($accessCode);
 
-$sql = "SELECT email FROM Invites " .
-    "WHERE access_code = '$accessCode' AND (validation <> 'COMPLETE' OR validation IS NULL)";
-$result = $link->query($sql);
-if (!$result) {
-    dbConnectionFailure();
-}
-if (mysqli_num_rows($result) == 0) {
-    $response = array(
-        'success' => false,
-        'errmsg' => 'No such access code!'
-    );
-    print json_encode($response);
-    die();
-}
-$assoc = $result->fetch_assoc();
-mysqli_free_result($result);
-
-// Put validation code in Invites table
-$validation = substr(md5(date("Y-m-d H:i:s") . $assoc['email']), 0, 255);
-$sql = "UPDATE Invites SET validation='$validation' WHERE access_code='$accessCode'";
-$result = $link->query($sql);
-if (!$result) {
-    dbConnectionFailure();
-}
-mysqli_close($link);
+// Put validation token in Invites table
+$validation = $databaseApi->escapeAndShorten(md5(date("Y-m-d H:i:s") . $email), 255);
+$databaseApi->accessCodeValidation($accessCode, $validation);
 
 // Return success with validation code
 $response = array(

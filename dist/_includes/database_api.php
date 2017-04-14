@@ -40,6 +40,15 @@ class DatabaseApi
         die();
     }
 
+    /**
+     * Used to update the user settings.
+     * @param $userId
+     * @param $firstName
+     * @param $lastName
+     * @param $universityId
+     * @param $email
+     * @param $phone
+     */
     function updateUserSettings($userId, $firstName, $lastName, $universityId, $email, $phone)
     {
         $sql = "UPDATE Users SET first_name='$firstName', last_name='$lastName', university_id='$universityId', " .
@@ -52,9 +61,51 @@ class DatabaseApi
         mysqli_free_result($result);
     }
 
+    /**
+     * Escapes dangerous characters from the string and shortens it to the desired length.
+     * @param $string
+     * @param $length
+     * @return bool|string
+     */
     function escapeAndShorten($string, $length)
     {
         return substr(mysqli_real_escape_string($this->link, $string), 0, $length);
+    }
+
+    /**
+     * Checks to see if the given access code is valid, and then (if valid) returns the invite
+     * email for that access code.
+     * @param $accessCode
+     * @return mixed
+     */
+    function accessCodeToInviteEmail($accessCode)
+    {
+        $sql = "SELECT email FROM Invites " .
+            "WHERE access_code = '$accessCode' AND (validation <> 'COMPLETE' OR validation IS NULL)";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson();
+        }
+        if (mysqli_num_rows($result) == 0) {
+            $this->failureToJson('No such access code!');
+        }
+        $assoc = $result->fetch_assoc();
+        mysqli_free_result($result);
+        return $assoc['email'];
+    }
+
+    /**
+     * Validates the access code with the generated validation token
+     * @param $accessCode
+     * @param $validation
+     */
+    function accessCodeValidation($accessCode, $validation)
+    {
+        $sql = "UPDATE Invites SET validation='$validation' WHERE access_code='$accessCode'";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson();
+        }
     }
 }
 
