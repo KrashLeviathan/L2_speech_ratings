@@ -10,8 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die();
 }
 
-// Gets the googleClientId for L2 Speech Ratings application, as well as MySQL config
-@include '../_includes/config.php';
+// Gets the googleClientId for L2 Speech Ratings application and MySQL connection API
+@include '../_includes/database_api.php';
 
 // Contains the Google_Client API
 require_once '../../vendor/autoload.php';
@@ -47,31 +47,7 @@ if ($payload) {
 }
 
 // Connect to the mysql database
-$link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
-// Check connection
-if ($link->connect_error) {
-    $response = array(
-        'success' => false,
-        'errmsg' => 'Database connection failure!'
-    );
-    print json_encode($response);
-    die();
-}
-mysqli_set_charset($link, 'utf8');
-
-function checkSqlSuccess($result, $link)
-{
-    if (!$result) {
-        $response = array(
-            'success' => false,
-            'errmsg' => 'Database connection failure!',
-            'mysql_errno' => mysqli_errno($link),
-            'mysql_error' => mysqli_error($link)
-        );
-        print json_encode($response);
-        die();
-    }
-}
+$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
 // Create new account if needed
 $newAccount = false;
@@ -80,65 +56,33 @@ if (isset($_POST['validation']) && $_POST['validation'] !== 'NONE') {
     sleep(2);
 
     // Check validation matches
-    $sql = "SELECT email FROM Invites WHERE validation='" . $_POST['validation'] . "'";
-    $result = $link->query($sql);
-    checkSqlSuccess($result, $link);
+    $isValid = $databaseApi->checkInviteValidation($_POST['validation']);
 
-    if (mysqli_num_rows($result) != 0) {
-        mysqli_free_result($result);
-
+    if ($isValid) {
         // The invite is validated, so create a new user for that code
-        $sql = "INSERT INTO Users (google_id, first_name, last_name, email, date_signed_up) " .
-            "VALUES ('$google_id','$firstName','$lastName','$email',NOW())";
-        $result = $link->query($sql);
-        checkSqlSuccess($result, $link);
-        mysqli_free_result($result);
+        $databaseApi->createNewUser($google_id, $firstName, $lastName, $email);
 
-        // Get user id
-        $sql = "SELECT user_id FROM Users WHERE google_id='" . $google_id . "'";
-        $result = $link->query($sql);
-        checkSqlSuccess($result, $link);
-        $userId = ($result->fetch_assoc())['user_id'];
-        mysqli_free_result($result);
+        // Get user id for the new user
+        $user = $databaseApi->getUserFromGoogleId($google_id);
 
         // Then update the invite
-        $sql = "UPDATE Invites SET accepted_by=" . $userId . ", validation='COMPLETE'" .
-            ", accepted_date=NOW() WHERE validation='" . $_POST['validation'] . "'";
-        $result = $link->query($sql);
-        checkSqlSuccess($result, $link);
+        $databaseApi->completeInvite($user['user_id'], $_POST['validation']);
         $newAccount = true;
     }
-    mysqli_free_result($result);
 }
 
-// Verify user's id with the application
-$sql = "SELECT * FROM Users WHERE Users.google_id = $google_id";
-$result = $link->query($sql);
-checkSqlSuccess($result, $link);
-if (mysqli_num_rows($result) == 0) {
-    $response = array(
-        'success' => false,
-        'errmsg' => 'No such user! Create a new account first.'
-    );
-    print json_encode($response);
-    die();
+// Verify user's google id with the application
+if (!isset($user)) {
+    $user = $databaseApi->getUserFromGoogleId($google_id);
 }
-$user = $result->fetch_assoc();
-mysqli_free_result($result);
 
 // Check if that user is an admin
-$lid = $user['user_id'];
-$sql = "SELECT * FROM Admins WHERE Admins.user_id = $lid";
-$result = $link->query($sql);
-checkSqlSuccess($result, $link);
-$userIsAdmin = (mysqli_num_rows($result) != 0);
-mysqli_free_result($result);
+$userIsAdmin = $databaseApi->isUserAdmin($user['user_id']);
 
-mysqli_close($link);
-
-// SUCCESS! Create a session for this verified user (7 day expiration)
+// SUCCESS! Create a session for this verified user
+$secondsPerDay = 86400;
 session_start([
-    'cookie_lifetime' => 604800
+    'cookie_lifetime' => $secondsPerDay * 7
 ]);
 $_SESSION['user_id'] = $user['user_id'];
 $_SESSION['first_name'] = $user['first_name'];

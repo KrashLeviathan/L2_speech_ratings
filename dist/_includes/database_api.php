@@ -17,14 +17,15 @@ class DatabaseApi
         $this->link->close();
     }
 
-    function failureToJson($mainMessage = 'Try again later, or contact IT if problems persist.', $finePrint = '')
+    function failureToJson($thrownBy = '', $mainMessage = 'Try again later, or contact IT if problems persist.', $finePrint = '')
     {
         $response = array(
             'success' => false,
             'errmsg' => $mainMessage,
             'details' => $finePrint,
             'mysql_errno' => mysqli_errno($this->link),
-            'mysql_error' => mysqli_error($this->link)
+            'mysql_error' => mysqli_error($this->link),
+            'thrown_by' => $thrownBy
         );
         print json_encode($response);
         $this->link->close();
@@ -65,7 +66,7 @@ class DatabaseApi
      * Escapes dangerous characters from the string and shortens it to the desired length.
      * @param $string
      * @param $length
-     * @return bool|string
+     * @return bool|string the escaped and shortened string
      */
     function escapeAndShorten($string, $length)
     {
@@ -76,7 +77,7 @@ class DatabaseApi
      * Checks to see if the given access code is valid, and then (if valid) returns the invite
      * email for that access code.
      * @param $accessCode
-     * @return mixed
+     * @return string The email for the given access code
      */
     function accessCodeToInviteEmail($accessCode)
     {
@@ -84,10 +85,10 @@ class DatabaseApi
             "WHERE access_code = '$accessCode' AND (validation <> 'COMPLETE' OR validation IS NULL)";
         $result = $this->link->query($sql);
         if (!$result) {
-            $this->failureToJson();
+            $this->failureToJson('accessCodeToInviteEmail: !$result');
         }
         if (mysqli_num_rows($result) == 0) {
-            $this->failureToJson('No such access code!');
+            $this->failureToJson('accessCodeToInviteEmail: 0 results', 'No such access code!');
         }
         $assoc = $result->fetch_assoc();
         mysqli_free_result($result);
@@ -104,8 +105,92 @@ class DatabaseApi
         $sql = "UPDATE Invites SET validation='$validation' WHERE access_code='$accessCode'";
         $result = $this->link->query($sql);
         if (!$result) {
-            $this->failureToJson();
+            $this->failureToJson('accessCodeValidation');
         }
+        mysqli_free_result($result);
+    }
+
+    /**
+     * Makes sure the invite validation code is valid.
+     * @param $validation
+     * @return bool true if it's valid, otherwise false.
+     */
+    function checkInviteValidation($validation)
+    {
+        $sql = "SELECT email FROM Invites WHERE validation='$validation'";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('checkInviteValidation');
+        }
+        $isValid = (mysqli_num_rows($result) != 0);
+        mysqli_free_result($result);
+        return $isValid;
+    }
+
+    function completeInvite($userId, $validation)
+    {
+        $sql = "UPDATE Invites SET accepted_by=$userId, validation='COMPLETE'" .
+            ", accepted_date=NOW() WHERE validation='$validation'";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('completeInvite');
+        }
+        mysqli_free_result($result);
+    }
+
+    /**
+     * Creates a new user with the given parameters
+     * @param $googleId
+     * @param $firstName
+     * @param $lastName
+     * @param $email
+     */
+    function createNewUser($googleId, $firstName, $lastName, $email)
+    {
+        $sql = "INSERT INTO Users (google_id, first_name, last_name, email, date_signed_up) " .
+            "VALUES ('$googleId','$firstName','$lastName','$email',NOW())";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('createNewUser');
+        }
+        mysqli_free_result($result);
+    }
+
+    /**
+     * Gets the user for the given google id.
+     * @param $googleId
+     * @return array user
+     */
+    function getUserFromGoogleId($googleId)
+    {
+        $sql = "SELECT * FROM Users WHERE google_id='$googleId'";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getUserIdFromGoogleId: !$result');
+        }
+        if (mysqli_num_rows($result) == 0) {
+            $this->failureToJson('getUserIdFromGoogleId: 0 results', 'No such user! Create a new account first.');
+        }
+        $user = $result->fetch_assoc();
+        mysqli_free_result($result);
+        return $user;
+    }
+
+    /**
+     * Returns true if the user is an admin, otherwise returns false.
+     * @param $userId
+     * @return bool
+     */
+    function isUserAdmin($userId)
+    {
+        $sql = "SELECT * FROM Admins WHERE user_id = $userId";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('isUserAdmin');
+        }
+        $userIsAdmin = (mysqli_num_rows($result) != 0);
+        mysqli_free_result($result);
+        return $userIsAdmin;
     }
 }
 
