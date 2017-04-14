@@ -141,18 +141,17 @@ $dateStarted = '2017-04-11';
                                            value="<?= $dateStarted ?>" disabled>
                                 </div>
                             </div>
+                            <div class="form-group col-lg-12">
+                                <button id="edit-btn" type="button" class="btn btn-primary" onclick="onEditClicked()">Edit
+                                </button>
+                                <button id="cancel-btn" type="reset" class="btn btn-default hidden"
+                                        onclick="onCancelClicked()">Cancel
+                                </button>
+                                <button id="submit-btn" type="submit" class="btn btn-primary hidden"
+                                        onclick="onSubmitClicked()">Submit
+                                </button>
+                            </div>
                         </fieldset>
-
-                        <div class="form-group col-lg-12">
-                            <button id="edit-btn" type="button" class="btn btn-primary" onclick="onEditClicked()">Edit
-                            </button>
-                            <button id="cancel-btn" type="reset" class="btn btn-default hidden"
-                                    onclick="onCancelClicked()">Cancel
-                            </button>
-                            <button id="submit-btn" type="submit" class="btn btn-primary hidden"
-                                    onclick="onSubmitClicked()">Submit
-                            </button>
-                        </div>
                     </form>
                 </div>
                 <h3>Demographics</h3>
