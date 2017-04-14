@@ -1,20 +1,5 @@
 <?php
 
-$injectedHeadElements = array('<style>
-/* Show scale arrows on mobile devices */
-@media (max-width: 767px) {
-.xs-arrow {font-size:3em;line-height:0.5em;}
-.arrow-top {margin-bottom:0.15em;}
-.buffer-top {margin-top:1em;}
-}
-.np-scale {width:380px;margin-bottom:1em;}
-audio {width:100%;}
-/* Prevent download button from displaying on audio element*/
-audio::-internal-media-controls-download-button {display:none;}
-audio::-webkit-media-controls-enclosure {overflow:hidden;}
-audio::-webkit-media-controls-panel {width: calc(100% + 30px); /* Adjust as needed */}
-</style>');
-
 @include '../../_includes/pageSetup.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -34,7 +19,7 @@ $audioSample = '/file_storage/3_w1_pic14.wav';
 
 <div class="container">
 
-    <div class="page-header" style="margin-top:6em;">
+    <div class="page-header l2sr-mtop">
         <div class="row">
             <div class="col-lg-12">
                 <p>To review the instructions at any time, <a href="/instructions" target="_blank">please click here</a>.
@@ -137,43 +122,6 @@ $audioSample = '/file_storage/3_w1_pic14.wav';
 
     <div id="submit-btn-container"></div>
 </div>
-<script>
-    var audioPlayer;
-    var pageTimerComplete = false;
-    var reachedEndOfClip = false;
-    var buttonAttached = false;
-
-    document.addEventListener("DOMContentLoaded", function () {
-        audioPlayer = document.querySelector('#audio-player');
-
-        // Page needs to sit
-        audioPlayer.addEventListener('durationchange', function () {
-            var ms = audioPlayer.duration * 1000;
-            setTimeout(function () {
-                pageTimerComplete = true;
-                letUserContinue();
-            }, ms);
-        });
-
-        audioPlayer.addEventListener('pause', function () {
-            if (!reachedEndOfClip) {
-                reachedEndOfClip = audioPlayer.currentTime === audioPlayer.duration;
-                letUserContinue();
-            }
-        });
-
-        letUserContinue();
-    });
-
-    function letUserContinue() {
-        if (!pageTimerComplete || !reachedEndOfClip || buttonAttached) {
-            return;
-        }
-        buttonAttached = true;
-        $('#submit-btn-container')
-            .append('<input type="submit" class="btn btn-primary center-block" form="survey_form" style="margin-bottom:4em;">');
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-</script>
+<script src="/js/survey_in_progress.js" type="text/javascript"></script>
 </body>
 </html>

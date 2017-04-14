@@ -22,8 +22,47 @@
   height: 2.5em;
   display: none; }
 
-.l2sp-signin-btn {
+.l2sr-signin-btn {
   width: 120px;
   margin: 0 auto; }
+
+.l2sr-start-survey-btn {
+  margin: 0 0 4em;
+  letter-spacing: 2px; }
+
+/* Show scale arrows on mobile devices */
+@media (max-width: 767px) {
+  .xs-arrow {
+    font-size: 3em;
+    line-height: 0.5em; }
+
+  .arrow-top {
+    margin-bottom: 0.15em; }
+
+  .buffer-top {
+    margin-top: 1em; } }
+.np-scale {
+  width: 380px;
+  margin-bottom: 1em; }
+
+audio {
+  width: 100%;
+  /* Prevent download button from displaying on audio element*/ }
+  audio::-internal-media-controls-download-button {
+    display: none; }
+  audio::-webkit-media-controls-enclosure {
+    overflow: hidden; }
+  audio::-webkit-media-controls-panel {
+    width: calc(100% + 30px);
+    /* Adjust as needed */ }
+
+.l2sr-mtop {
+  margin-top: 6em; }
+
+.l2sr-mbot {
+  margin-bottom: 4em; }
+
+.l2sr-bold {
+  font-weight: 700; }
 
 /*# sourceMappingURL=stylesheet.css.map */

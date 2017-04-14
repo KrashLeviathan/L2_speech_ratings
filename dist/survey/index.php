@@ -64,8 +64,7 @@
     <div class="page-header" id="banner">
         <div class="row">
             <div class="col-lg-12">
-                <a type="button" class="btn btn-primary center-block" href="/survey/in_progress"
-                   style="margin:0 0 4em;letter-spacing:2px;">
+                <a type="button" class="btn btn-primary center-block l2sr-start-survey-btn" href="/survey/in_progress">
                     START</a>
             </div>
         </div>

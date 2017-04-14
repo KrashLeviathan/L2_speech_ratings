@@ -46,7 +46,7 @@
                             <legend>Existing Users</legend>
                             <div class="form-group">
                                 <div class="col-lg-10">
-                                    <div class="g-signin2 l2sp-signin-btn" data-onsuccess="onSignIn"
+                                    <div class="g-signin2 l2sr-signin-btn" data-onsuccess="onSignIn"
                                          onclick="initialSignIn()"></div>
                                 </div>
                             </div>

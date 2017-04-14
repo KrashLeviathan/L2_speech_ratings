@@ -35,6 +35,10 @@
     </div>
 </div>
 <script defer>
+    // TODO: For some reason this script can't be moved to it's own file
+    // without screwing something up with gapi and logout. So it gets left here for now.
+    // Maybe in the future this can be resolved, but for now it's fine where it is.
+
     var gapiReady = false;
     var attemptedSignOut = false;
     var timer;
@@ -71,7 +75,7 @@
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '<?=$domain?>/logout');
+            xhr.open('POST', '/logout');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function () {
                 window.location = '/';
