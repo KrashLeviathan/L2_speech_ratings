@@ -16,6 +16,12 @@ if (isset($_SESSION['user_id'])) {
         'university_id' => $_SESSION['university_id'],
         'user_is_admin' => $_SESSION['user_is_admin']
     );
+    if ($_SERVER['REQUEST_URI'] === '/') {
+        // If a user is signed in and tried to go back to the home page,
+        // redirect them to the about page.
+        header('Location: ' . $domain . '/about');
+        die();
+    }
 } else if ($_SERVER['REQUEST_URI'] !== '/' && $_SERVER['REQUEST_URI'] !== '/about') {
     // User can only visit the homepage and the about page when logged out
     session_abort();
