@@ -8,4 +8,22 @@
 .demographics-btn {
   margin: 1em 0; }
 
+.bottom-alert {
+  position: fixed;
+  text-align: center;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: 1em; }
+
+#spinner {
+  float: right;
+  margin-right: 1em;
+  height: 2.5em;
+  display: none; }
+
+.l2sp-signin-btn {
+  width: 120px;
+  margin: 0 auto; }
+
 /*# sourceMappingURL=stylesheet.css.map */
