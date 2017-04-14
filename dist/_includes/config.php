@@ -13,13 +13,21 @@ if (file_exists($sql_file)) {
 }
 $json = json_decode($json);
 
+
+/**
+ * Most places that make URL references should access the domain name here
+ */
+$domain = 'https://L2_speech_ratings.iastate.edu';
 $dbHost = $json->{'mysql_database'}->{'host'};
 $dbName = $json->{'mysql_database'}->{'database'};
 $dbUser = $json->{'mysql_database'}->{'username'};
 $dbPass = $json->{'mysql_database'}->{'password'};
-
 $port = $json->{'port'};
 
+/**
+ * API key from Google for use in user authentication. The ClientId is added to
+ * the page header.
+ */
 $googleClientId = $json->{'googleClientId'};
 if (isset($injectedHeadElements)) {
     array_push($injectedHeadElements, '<meta name="google-signin-client_id" content="' . $googleClientId . '">');
@@ -29,6 +37,7 @@ if (isset($injectedHeadElements)) {
 
 // Uncomment this section for your local database.
 // #############################################
+$domain = 'http://localhost:5000';
 $dbHost = 'localhost';
 $dbName = 'L2_speech_ratings';
 $dbUser = 'root';

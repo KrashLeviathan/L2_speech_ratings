@@ -1,51 +1,29 @@
 <?php
+@include '../_includes/database_api.php';
 @include '../_includes/pageSetup.php';
-
-function handleSqlError()
-{
-    print '<div class="alert alert-danger alert-dismissible text-center" role="alert" style="position:fixed;bottom:0;left:0;right:0;margin:1em;">
-<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-<strong>Error!</strong> Try again later, or contact IT.';
-    die();
-}
 
 // Handle POST form data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Prep connection
-    $link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
-    if ($link->connect_error) {
-        handleSqlError();
-    }
-    mysqli_set_charset($link, 'utf8');
+    $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
-    $firstName = substr(mysqli_real_escape_string($link, $_POST['firstName']), 0, 255);
-    $_SESSION['first_name'] = $firstName;
-
-    $lastName = substr(mysqli_real_escape_string($link, $_POST['lastName']), 0, 255);
-    $_SESSION['last_name'] = $lastName;
-
-    $univId = substr(mysqli_real_escape_string($link, $_POST['universityId']), 0, 12);
-    $_SESSION['university_id'] = $univId;
-
-    $email = substr(mysqli_real_escape_string($link, $_POST['email']), 0, 255);
-    $_SESSION['email'] = $email;
-
-    $phone = substr(mysqli_real_escape_string($link, $_POST['phone']), 0, 16);
-    $_SESSION['phone'] = $phone;
+    $firstName = $databaseApi->escapeAndShorten($_POST['firstName'], 255);
+    $lastName = $databaseApi->escapeAndShorten($_POST['lastName'], 255);
+    $univId = $databaseApi->escapeAndShorten($_POST['universityId'], 12);
+    $email = $databaseApi->escapeAndShorten($_POST['email'], 255);
+    $phone = $databaseApi->escapeAndShorten($_POST['phone'], 16);
 
     $uid = $user['user_id'];
-    $sql = "UPDATE Users SET first_name='$firstName', last_name='$lastName', university_id='$univId', " .
-        "email='$email', phone='$phone' WHERE user_id=$uid";
-    $result = $link->query($sql);
-    if (!$result) {
-        print $sql;
-        handleSqlError();
-    }
-    mysqli_free_result($result);
-    mysqli_close($link);
+
+    $databaseApi->updateUserSettings($uid, $firstName, $lastName, $univId, $email, $phone);
+
+    // Update session variable on success
+    $_SESSION['first_name'] = $firstName;
+    $_SESSION['last_name'] = $lastName;
+    $_SESSION['university_id'] = $univId;
+    $_SESSION['email'] = $email;
+    $_SESSION['phone'] = $phone;
 
     // Reload page to refresh session data (that populates the form as well)
-    $domain = 'http://localhost:5000';
     print '<script type="text/javascript">window.location = "' . $domain . '/user_settings";</script>';
     die();
 }
@@ -139,44 +117,14 @@ $dateStarted = '2017-04-11';
                 <h3>Demographics</h3>
                 <p>If you haven't already filled out the demographics form, please click the button below and
                     complete before taking a survey.</p>
-                <a type="button" class="btn btn-primary" href="/user_settings/demographics" style="margin:1em 0;">
+                <a type="button" class="btn btn-primary demographics-btn" href="/user_settings/demographics">
                     Complete Demographics Form</a>
             </div>
         </div>
     </div>
 </div>
 
-<script type="text/javascript" defer>
-    var editButton;
-    var cancelButton;
-    var submitButton;
-
-    var editModeActive = false;
-
-    document.addEventListener("DOMContentLoaded", function () {
-        editButton = $('#edit-btn');
-        cancelButton = $('#cancel-btn');
-        submitButton = $('#submit-btn');
-    });
-
-    function onEditClicked() {
-        editButton.addClass('hidden');
-        cancelButton.removeClass('hidden');
-        submitButton.removeClass('hidden');
-        editModeActive = true;
-        $('#form-fieldset').removeAttr('disabled');
-    }
-
-    function onCancelClicked() {
-        editButton.removeClass('hidden');
-        cancelButton.addClass('hidden');
-        submitButton.addClass('hidden');
-        editModeActive = false;
-        $('#form-fieldset').prop('disabled', true);
-    }
-
-    function onSubmitClicked() {
-    }
+<script src="/js/user_settings.js" type="text/javascript" defer>
 </script>
 </body>
 </html>

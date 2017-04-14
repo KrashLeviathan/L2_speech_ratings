@@ -39,8 +39,8 @@
     var attemptedSignOut = false;
     var timer;
 
-    document.addEventListener("DOMContentLoaded", function() {
-        timer = setTimeout(function() {
+    document.addEventListener("DOMContentLoaded", function () {
+        timer = setTimeout(function () {
             // Sometimes the google api fails to load for some reason. If so, this will time
             // out and display in the console.
             console.log("Google authentication API failed to load! Try refreshing the page.");
@@ -71,7 +71,7 @@
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:5000/logout');
+            xhr.open('POST', '<?=$domain?>/logout');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function () {
                 window.location = '/';

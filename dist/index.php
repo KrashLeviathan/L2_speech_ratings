@@ -116,7 +116,7 @@ $injectedHeadElements = array($style);
         // Check if access code is valid
         var data = $('#access-code-form').serialize();
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:5000/tokensignin/check_access_code.php');
+        xhr.open('POST', '<?=$domain?>/tokensignin/check_access_code.php');
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             spinner.hide();
@@ -148,7 +148,7 @@ $injectedHeadElements = array($style);
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:5000/logout');
+            xhr.open('POST', '<?=$domain?>/logout');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function () {
                 // This just makes sure the session is destroyed (if there was one)
@@ -169,7 +169,7 @@ $injectedHeadElements = array($style);
         if (shouldRedirect) {
             var id_token = googleUser.getAuthResponse().id_token;
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:5000/tokensignin');
+            xhr.open('POST', '<?=$domain?>/tokensignin');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function () {
                 var responseJson = JSON.parse(xhr.response);

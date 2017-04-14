@@ -20,6 +20,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/reset.css" type="text/css">
     <link rel="stylesheet" href="/css/superhero/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/stylesheet.css" type="text/css">
     <!-- BEGIN INJECTS-->
     <?php
     if (isset($injectedHeadElements)) {

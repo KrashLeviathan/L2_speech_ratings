@@ -1,6 +1,9 @@
 <?php
 
-$domain = 'http://localhost:5000';
+if (!$includedConfig) {
+    @include 'config.php';
+    $includedConfig = true;
+}
 
 // 7 day expiration
 session_start([
@@ -18,7 +21,8 @@ if (isset($_SESSION['user_id'])) {
     );
     if ($_SERVER['REQUEST_URI'] === '/') {
         // If a user is signed in and tried to go back to the home page,
-        // redirect them to the about page.
+        // redirect them to the about page. $domain is loaded
+        // from the config file.
         header('Location: ' . $domain . '/about');
         die();
     }

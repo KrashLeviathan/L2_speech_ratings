@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Slow down bots with brute force attempts to guess access codes
 sleep(2);
 
-// Gets the MySQL config
-@include '../_includes/config.php';
+// Gets the MySQL config and database API
+@include '../_includes/database_api.php';
 
 // Get $accessCode via HTTPS POST.
 if (isset($_POST['accessCode'])) {
@@ -27,24 +27,8 @@ if (isset($_POST['accessCode'])) {
     die();
 }
 
-function dbConnectionFailure()
-{
-    $response = array(
-        'success' => false,
-        'errmsg' => 'Database connection failure!'
-    );
-    print json_encode($response);
-    die();
-}
 
 // Verify access code
-// Connect to the mysql database
-$link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
-// Check connection
-if ($link->connect_error) {
-    dbConnectionFailure();
-}
-mysqli_set_charset($link, 'utf8');
 
 $sql = "SELECT email FROM Invites " .
     "WHERE access_code = '$accessCode' AND (validation <> 'COMPLETE' OR validation IS NULL)";
