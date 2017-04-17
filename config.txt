@@ -3,7 +3,7 @@
       "username":"root",
       "password":"root",
       "host":"localhost",
-      "database":"sys"
+      "database":"L2_speech_ratings"
    },
    "port":3306,
    "googleClientId":"756767624939-mnij3d6iuhrml2itva06l3fg4hivpn9o.apps.googleusercontent.com"

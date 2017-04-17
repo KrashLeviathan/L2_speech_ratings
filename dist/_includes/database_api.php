@@ -1,6 +1,7 @@
 <?php
 
 @include 'config.php';
+@include 'csv_creator.php';
 $includedConfig = true;
 
 class DatabaseApi
@@ -191,6 +192,24 @@ class DatabaseApi
         $userIsAdmin = (mysqli_num_rows($result) != 0);
         mysqli_free_result($result);
         return $userIsAdmin;
+    }
+
+    function createCsvFromResults($filename)
+    {
+        $csv = new CsvCreator($filename);
+        if ($csv->hasError()) {
+            return $csv->errorMsg;
+        }
+
+        // TODO: Fix me to return actual results
+        $csv->append('user_id,google_id,yada,yada,yada,...');
+        $sql = "SELECT * FROM Users";
+        $result = $this->link->query($sql);
+        while ($row = $result->fetch_row()) {
+            $csv->append($row[0] . ',' . $row[1] . ',' . $row[2] . ',' . $row[3] . ',' . $row[4] .
+                ',' . $row[5] . ',' . $row[6] . ',' . $row[7] . ',' . $row[8] . "\n");
+        }
+        mysqli_free_result($result);
     }
 }
 
