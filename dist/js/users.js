@@ -4,17 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
     $("*[data-dismiss='modal']").click(dismissInvite);
     $('#invite-form').submit(submitInvite);
 
-    // Check if access code is valid
+    // Get users from the database
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/users/get_users.php');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
         var responseJson = JSON.parse(xhr.response);
         if (responseJson.success) {
-            // Access code is valid
             onSuccess(responseJson);
         } else {
-            // Access code is NOT valid. Display an alert message.
             onFailure(responseJson);
         }
     };

@@ -121,3 +121,4 @@ composer.phar
 
 .idea
 *.css.map
+/dist/files/upload_handler/files
