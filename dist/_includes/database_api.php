@@ -224,4 +224,26 @@ class DatabaseApi
         mysqli_free_result($result);
         return $users;
     }
+
+    function getAllInvites()
+    {
+        $sql = "SELECT * FROM Invites";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getAllInvites: !$result');
+        }
+        $invites = $result->fetch_all();
+        for ($i = 0; $i < sizeof($invites); $i++) {
+            if (!$invites[$i] || $invites[$i][3] !== 'COMPLETE') {
+                $invites[$i][3] = 'OPEN';
+            }
+        }
+//        foreach ($invites as $invite) {
+//            if (!$invite[3] || $invite[3] != 'COMPLETE') {
+//                $invite[3] = 'OPEN';
+//            }
+//        }
+        mysqli_free_result($result);
+        return $invites;
+    }
 }

@@ -56,17 +56,28 @@ audio {
     width: calc(100% + 30px);
     /* Adjust as needed */ }
 
-.l2sr-mtop {
+.l2sr-mtop-lg {
   margin-top: 6em; }
+.l2sr-mtop-md {
+  margin-top: 4em; }
+.l2sr-mtop-sm {
+  margin-top: 2em; }
 
-.l2sr-mbot {
+.l2sr-mbot-lg {
+  margin-bottom: 6em; }
+.l2sr-mbot-md {
   margin-bottom: 4em; }
+.l2sr-mbot-sm {
+  margin-bottom: 2em; }
 
 .l2sr-bold {
   font-weight: 700; }
 
 .font-weight-bold {
   font-weight: 700; }
+
+.font-italic {
+  font-style: italic; }
 
 .l2sr-table th {
   font-variant-caps: petite-caps;

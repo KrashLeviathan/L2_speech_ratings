@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Attach sendInvite action
+    $('#send-invite-btn').click(sendInvite);
+    $("*[data-dismiss='modal']").click(dismissInvite);
+
     // Check if access code is valid
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/users/get_users.php');
@@ -16,6 +20,16 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.send('');
 });
 
+function sendInvite() {
+    setTimeout(function () {
+        $('#send-invite-modal').addClass('in');
+    }, 250);
+}
+
+function dismissInvite() {
+    $('#send-invite-modal').removeClass('in');
+}
+
 function errorAlert(msg) {
     $('body').append('<div class="alert alert-danger alert-dismissible bottom-alert" role="alert">' +
         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
@@ -27,8 +41,8 @@ function errorAlert(msg) {
 }
 
 function onSuccess(json) {
-    var tableBody = $('#table-body');
-    tableBody.children().remove();
+    var userTableBody = $('#user-table-body');
+    userTableBody.children().remove();
 
     for (var userIndex in json.users) {
         var id = json.users[userIndex][0];
@@ -38,13 +52,30 @@ function onSuccess(json) {
         var phone = json.users[userIndex][4];
         var date = json.users[userIndex][5];
         var univId = json.users[userIndex][6];
-        tableBody.append('<tr><td>' + id + '</td><td>' + first + '</td><td>' + last + '</td><td>' + email + '</td><td>' + phone + '</td><td>' + date + '</td><td>' + univId + '</td></tr>')
+        userTableBody.append('<tr><td>' + id + '</td><td>' + first + '</td><td>' + last
+            + '</td><td>' + email + '</td><td>' + phone + '</td><td>' + date + '</td><td>'
+            + univId + '</td></tr>')
+    }
+
+    var inviteTableBody = $('#invite-table-body');
+    inviteTableBody.children().remove();
+    console.log(json);
+
+    for (var inviteIndex in json.invites) {
+        var code = json.invites[inviteIndex][1];
+        var email = json.invites[inviteIndex][2];
+        var status = json.invites[inviteIndex][3];
+        var acceptedBy = json.invites[inviteIndex][4];
+        var dateAccepted = json.invites[inviteIndex][5];
+        inviteTableBody.append('<tr><td>' + code + '</td><td>' + email + '</td><td>' + status
+            + '</td><td>' + ((acceptedBy === null) ? '' : acceptedBy)
+            + '</td><td>' + ((dateAccepted === null) ? '' : dateAccepted) + '</td></tr>')
     }
 }
 
 function onFailure(response) {
-    var tableBody = $('#table-body');
-    tableBody.children().remove();
+    $('#user-table-body').children.remove();
+    $('#invite-table-body').children().remove();
 
     console.log(response);
     errorAlert(response.errmsg);

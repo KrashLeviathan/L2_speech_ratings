@@ -19,7 +19,7 @@ $audioSample = '/file_storage/3_w1_pic14.wav';
 
 <div class="container">
 
-    <div class="page-header l2sr-mtop">
+    <div class="page-header l2sr-mtop-lg">
         <div class="row">
             <div class="col-lg-12">
                 <p>To review the instructions at any time, <a href="/instructions" target="_blank">please click here</a>.

@@ -9,10 +9,12 @@ $adminOnlyPage = true;
 $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
 $users = $databaseApi->getAllUsers();
+$invites = $databaseApi->getAllInvites();
 
 $response = array(
     'success' => true,
-    'users' => $users
+    'users' => $users,
+    'invites' => $invites
 );
 print json_encode($response);
 die();

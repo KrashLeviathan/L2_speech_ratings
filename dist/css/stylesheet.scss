@@ -70,11 +70,27 @@ audio {
 }
 
 .l2sr-mtop {
-  margin-top: 6em;
+  &-lg {
+    margin-top: 6em;
+  }
+  &-md {
+    margin-top: 4em;
+  }
+  &-sm {
+    margin-top: 2em;
+  }
 }
 
 .l2sr-mbot {
-  margin-bottom: 4em;
+  &-lg {
+    margin-bottom: 6em;
+  }
+  &-md {
+    margin-bottom: 4em;
+  }
+  &-sm {
+    margin-bottom: 2em;
+  }
 }
 
 .l2sr-bold {
@@ -83,6 +99,10 @@ audio {
 
 .font-weight-bold {
   font-weight: 700;
+}
+
+.font-italic {
+  font-style: italic;
 }
 
 .l2sr-table {
