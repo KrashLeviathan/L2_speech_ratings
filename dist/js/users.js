@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Attach sendInvite action
+    // Attach sendInvite actions
     $('#send-invite-btn').click(sendInvite);
     $("*[data-dismiss='modal']").click(dismissInvite);
+    $('#invite-form').submit(submitInvite);
 
     // Check if access code is valid
     var xhr = new XMLHttpRequest();
@@ -28,6 +29,37 @@ function sendInvite() {
 
 function dismissInvite() {
     $('#send-invite-modal').removeClass('in');
+}
+
+function submitInvite(event) {
+    event.preventDefault();
+
+    // Get input values
+    var values = {};
+    $('#invite-form :input').each(function () {
+        values[this.name] = $(this).val();
+    });
+
+    // Send invite to server
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/users/create_invite.php');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function () {
+        var responseJson = JSON.parse(xhr.response);
+        if (responseJson.success) {
+            // Invite creation was successful
+            $('#send-invite-modal').removeClass('in');
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+        } else {
+            // Invite creation was unsuccessful
+            $('#send-invite-modal').removeClass('in');
+            console.log(responseJson);
+            errorAlert(responseJson.errmsg);
+        }
+    };
+    xhr.send('email=' + encodeURIComponent(values['email']));
 }
 
 function errorAlert(msg) {
@@ -59,7 +91,6 @@ function onSuccess(json) {
 
     var inviteTableBody = $('#invite-table-body');
     inviteTableBody.children().remove();
-    console.log(json);
 
     for (var inviteIndex in json.invites) {
         var code = json.invites[inviteIndex][1];

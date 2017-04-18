@@ -238,12 +238,17 @@ class DatabaseApi
                 $invites[$i][3] = 'OPEN';
             }
         }
-//        foreach ($invites as $invite) {
-//            if (!$invite[3] || $invite[3] != 'COMPLETE') {
-//                $invite[3] = 'OPEN';
-//            }
-//        }
         mysqli_free_result($result);
         return $invites;
+    }
+
+    function addInvite($accessCode, $email)
+    {
+        $sql = "INSERT INTO Invites (access_code, email) VALUES ('$accessCode','$email')";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getAllInvites: !$result');
+        }
+        mysqli_free_result($result);
     }
 }

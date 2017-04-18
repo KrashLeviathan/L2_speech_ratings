@@ -97,13 +97,23 @@
                                             aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">Send Invite</h4>
                             </div>
-                            <div class="modal-body">
-                                ...
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary">Send</button>
-                            </div>
+                            <form id="invite-form">
+                                <div class="modal-body">
+                                    <fieldset id="form-fieldset">
+                                        <div class="form-group col-lg-12">
+                                            <label for="inputEmail" class="control-label">Email</label>
+                                            <div>
+                                                <input type="email" class="form-control" name="email" id="inputEmail"
+                                                       value="">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Send</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
