@@ -35,7 +35,7 @@ $audioSample = '/file_storage/3_w1_pic14.wav';
             </div>
             <div class="row text-center">
                 <div class="col-sm-2 col-md-3 col-lg-4">
-                    <span class="visible-xs xs-arrow arrow-top">&larr;</span>Very easy to understand
+                    <span class="visible-xs xs-arrow arrow-top">&larr;</span>Very difficult to understand
                 </div>
                 <div class="col-sm-8 col-md-6 col-lg-4">
                     <div class="btn-group center-block clearfix buffer-top np-scale" role="group"
@@ -53,7 +53,7 @@ $audioSample = '/file_storage/3_w1_pic14.wav';
                     </div>
                 </div>
                 <div class="col-sm-2 col-md-3 col-lg-4">
-                    Very difficult to understand<span class="visible-xs xs-arrow">&rarr;</span>
+                    Very easy to understand<span class="visible-xs xs-arrow">&rarr;</span>
                 </div>
             </div>
             <div class="row">
@@ -61,7 +61,7 @@ $audioSample = '/file_storage/3_w1_pic14.wav';
             </div>
             <div class="row text-center">
                 <div class="col-sm-2 col-md-3 col-lg-4">
-                    <span class="visible-xs xs-arrow arrow-top">&larr;</span>Extremely fluent
+                    <span class="visible-xs xs-arrow arrow-top">&larr;</span>Extremely disfluent
                 </div>
                 <div class="col-sm-8 col-md-6 col-lg-4">
                     <div class="btn-group center-block clearfix buffer-top np-scale" role="group"
@@ -78,7 +78,7 @@ $audioSample = '/file_storage/3_w1_pic14.wav';
                     </div>
                 </div>
                 <div class="col-sm-2 col-md-3 col-lg-4">
-                    Extremely disfluent<span class="visible-xs xs-arrow">&rarr;</span>
+                    Extremely fluent<span class="visible-xs xs-arrow">&rarr;</span>
                 </div>
             </div>
             <div class="row">
