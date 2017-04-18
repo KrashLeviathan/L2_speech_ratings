@@ -198,7 +198,7 @@ class DatabaseApi
     {
         $csv = new CsvCreator($filename);
         if ($csv->hasError()) {
-            return $csv->errorMsg;
+            return array('success' => false, 'errorMsg' => $csv->errorMsg);
         }
 
         // TODO: Fix me to return actual results
@@ -210,28 +210,18 @@ class DatabaseApi
                 ',' . $row[5] . ',' . $row[6] . ',' . $row[7] . ',' . $row[8] . "\n");
         }
         mysqli_free_result($result);
+        return array('success' => true);
     }
-}
 
-
-function getUser(mysqli $mysqli, $user_id)
-{
-    $sql = "SELECT * FROM Users WHERE user_id = $user_id";
-    if (!$result = $mysqli->query($sql)) {
-        onSqlFail($mysqli, $sql);
+    function getAllUsers()
+    {
+        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up, university_id FROM Users";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getAllUsers: !$result');
+        }
+        $users = $result->fetch_all();
+        mysqli_free_result($result);
+        return $users;
     }
-    $user = $result->fetch_assoc();
-    mysqli_free_result($result);
-    return $user;
-}
-
-function getAllUsers(mysqli $mysqli)
-{
-    $sql = "SELECT * FROM Users";
-    if (!$result = $mysqli->query($sql)) {
-        onSqlFail($mysqli, $sql);
-    }
-    $arr = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_free_result($result);
-    return $arr;
 }
