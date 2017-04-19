@@ -102,6 +102,9 @@ class FilenameParser
                         break;
                     }
                 }
+
+                // Not a language
+                array_push($this->errorTokens, $token . ' : Unknown token!');
             } else {
                 array_push($this->errorTokens, $token . ' : Unknown token, or Language already set!');
             }

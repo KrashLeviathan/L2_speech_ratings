@@ -1,20 +1,21 @@
 CREATE TABLE IF NOT EXISTS Users (
-  user_id         INT(10)      NOT NULL AUTO_INCREMENT,
-  google_id       VARCHAR(255) NOT NULL UNIQUE KEY,
-  first_name      VARCHAR(255) NOT NULL,
-  last_name       VARCHAR(255) NOT NULL,
-  email           VARCHAR(255) NOT NULL,
+  user_id         INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  google_id       VARCHAR(255)     NOT NULL UNIQUE KEY,
+  first_name      VARCHAR(255)     NOT NULL,
+  last_name       VARCHAR(255)     NOT NULL,
+  email           VARCHAR(255)     NOT NULL,
   phone           VARCHAR(16),
-  date_signed_up  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  date_signed_up  DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   payment_info_id INT(10),
   university_id   VARCHAR(12),
 
   PRIMARY KEY (user_id)
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS Demographics (
-  demographic_id INT(10) NOT NULL AUTO_INCREMENT,
-  user_id        INT(10) NOT NULL,
+  demographic_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id        INT(10) UNSIGNED NOT NULL,
   race           VARCHAR(64),
   etc            VARCHAR(255),
 
@@ -24,11 +25,12 @@ CREATE TABLE IF NOT EXISTS Demographics (
   FOREIGN KEY (user_id)
   REFERENCES Users (user_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS PaymentInformation (
-  payment_info_id INT(10) NOT NULL AUTO_INCREMENT,
-  user_id         INT(10) NOT NULL,
+  payment_info_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id         INT(10) UNSIGNED NOT NULL,
   payment_info    VARCHAR(255),
 
   PRIMARY KEY (payment_info_id),
@@ -37,22 +39,34 @@ CREATE TABLE IF NOT EXISTS PaymentInformation (
   FOREIGN KEY (user_id)
   REFERENCES Users (user_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS AudioCategories (
-  audio_category_id INT(10)     NOT NULL AUTO_INCREMENT,
-  name              VARCHAR(64) NOT NULL,
+  audio_category_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name              VARCHAR(64)      NOT NULL,
   description       VARCHAR(255),
 
   PRIMARY KEY (audio_category_id)
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS AudioSamples (
-  audio_sample_id INT(10)      NOT NULL AUTO_INCREMENT,
-  duration_ms     LONG,
-  filename        VARCHAR(255) NOT NULL,
-  upload_date     DATETIME              DEFAULT CURRENT_TIMESTAMP(),
-  category_id     INT(10)      NOT NULL,
+  audio_sample_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  filename        VARCHAR(255)     NOT NULL,
+  size            INT(10)                   DEFAULT NULL,
+  duration_ms     LONG                      DEFAULT NULL,
+  type            VARCHAR(255)              DEFAULT NULL,
+  url             VARCHAR(255)              DEFAULT NULL,
+  upload_date     DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
+  language        VARCHAR(16)               DEFAULT NULL,
+  level           VARCHAR(8)                DEFAULT NULL,
+  speaker_id      INT(10)                   DEFAULT NULL,
+  wave            INT(10)                   DEFAULT NULL,
+  task            INT(10)                   DEFAULT NULL,
+  item            INT(10)                   DEFAULT NULL,
+  error_tokens    VARCHAR(255)              DEFAULT NULL,
+  category_id     INT(10) UNSIGNED NOT NULL DEFAULT '1',
 
   PRIMARY KEY (audio_sample_id),
 
@@ -60,20 +74,23 @@ CREATE TABLE IF NOT EXISTS AudioSamples (
   FOREIGN KEY (category_id)
   REFERENCES AudioCategories (audio_category_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS RatingProperties (
-  rating_property_id INT(10)     NOT NULL AUTO_INCREMENT,
-  name               VARCHAR(64) NOT NULL,
+  rating_property_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name               VARCHAR(64)      NOT NULL,
   definition         VARCHAR(255),
+  csv_value          VARCHAR(16)      NOT NULL,
 
   PRIMARY KEY (rating_property_id)
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS RatingScores (
-  rating_score_id INT(10) NOT NULL AUTO_INCREMENT,
-  score           INT(10) NOT NULL,
-  property        INT(10) NOT NULL,
+  rating_score_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  score           INT(10)          NOT NULL,
+  property        INT(10) UNSIGNED NOT NULL,
 
   PRIMARY KEY (rating_score_id),
 
@@ -81,14 +98,15 @@ CREATE TABLE IF NOT EXISTS RatingScores (
   FOREIGN KEY (property)
   REFERENCES RatingProperties (rating_property_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS RatingEvents (
-  rating_event_id INT(10) NOT NULL AUTO_INCREMENT,
-  date_time       DATETIME         DEFAULT CURRENT_TIMESTAMP(),
-  performed_by_id INT(10) NOT NULL,
-  score_id        INT(10) NOT NULL,
-  audio_sample_id INT(10) NOT NULL,
+  rating_event_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  date_time       DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
+  performed_by_id INT(10) UNSIGNED NOT NULL,
+  score_id        INT(10) UNSIGNED NOT NULL,
+  audio_sample_id INT(10) UNSIGNED NOT NULL,
 
   PRIMARY KEY (rating_event_id),
 
@@ -106,12 +124,13 @@ CREATE TABLE IF NOT EXISTS RatingEvents (
   FOREIGN KEY (audio_sample_id)
   REFERENCES AudioSamples (audio_sample_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS ControlFlags (
-  control_flag_id INT(10) NOT NULL AUTO_INCREMENT,
-  user_id         INT(10) NOT NULL,
-  rating_event_id INT(10) NOT NULL,
+  control_flag_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id         INT(10) UNSIGNED NOT NULL,
+  rating_event_id INT(10) UNSIGNED NOT NULL,
 
   PRIMARY KEY (control_flag_id),
 
@@ -124,13 +143,14 @@ CREATE TABLE IF NOT EXISTS ControlFlags (
   FOREIGN KEY (rating_event_id)
   REFERENCES RatingEvents (rating_event_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 
 CREATE TABLE IF NOT EXISTS ControlRatings (
-  control_rating_id INT(10) NOT NULL AUTO_INCREMENT,
-  expected_score_id INT(10) NOT NULL,
-  audio_sample_id   INT(10) NOT NULL,
+  control_rating_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  expected_score_id INT(10) UNSIGNED NOT NULL,
+  audio_sample_id   INT(10) UNSIGNED NOT NULL,
 
   PRIMARY KEY (control_rating_id),
 
@@ -143,14 +163,15 @@ CREATE TABLE IF NOT EXISTS ControlRatings (
   FOREIGN KEY (audio_sample_id)
   REFERENCES AudioSamples (audio_sample_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS CorruptFiles (
-  corrupt_file_id INT(10) NOT NULL AUTO_INCREMENT,
-  reported_by     INT(10) NOT NULL,
-  date_reported   DATETIME         DEFAULT CURRENT_TIMESTAMP(),
+  corrupt_file_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  reported_by     INT(10) UNSIGNED NOT NULL,
+  date_reported   DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
   description     VARCHAR(1024),
-  audio_sample_id INT(10) NOT NULL,
+  audio_sample_id INT(10) UNSIGNED NOT NULL,
 
   PRIMARY KEY (corrupt_file_id),
 
@@ -163,35 +184,38 @@ CREATE TABLE IF NOT EXISTS CorruptFiles (
   FOREIGN KEY (audio_sample_id)
   REFERENCES AudioSamples (audio_sample_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 
 CREATE TABLE IF NOT EXISTS Surveys (
-  survey_id               INT(10)     NOT NULL AUTO_INCREMENT,
-  name                    VARCHAR(64) NOT NULL,
+  survey_id               INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name                    VARCHAR(64)      NOT NULL,
   description             VARCHAR(1024),
-  start_date              DATETIME             DEFAULT CURRENT_TIMESTAMP(),
+  start_date              DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
   end_date                DATETIME,
-  times_audio_plays       INT(10)              DEFAULT 0,
+  times_audio_plays       INT(10)                   DEFAULT 0,
   instructional_info      VARCHAR(8192),
   notification_settings   VARCHAR(64),
   target_rating_threshold INT(10),
 
   PRIMARY KEY (survey_id)
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS SampleBlocks (
-  sample_block_id INT(10)     NOT NULL AUTO_INCREMENT,
-  name            VARCHAR(64) NOT NULL,
-  date_created    DATETIME             DEFAULT CURRENT_TIMESTAMP(),
+  sample_block_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name            VARCHAR(64)      NOT NULL,
+  date_created    DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
 
   PRIMARY KEY (sample_block_id)
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS SurveyBlocks (
-  survey_block_id INT(10) NOT NULL AUTO_INCREMENT,
-  survey_id       INT(10) NOT NULL,
-  sample_block_id INT(10) NOT NULL,
+  survey_block_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  survey_id       INT(10) UNSIGNED NOT NULL,
+  sample_block_id INT(10) UNSIGNED NOT NULL,
 
   PRIMARY KEY (survey_block_id),
 
@@ -204,12 +228,13 @@ CREATE TABLE IF NOT EXISTS SurveyBlocks (
   FOREIGN KEY (sample_block_id)
   REFERENCES SampleBlocks (sample_block_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS BlockAudioSamples (
-  block_audio_id  INT(10) NOT NULL AUTO_INCREMENT,
-  sample_block_id INT(10) NOT NULL,
-  audio_sample_id INT(10) NOT NULL,
+  block_audio_id  INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  sample_block_id INT(10) UNSIGNED NOT NULL,
+  audio_sample_id INT(10) UNSIGNED NOT NULL,
 
   PRIMARY KEY (block_audio_id),
 
@@ -222,14 +247,15 @@ CREATE TABLE IF NOT EXISTS BlockAudioSamples (
   FOREIGN KEY (audio_sample_id)
   REFERENCES AudioSamples (audio_sample_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS Invites (
-  invite_id     INT(10)      NOT NULL AUTO_INCREMENT,
-  access_code   VARCHAR(255) NOT NULL,
-  email         VARCHAR(255) NOT NULL,
+  invite_id     INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  access_code   VARCHAR(255)     NOT NULL,
+  email         VARCHAR(255)     NOT NULL,
   validation    VARCHAR(255),
-  accepted_by   INT(10),
+  accepted_by   INT(10) UNSIGNED,
   accepted_date DATETIME,
 
   PRIMARY KEY (invite_id),
@@ -237,13 +263,14 @@ CREATE TABLE IF NOT EXISTS Invites (
   FOREIGN KEY (accepted_by)
   REFERENCES Users (user_id)
     ON DELETE SET NULL
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS Sessions (
-  session_id   INT(10) NOT NULL AUTO_INCREMENT,
-  date_created DATETIME         DEFAULT CURRENT_TIMESTAMP(),
+  session_id   INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  date_created DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
   date_expires DATETIME,
-  user_id      INT(10) NOT NULL,
+  user_id      INT(10) UNSIGNED NOT NULL,
 
   PRIMARY KEY (session_id),
 
@@ -251,12 +278,13 @@ CREATE TABLE IF NOT EXISTS Sessions (
   FOREIGN KEY (user_id)
   REFERENCES Users (user_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS Admins (
-  admin_id   INT(10) NOT NULL AUTO_INCREMENT,
-  user_id    INT(10) NOT NULL,
-  privileges VARCHAR(16)      DEFAULT 'NONE',
+  admin_id   INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id    INT(10) UNSIGNED NOT NULL,
+  privileges VARCHAR(16)               DEFAULT 'NONE',
 
   PRIMARY KEY (admin_id),
 
@@ -264,7 +292,8 @@ CREATE TABLE IF NOT EXISTS Admins (
   FOREIGN KEY (user_id)
   REFERENCES Users (user_id)
     ON DELETE CASCADE
-);
+)
+  DEFAULT CHARSET = utf8;
 
 # Automatically set expiration date on sessions table before any attempted insert
 DELIMITER $$

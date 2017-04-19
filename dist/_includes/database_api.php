@@ -11,6 +11,7 @@ class DatabaseApi
     function __construct($dbHost, $dbUser, $dbPass, $dbName)
     {
         $this->link = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+        $this->link->set_charset('utf8');
     }
 
     function __destruct()
