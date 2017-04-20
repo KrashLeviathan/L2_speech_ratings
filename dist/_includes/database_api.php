@@ -285,4 +285,41 @@ class DatabaseApi
         }
         mysqli_free_result($result);
     }
+
+    function addAudioSample($jq_file, $duration, $parser, $errorTokens)
+    {
+        $sql = 'INSERT INTO `AudioSamples`'
+            . ' (`filename`,`size`,`duration_ms`,`type`,`language`,`level`,`speaker_id`,`wave`,`task`,`item`,`error_tokens`)'
+            . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            . ' ON DUPLICATE KEY UPDATE'
+            . ' size=?, duration_ms=?, type=?, language=?, level=?, speaker_id=?, wave=?, task=?, item=?, error_tokens=?,'
+            . ' upload_date=NOW()';
+        $query = $this->link->prepare($sql);
+        $query->bind_param(
+            'sissssiiiisissssiiiis',
+            $jq_file->name,
+            $jq_file->size,
+            $duration,
+            $jq_file->type,
+            $parser->language,
+            $parser->level,
+            $parser->id,
+            $parser->wave,
+            $parser->task,
+            $parser->item,
+            $errorTokens,
+            $jq_file->size,
+            $duration,
+            $jq_file->type,
+            $parser->language,
+            $parser->level,
+            $parser->id,
+            $parser->wave,
+            $parser->task,
+            $parser->item,
+            $errorTokens
+        );
+        $query->execute();
+        return $this->link->insert_id;
+    }
 }
