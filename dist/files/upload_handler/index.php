@@ -58,11 +58,23 @@ class CustomUploadHandler extends UploadHandler
             $errorTokens = ($parser->hasErrors()) ? json_encode($parser->errorTokens) : '';
             $sql = 'INSERT INTO `' . $this->options['db_table']
                 . '` (`filename`,`size`,`type`,`language`,`level`,`speaker_id`,`wave`,`task`,`item`,`error_tokens`)'
-                . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                . ' ON DUPLICATE KEY UPDATE'
+                . ' size=?, type=?, language=?, level=?, speaker_id=?, wave=?, task=?, item=?, error_tokens=?,'
+                . ' upload_date=NOW()';
             $query = $this->db->prepare($sql);
             $query->bind_param(
-                'sisssiiiis',
+                'sisssiiiisisssiiiis',
                 $file->name,
+                $file->size,
+                $file->type,
+                $parser->language,
+                $parser->level,
+                $parser->id,
+                $parser->wave,
+                $parser->task,
+                $parser->item,
+                $errorTokens,
                 $file->size,
                 $file->type,
                 $parser->language,
