@@ -348,4 +348,41 @@ class DatabaseApi
         mysqli_free_result($result);
         return $survey;
     }
+
+    function getAudioIdsFromSurveyBlock($surveyId)
+    {
+        $sql = "SELECT audioLU.audio_sample_id FROM L2_speech_ratings.SampleBlockAudioLookup AS audioLU"
+            . " INNER JOIN L2_speech_ratings.SurveySampleBlockLookup AS surveyLU ON audioLU.sample_block_id = surveyLU.sample_block_id"
+            . " WHERE surveyLU.survey_id = '1';";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getAudioIdsFromSurveyBlock: !$result');
+        }
+        if (mysqli_num_rows($result) == 0) {
+            $this->failureToJson('getAudioIdsFromSurveyBlock: 0 results',
+                'That survey does not have any audio samples to rate!',
+                'surveyId: ' . $surveyId);
+        }
+        $survey = $result->fetch_all();
+        mysqli_free_result($result);
+        return $survey;
+    }
+
+    function getAudioFilename($audioId)
+    {
+        $sql = "SELECT filename FROM L2_speech_ratings.AudioSamples WHERE audio_sample_id='$audioId'";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getAudioFilename: !$result');
+        }
+        if (mysqli_num_rows($result) == 0) {
+            $this->failureToJson('getAudioFilename: 0 results',
+                'There is no audio file for that id!',
+                'audioId: ' . $audioId);
+        }
+        $filename = $result->fetch_row()[0];
+        mysqli_free_result($result);
+        return $filename;
+
+    }
 }

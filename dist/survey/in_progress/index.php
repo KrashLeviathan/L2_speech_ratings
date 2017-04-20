@@ -1,14 +1,9 @@
 <?php
 
+@include '../../_includes/database_api.php';
 @include '../../_includes/pageSetup.php';
 
-if (!$_SESSION['survey_in_progress']) {
-    $_SESSION['survey_in_progress'] = true;
-    // TODO: Fetch survey items
-    // TODO: Randomize the order, and stick them in session variable
-} else {
-    // TODO
-}
+$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // TODO: Form validation
@@ -18,10 +13,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // TODO: If invalid, make them rate it again.
 }
 
-// TODO: Get a random(?) survey from DB if it just started
+if (!$_SESSION['survey_in_progress']) {
+    $_SESSION['survey_in_progress'] = true;
+    $_SESSION['survey_current_id_index'] = 0;
 
-// TODO: Get a random(?) survey sample from DB
-$audioSample = '/file_storage/3_w1_pic14.wav';
+    // Get all audio ids for this survey
+    $audioSampleIds = $databaseApi->getAudioIdsFromSurveyBlock($_SESSION['survey_id']);
+
+    // Randomize order of audio ids
+    // TODO: Check if Dr Nagle actually wants these randomized
+    shuffle($audioSampleIds);
+
+    // Clean up and put in session variable
+    $_SESSION['survey_audio_id_order'] = array();
+    foreach ($audioSampleIds as $audioSampleId) {
+        array_push($_SESSION['survey_audio_id_order'], $audioSampleId[0]);
+    }
+}
+
+$audioId = $_SESSION['survey_audio_id_order'][$_SESSION['survey_current_id_index']];
+$audioFilename = $databaseApi->getAudioFilename($audioId);
+$audioSample = '/file_storage/' . $audioFilename;
 
 ?>
 

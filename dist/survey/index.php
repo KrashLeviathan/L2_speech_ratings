@@ -2,7 +2,7 @@
 @include '../_includes/database_api.php';
 @include '../_includes/pageSetup.php';
 
-$databaseApi = new DatabaseApi($dbHose, $dbUser, $dbPass, $dbName);
+$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
 // TODO: Will fetch other surveys in future iterations
 $_SESSION['survey_id'] = 1;
