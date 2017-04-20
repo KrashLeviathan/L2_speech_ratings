@@ -50,6 +50,7 @@ class CustomUploadHandler extends UploadHandler
             $errorTokens = ($parser->hasErrors()) ? json_encode($parser->errorTokens) : '';
             $duration = wavDur($this->options['upload_dir'] . $file->name);
             $file->id = $this->databaseApi->addAudioSample($file, $duration, $parser, $errorTokens);
+            $this->databaseApi->addAudioSampleToSurveyBlock($file->id);
         }
         return $file;
     }

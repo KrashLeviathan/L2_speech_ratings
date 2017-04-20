@@ -54,7 +54,7 @@ class DatabaseApi
      */
     function updateUserSettings($userId, $firstName, $lastName, $universityId, $email, $phone)
     {
-        $sql = "UPDATE Users SET first_name='$firstName', last_name='$lastName', university_id='$universityId', " .
+        $sql = "UPDATE L2_speech_ratings.Users SET first_name='$firstName', last_name='$lastName', university_id='$universityId', " .
             "email='$email', phone='$phone' WHERE user_id=$userId";
 
         $result = $this->link->query($sql);
@@ -83,7 +83,7 @@ class DatabaseApi
      */
     function accessCodeToInviteEmail($accessCode)
     {
-        $sql = "SELECT email FROM Invites " .
+        $sql = "SELECT email FROM L2_speech_ratings.Invites " .
             "WHERE access_code = '$accessCode' AND (validation <> 'COMPLETE' OR validation IS NULL)";
         $result = $this->link->query($sql);
         if (!$result) {
@@ -104,7 +104,7 @@ class DatabaseApi
      */
     function accessCodeValidation($accessCode, $validation)
     {
-        $sql = "UPDATE Invites SET validation='$validation' WHERE access_code='$accessCode'";
+        $sql = "UPDATE L2_speech_ratings.Invites SET validation='$validation' WHERE access_code='$accessCode'";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('accessCodeValidation');
@@ -119,7 +119,7 @@ class DatabaseApi
      */
     function checkInviteValidation($validation)
     {
-        $sql = "SELECT email FROM Invites WHERE validation='$validation'";
+        $sql = "SELECT email FROM L2_speech_ratings.Invites WHERE validation='$validation'";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('checkInviteValidation');
@@ -131,7 +131,7 @@ class DatabaseApi
 
     function completeInvite($userId, $validation)
     {
-        $sql = "UPDATE Invites SET accepted_by=$userId, validation='COMPLETE'" .
+        $sql = "UPDATE L2_speech_ratings.Invites SET accepted_by=$userId, validation='COMPLETE'" .
             ", accepted_date=NOW() WHERE validation='$validation'";
         $result = $this->link->query($sql);
         if (!$result) {
@@ -149,7 +149,7 @@ class DatabaseApi
      */
     function createNewUser($googleId, $firstName, $lastName, $email)
     {
-        $sql = "INSERT INTO Users (google_id, first_name, last_name, email, date_signed_up) " .
+        $sql = "INSERT INTO L2_speech_ratings.Users (google_id, first_name, last_name, email, date_signed_up) " .
             "VALUES ('$googleId','$firstName','$lastName','$email',NOW())";
         $result = $this->link->query($sql);
         if (!$result) {
@@ -165,7 +165,7 @@ class DatabaseApi
      */
     function getUserFromGoogleId($googleId)
     {
-        $sql = "SELECT * FROM Users WHERE google_id='$googleId'";
+        $sql = "SELECT * FROM L2_speech_ratings.Users WHERE google_id='$googleId'";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('getUserIdFromGoogleId: !$result');
@@ -185,7 +185,7 @@ class DatabaseApi
      */
     function isUserAdmin($userId)
     {
-        $sql = "SELECT * FROM Admins WHERE user_id = $userId";
+        $sql = "SELECT * FROM L2_speech_ratings.Admins WHERE user_id = $userId";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('isUserAdmin');
@@ -204,7 +204,7 @@ class DatabaseApi
 
         // TODO: Fix me to return actual results
         $csv->append('user_id,google_id,yada,yada,yada,...');
-        $sql = "SELECT * FROM Users";
+        $sql = "SELECT * FROM L2_speech_ratings.Users";
         $result = $this->link->query($sql);
         while ($row = $result->fetch_row()) {
             $csv->append($row[0] . ',' . $row[1] . ',' . $row[2] . ',' . $row[3] . ',' . $row[4] .
@@ -216,8 +216,8 @@ class DatabaseApi
 
     function getAllFiles()
     {
-        $sql = "SELECT audio_sample_id, filename, duration_ms, upload_date, error_tokens "
-            . "FROM AudioSamples ORDER BY filename";
+        $sql = "SELECT audio_sample_id, filename, duration_ms, upload_date, error_tokens FROM L2_speech_ratings.AudioSamples "
+            . "ORDER BY filename";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('getAllFiles: !$result');
@@ -235,7 +235,7 @@ class DatabaseApi
                 $this->failureToJson('deleteFiles: invalid filename',
                     $file . ' is not a valid filename!');
             }
-            $sql = "DELETE FROM AudioSamples WHERE filename='$sanitizedFile'";
+            $sql = "DELETE FROM L2_speech_ratings.AudioSamples WHERE filename='$sanitizedFile'";
             $result = $this->link->query($sql);
             if (!$result) {
                 $this->failureToJson('deleteFiles: !$result',
@@ -249,7 +249,7 @@ class DatabaseApi
 
     function getAllUsers()
     {
-        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up, university_id FROM Users";
+        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up, university_id FROM L2_speech_ratings.Users";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('getAllUsers: !$result');
@@ -261,7 +261,7 @@ class DatabaseApi
 
     function getAllInvites()
     {
-        $sql = "SELECT * FROM Invites";
+        $sql = "SELECT * FROM L2_speech_ratings.Invites";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('getAllInvites: !$result');
@@ -278,7 +278,8 @@ class DatabaseApi
 
     function addInvite($accessCode, $email)
     {
-        $sql = "INSERT INTO Invites (access_code, email) VALUES ('$accessCode','$email')";
+        $sql = "INSERT INTO L2_speech_ratings.Invites (access_code, email)"
+            . " VALUES ('$accessCode','$email')";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('getAllInvites: !$result');
@@ -288,7 +289,7 @@ class DatabaseApi
 
     function addAudioSample($jq_file, $duration, $parser, $errorTokens)
     {
-        $sql = 'INSERT INTO `AudioSamples`'
+        $sql = 'INSERT INTO L2_speech_ratings.AudioSamples'
             . ' (`filename`,`size`,`duration_ms`,`type`,`language`,`level`,`speaker_id`,`wave`,`task`,`item`,`error_tokens`)'
             . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             . ' ON DUPLICATE KEY UPDATE'
@@ -321,5 +322,13 @@ class DatabaseApi
         );
         $query->execute();
         return $this->link->insert_id;
+    }
+
+    function addAudioSampleToSurveyBlock($fileId, $blockId = 1)
+    {
+        $sql = "INSERT INTO L2_speech_ratings.SampleBlockAudioLookup (`sample_block_id`, `audio_sample_id`)"
+            . "VALUES ('$blockId', '$fileId');";
+        $result = $this->link->query($sql);
+        mysqli_free_result($result);
     }
 }

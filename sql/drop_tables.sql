@@ -1,22 +1,22 @@
 DELIMITER $$
-DROP TRIGGER IF EXISTS tr_b_ins_sessions $$
+DROP TRIGGER IF EXISTS L2_speech_ratings.tr_b_ins_sessions $$
 DELIMITER ;
 
-DROP TABLE IF EXISTS Admins;
-DROP TABLE IF EXISTS Sessions;
-DROP TABLE IF EXISTS Invites;
-DROP TABLE IF EXISTS BlockAudioSamples;
-DROP TABLE IF EXISTS SurveyBlocks;
-DROP TABLE IF EXISTS SampleBlocks;
-DROP TABLE IF EXISTS Surveys;
-DROP TABLE IF EXISTS CorruptFiles;
-DROP TABLE IF EXISTS ControlRatings;
-DROP TABLE IF EXISTS ControlFlags;
-DROP TABLE IF EXISTS RatingEvents;
-DROP TABLE IF EXISTS RatingScores;
-DROP TABLE IF EXISTS RatingProperties;
-DROP TABLE IF EXISTS AudioSamples;
-DROP TABLE IF EXISTS AudioCategories;
-DROP TABLE IF EXISTS PaymentInformation;
-DROP TABLE IF EXISTS Demographics;
-DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS L2_speech_ratings.Admins;
+DROP TABLE IF EXISTS L2_speech_ratings.Sessions;
+DROP TABLE IF EXISTS L2_speech_ratings.Invites;
+DROP TABLE IF EXISTS L2_speech_ratings.SampleBlockAudioLookup;
+DROP TABLE IF EXISTS L2_speech_ratings.SurveySampleBlockLookup;
+DROP TABLE IF EXISTS L2_speech_ratings.SampleBlocks;
+DROP TABLE IF EXISTS L2_speech_ratings.Surveys;
+DROP TABLE IF EXISTS L2_speech_ratings.CorruptFiles;
+DROP TABLE IF EXISTS L2_speech_ratings.ControlRatings;
+DROP TABLE IF EXISTS L2_speech_ratings.ControlFlags;
+DROP TABLE IF EXISTS L2_speech_ratings.RatingEvents;
+DROP TABLE IF EXISTS L2_speech_ratings.RatingScores;
+DROP TABLE IF EXISTS L2_speech_ratings.RatingProperties;
+DROP TABLE IF EXISTS L2_speech_ratings.AudioSamples;
+DROP TABLE IF EXISTS L2_speech_ratings.AudioCategories;
+DROP TABLE IF EXISTS L2_speech_ratings.PaymentInformation;
+DROP TABLE IF EXISTS L2_speech_ratings.Demographics;
+DROP TABLE IF EXISTS L2_speech_ratings.Users;
