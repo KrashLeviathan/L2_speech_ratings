@@ -1,3 +1,5 @@
+@import "superhero/_variables";
+
 .l2sr-alert {
   position: fixed;
   bottom: 0;
@@ -93,6 +95,13 @@ audio {
   }
 }
 
+.l2sr-file-uploads {
+  max-height: 25vh;
+  overflow-y: scroll;
+  border: 1px solid #1d1e1f;
+  padding: 1em;
+}
+
 .l2sr-bold {
   font-weight: 700;
 }
@@ -109,6 +118,10 @@ audio {
   th {
     font-variant-caps: petite-caps;
     font-size: 1.2em;
+  }
+  td a {
+    text-decoration: none !important;
+    color: $brand-primary !important;
   }
 }
 

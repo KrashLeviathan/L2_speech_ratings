@@ -70,6 +70,12 @@ audio {
 .l2sr-mbot-sm {
   margin-bottom: 2em; }
 
+.l2sr-file-uploads {
+  max-height: 25vh;
+  overflow-y: scroll;
+  border: 1px solid #1d1e1f;
+  padding: 1em; }
+
 .l2sr-bold {
   font-weight: 700; }
 
@@ -82,6 +88,9 @@ audio {
 .l2sr-table th {
   font-variant-caps: petite-caps;
   font-size: 1.2em; }
+.l2sr-table td a {
+  text-decoration: none !important;
+  color: #DF691A !important; }
 
 .fileinput-button {
   position: relative;

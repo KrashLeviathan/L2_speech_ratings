@@ -214,6 +214,39 @@ class DatabaseApi
         return array('success' => true);
     }
 
+    function getAllFiles()
+    {
+        $sql = "SELECT audio_sample_id, filename, duration_ms, upload_date, error_tokens "
+            . "FROM AudioSamples ORDER BY filename";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getAllFiles: !$result');
+        }
+        $files = $result->fetch_all();
+        mysqli_free_result($result);
+        return $files;
+    }
+
+    function deleteFiles($fileList)
+    {
+        foreach ($fileList as $file) {
+            $sanitizedFile = $this->escapeAndShorten($file, 255);
+            if (strlen($file) !== strlen($sanitizedFile) || strpos($sanitizedFile, '..') !== false) {
+                $this->failureToJson('deleteFiles: invalid filename',
+                    $file . ' is not a valid filename!');
+            }
+            $sql = "DELETE FROM AudioSamples WHERE filename='$sanitizedFile'";
+            $result = $this->link->query($sql);
+            if (!$result) {
+                $this->failureToJson('deleteFiles: !$result',
+                    'Not all files could be deleted! Contact IT if problems persist.',
+                    'Reload the page to refresh the table.');
+            }
+            mysqli_free_result($result);
+            unlink("../files/upload_handler/files/" . $sanitizedFile);
+        }
+    }
+
     function getAllUsers()
     {
         $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up, university_id FROM Users";

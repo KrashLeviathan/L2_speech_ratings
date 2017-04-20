@@ -33,12 +33,44 @@
                     <div class="progress-bar progress-bar-success"></div>
                 </div>
                 <!-- The container for the uploaded files -->
-                <div id="files" class="files"></div>
+                <h3>Upload Results</h3>
+                <div id="files" class="l2sr-file-uploads"></div>
+            </div>
+        </div>
+        <div class="row l2sr-mtop-sm">
+            <div class="col-lg-12 l2sr-mbot-sm">
+                <h3>File Management</h3>
+                <button id="delete-files-btn" type="button" class="btn btn-danger l2sr-mtop-sm">Delete Checked Files
+                </button>
+            </div>
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-hover table-striped l2sr-table">
+                    <thead class="font-weight-bold">
+                    <tr>
+                        <th>Filename</th>
+                        <th>Duration</th>
+                        <th>Upload Date</th>
+                        <th>Error Tokens</th>
+                        <th class="text-center">
+                            <button id="select-all" class="btn btn-xs btn-primary">Check All</button>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="file-table-body">
+                    <tr>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
-
+<script src="/js/files_table.js" type="text/javascript"></script>
 
 <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 <script src="/js/jQuery-File-Upload/vendor/jquery.ui.widget.js" defer></script>
@@ -111,6 +143,8 @@
                         .append(error);
                 }
             });
+        }).on('fileuploadstop', function (e, data) {
+            fetchFiles();
         }).on('fileuploadfail', function (e, data) {
             $.each(data.files, function (index) {
                 var error = $('<span class="text-danger"/>').text('File upload failed.');
