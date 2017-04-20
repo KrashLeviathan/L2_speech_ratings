@@ -14,6 +14,7 @@ $adminOnlyPage = true;
 @include '../../_includes/config.php';
 @include '../../_includes/checkSession.php';
 @include '../../_includes/filename_parser.php';
+@include '../../_includes/wav_duration.php';
 
 $options = array(
     'delete_type' => 'POST',
@@ -56,17 +57,19 @@ class CustomUploadHandler extends UploadHandler
         if (empty($file->error)) {
             $parser = new FilenameParser($file->name);
             $errorTokens = ($parser->hasErrors()) ? json_encode($parser->errorTokens) : '';
+            $duration = wavDur($this->options['upload_dir'] . $file->name);
             $sql = 'INSERT INTO `' . $this->options['db_table']
-                . '` (`filename`,`size`,`type`,`language`,`level`,`speaker_id`,`wave`,`task`,`item`,`error_tokens`)'
-                . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                . '` (`filename`,`size`,`duration_ms`,`type`,`language`,`level`,`speaker_id`,`wave`,`task`,`item`,`error_tokens`)'
+                . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
                 . ' ON DUPLICATE KEY UPDATE'
-                . ' size=?, type=?, language=?, level=?, speaker_id=?, wave=?, task=?, item=?, error_tokens=?,'
+                . ' size=?, duration_ms=?, type=?, language=?, level=?, speaker_id=?, wave=?, task=?, item=?, error_tokens=?,'
                 . ' upload_date=NOW()';
             $query = $this->db->prepare($sql);
             $query->bind_param(
-                'sisssiiiisisssiiiis',
+                'sissssiiiis' . 'issssiiiis',
                 $file->name,
                 $file->size,
+                $duration,
                 $file->type,
                 $parser->language,
                 $parser->level,
@@ -76,6 +79,7 @@ class CustomUploadHandler extends UploadHandler
                 $parser->item,
                 $errorTokens,
                 $file->size,
+                $duration,
                 $file->type,
                 $parser->language,
                 $parser->level,
