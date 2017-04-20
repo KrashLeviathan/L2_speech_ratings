@@ -331,4 +331,21 @@ class DatabaseApi
         $result = $this->link->query($sql);
         mysqli_free_result($result);
     }
+
+    function getSurvey($surveyId)
+    {
+        $sql = "SELECT * FROM L2_speech_ratings.Surveys WHERE survey_id='$surveyId'";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getSurvey: !$result');
+        }
+        if (mysqli_num_rows($result) == 0) {
+            $this->failureToJson('getSurvey: 0 results',
+                'The survey with that ID does not exist!',
+                'surveyId: ' . $surveyId);
+        }
+        $survey = $result->fetch_assoc();
+        mysqli_free_result($result);
+        return $survey;
+    }
 }

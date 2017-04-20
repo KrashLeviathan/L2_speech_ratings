@@ -27,8 +27,8 @@ mysql -u root -p < "sql/config_initial_values.sql"
 
 # This script is not tracked in git (populates user data
 # for development, which includes Google ID and other PII)
-echo "Configure additional development data"
-mysql -u root -p < "sql/do_not_track.sql"
+echo "Configure additional development data (STOP AND REMOVE IF THIS IS A PRODUCTION BUILD!)"
+mysql -u root -p < "sql/do_not_track.sql" # TODO: Should be removed after development is finished!
 
 # For development, copy a few of the test files onto the server folder
 echo

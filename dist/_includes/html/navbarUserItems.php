@@ -5,7 +5,7 @@
     } else {
         print '<li><a href="/instructions">Instructions</a></li>';
     }
-    if ($_SERVER['REQUEST_URI'] === '/survey') {
+    if ($_SERVER['REQUEST_URI'] === '/survey' || $_SERVER['REQUEST_URI'] === '/survey/in_progress') {
         print '<li class="active"><a href="#">Start Survey <span class="sr-only">(current)</span></a></li>';
     } else {
         print '<li><a href="/survey">Start Survey</a></li>';

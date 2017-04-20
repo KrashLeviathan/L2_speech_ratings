@@ -2,6 +2,14 @@
 
 @include '../../_includes/pageSetup.php';
 
+if (!$_SESSION['survey_in_progress']) {
+    $_SESSION['survey_in_progress'] = true;
+    // TODO: Fetch survey items
+    // TODO: Randomize the order, and stick them in session variable
+} else {
+    // TODO
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // TODO: Form validation
 

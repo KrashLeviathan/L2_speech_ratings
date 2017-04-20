@@ -189,15 +189,18 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.CorruptFiles (
 
 
 CREATE TABLE IF NOT EXISTS L2_speech_ratings.Surveys (
-  survey_id               INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  name                    VARCHAR(64)      NOT NULL,
-  description             VARCHAR(1024),
-  start_date              DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
-  end_date                DATETIME,
-  times_audio_plays       INT(10)                   DEFAULT 0,
-  instructional_info      VARCHAR(8192),
-  notification_settings   VARCHAR(64),
-  target_rating_threshold INT(10),
+  survey_id                INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name                     VARCHAR(64)      NOT NULL,
+  description              VARCHAR(1024),
+  start_date               DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
+  end_date                 DATETIME,
+  instructional_info       VARCHAR(8192),
+  num_replays_allowed      INT(10)                   DEFAULT -1,
+  total_time_limit         INT(10)                   DEFAULT -1,
+  estimated_length_minutes INT(10)                   DEFAULT 60,
+  closed                   TINYINT                   DEFAULT 0,
+  notification_settings    VARCHAR(64),
+  target_rating_threshold  INT(10),
 
   PRIMARY KEY (survey_id)
 )
