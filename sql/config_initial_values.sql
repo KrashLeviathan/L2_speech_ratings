@@ -25,5 +25,5 @@ VALUES ('1', 'Default', 'Contains all audio samples', NULL, '', 'cnagle@iastate.
 INSERT INTO L2_speech_ratings.SampleBlocks (`sample_block_id`, `name`)
 VALUES ('1', 'Initial Block');
 
-INSERT INTO L2_speech_ratings.SurveySampleBlockLookup (`survey_block_id`, `survey_id`, `sample_block_id`)
+INSERT INTO L2_speech_ratings.SurveySampleBlockLookup (`lookup_id`, `survey_id`, `sample_block_id`)
 VALUES ('1', '1', '1');

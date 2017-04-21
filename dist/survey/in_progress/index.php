@@ -2,20 +2,40 @@
 
 @include '../../_includes/database_api.php';
 @include '../../_includes/pageSetup.php';
+@include '../../_includes/generate_access_code.php';
 
 $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // TODO: Form validation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['token'] === $_SESSION['in_progress_token']) {
+    if ($_SESSION['survey_complete']) {
+        @include 'end_of_survey.php';
+        die();
+    }
 
-    // TODO: Update database
+    // Validate input
+    $comprehension = $databaseApi->escapeAndShorten($_POST['comprehension'], 1);
+    $fluency = $databaseApi->escapeAndShorten($_POST['fluency'], 1);
+    $accent = $databaseApi->escapeAndShorten($_POST['accent'], 1);
 
-    // TODO: If invalid, make them rate it again.
+    // Update database
+    $audioId = $_SESSION['survey_audio_id_order'][$_SESSION['survey_current_id_index']];
+    $databaseApi->createRatingEvent($comprehension, $fluency, $accent, $_SESSION['user_id'], $audioId, $_SESSION['survey_id']);
+
+    // Progress through survey
+    if ($_SESSION['survey_current_id_index'] < sizeof($_SESSION['survey_audio_id_order']) - 1) {
+        $_SESSION['survey_current_id_index']++;
+    } else {
+        // It has reached the end of the survey, so we take the user to another page.
+        $_SESSION['survey_complete'] = true;
+        @include 'end_of_survey.php';
+        die();
+    }
 }
 
 if (!$_SESSION['survey_in_progress']) {
     $_SESSION['survey_in_progress'] = true;
     $_SESSION['survey_current_id_index'] = 0;
+    $_SESSION['survey_start_time'] = time();
 
     // Get all audio ids for this survey
     $audioSampleIds = $databaseApi->getAudioIdsFromSurveyBlock($_SESSION['survey_id']);
@@ -30,6 +50,9 @@ if (!$_SESSION['survey_in_progress']) {
         array_push($_SESSION['survey_audio_id_order'], $audioSampleId[0]);
     }
 }
+
+$randomToken = generateAccessCode(16, false);
+$_SESSION['in_progress_token'] = $randomToken;
 
 $audioId = $_SESSION['survey_audio_id_order'][$_SESSION['survey_current_id_index']];
 $audioFilename = $databaseApi->getAudioFilename($audioId);
@@ -126,6 +149,7 @@ $audioSample = '/file_storage/' . $audioFilename;
                     No foreign accent whatsoever<span class="visible-xs xs-arrow">&rarr;</span>
                 </div>
             </div>
+            <input type="hidden" value="<?= $randomToken ?>" name="token">
         </form>
     </div>
 

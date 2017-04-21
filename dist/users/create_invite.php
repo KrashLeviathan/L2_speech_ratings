@@ -6,24 +6,10 @@ $adminOnlyPage = true;
 // Make sure the user is authorized to be here
 @include '../_includes/checkSession.php';
 @include '../_includes/validation.php';
-
-function generateAccessCode()
-{
-    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $random_string_length = 16;
-    $string = '';
-    $max = strlen($characters) - 1;
-    for ($i = 0; $i < $random_string_length; $i++) {
-        if ($i !== 0 && ($i % 4 === 0)) {
-            $string .= '-';
-        }
-        $string .= $characters[mt_rand(0, $max)];
-    }
-    return $string;
-}
+@include '../_includes/generate_access_code.php';
 
 $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
-$accessCode = generateAccessCode();
+$accessCode = generateAccessCode(16);
 
 $response = array('success' => false, 'errmsg' => '');
 if (isset($_POST['email'])) {

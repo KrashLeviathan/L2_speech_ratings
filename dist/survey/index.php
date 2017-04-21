@@ -7,6 +7,7 @@ $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 // TODO: Will fetch other surveys in future iterations
 $_SESSION['survey_id'] = 1;
 $_SESSION['survey_in_progress'] = false;
+$_SESSION['survey_complete'] = false;
 $survey = $databaseApi->getSurvey($_SESSION['survey_id']);
 ?>
 

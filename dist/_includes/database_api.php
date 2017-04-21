@@ -385,4 +385,35 @@ class DatabaseApi
         return $filename;
 
     }
+
+    function createRatingEvent($comprehension, $fluency, $accent, $userId, $audioId, $surveyId)
+    {
+        // Create the rating event
+        $sql = "INSERT INTO L2_speech_ratings.RatingEvents (performed_by_id, audio_sample_id, survey_id)"
+            . " VALUES ('$userId', '$audioId', '$surveyId')";
+        $this->link->query($sql);
+        $eventId = $this->link->insert_id;
+
+        // Create the scores
+        $sql = "INSERT INTO L2_speech_ratings.RatingScores (score, property) VALUES ('$comprehension','1')";
+        $this->link->query($sql);
+        $scoreId1 = $this->link->insert_id;
+        $sql = "INSERT INTO L2_speech_ratings.RatingScores (score, property) VALUES ('$fluency','2')";
+        $this->link->query($sql);
+        $scoreId2 = $this->link->insert_id;
+        $sql = "INSERT INTO L2_speech_ratings.RatingScores (score, property) VALUES ('$accent','3')";
+        $this->link->query($sql);
+        $scoreId3 = $this->link->insert_id;
+
+        // Map the scores to the event
+        $sql = "INSERT INTO L2_speech_ratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
+            . " VALUES ('$eventId', '$scoreId1')";
+        $this->link->query($sql);
+        $sql = "INSERT INTO L2_speech_ratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
+            . " VALUES ('$eventId', '$scoreId2')";
+        $this->link->query($sql);
+        $sql = "INSERT INTO L2_speech_ratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
+            . " VALUES ('$eventId', '$scoreId3')";
+        $this->link->query($sql);
+    }
 }
