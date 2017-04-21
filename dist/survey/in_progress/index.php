@@ -1,37 +1,19 @@
 <?php
 
-@include '../../_includes/database_api.php';
-@include '../../_includes/pageSetup.php';
 @include '../../_includes/generate_access_code.php';
+@include '../../_includes/database_api.php';
+@include '../../_includes/checkSession.php';
+@include '../../_includes/html/head.php';
+
+if ($_SESSION['survey_complete']) {
+    @include '../../_includes/html/navbar.php';
+    @include 'end_of_survey.php';
+    die();
+}
 
 $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['token'] === $_SESSION['in_progress_token']) {
-    if ($_SESSION['survey_complete']) {
-        @include 'end_of_survey.php';
-        die();
-    }
-
-    // Validate input
-    $comprehension = $databaseApi->escapeAndShorten($_POST['comprehension'], 1);
-    $fluency = $databaseApi->escapeAndShorten($_POST['fluency'], 1);
-    $accent = $databaseApi->escapeAndShorten($_POST['accent'], 1);
-
-    // Update database
-    $audioId = $_SESSION['survey_audio_id_order'][$_SESSION['survey_current_id_index']];
-    $databaseApi->createRatingEvent($comprehension, $fluency, $accent, $_SESSION['user_id'], $audioId, $_SESSION['survey_id']);
-
-    // Progress through survey
-    if ($_SESSION['survey_current_id_index'] < sizeof($_SESSION['survey_audio_id_order']) - 1) {
-        $_SESSION['survey_current_id_index']++;
-    } else {
-        // It has reached the end of the survey, so we take the user to another page.
-        $_SESSION['survey_complete'] = true;
-        @include 'end_of_survey.php';
-        die();
-    }
-}
-
+// If this is the first item in the survey, we initialize some values
 if (!$_SESSION['survey_in_progress']) {
     $_SESSION['survey_in_progress'] = true;
     $_SESSION['survey_current_id_index'] = 0;
@@ -51,13 +33,17 @@ if (!$_SESSION['survey_in_progress']) {
     }
 }
 
+// We put the navbar after setting session_in_progress so that it can change appropriately
+@include '../../_includes/html/navbar.php';
+
+// Generate a random token to try to help prevent survey progress tampering (not foolproof)
 $randomToken = generateAccessCode(16, false);
 $_SESSION['in_progress_token'] = $randomToken;
 
+// Get the filename for the current audio sample
 $audioId = $_SESSION['survey_audio_id_order'][$_SESSION['survey_current_id_index']];
 $audioFilename = $databaseApi->getAudioFilename($audioId);
 $audioSample = '/file_storage/' . $audioFilename;
-
 ?>
 
 <div class="container">
@@ -65,14 +51,15 @@ $audioSample = '/file_storage/' . $audioFilename;
     <div class="page-header l2sr-mtop-lg">
         <div class="row">
             <div class="col-lg-12">
-                <p>To review the instructions at any time, <a href="/instructions" target="_blank">please click here</a>.
+                <p>To open the instructions in a new window,
+                    <a href="/instructions" target="_blank">please click here</a>.
                 </p>
             </div>
         </div>
     </div>
 
     <div class="bs-docs-section">
-        <form id="survey_form" method="post">
+        <form id="survey-form">
             <div class="row">
                 <h2 class="col-lg-12 text-center">Comprehensibility</h2>
             </div>

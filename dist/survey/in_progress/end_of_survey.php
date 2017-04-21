@@ -29,7 +29,7 @@ $seconds = floor($totalTimeTaken % 60);
                     <dt>Total Time Taken</dt>
                     <dd><?= $minutes ?> minutes, <?= $seconds ?> seconds</dd>
                     <dt>Samples Rated</dt>
-                    <dd><?= $_SESSION['survey_current_id_index'] + 1 ?></dd>
+                    <dd><?= $_SESSION['survey_current_id_index'] ?></dd>
                 </dl>
                 <p>It is recommended that you take a break for a while before continuing
                     to rate more audio samples.</p>
