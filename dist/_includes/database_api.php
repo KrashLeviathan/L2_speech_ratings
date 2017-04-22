@@ -195,22 +195,61 @@ class DatabaseApi
         return $userIsAdmin;
     }
 
-    function createCsvFromResults($filename)
+    function createCsvFromResults($surveyId, $filepath, $filename)
     {
-        $csv = new CsvCreator($filename);
+        $csv = new CsvCreator($filepath, $filename);
         if ($csv->hasError()) {
             return array('success' => false, 'errorMsg' => $csv->errorMsg);
         }
 
-        // TODO: Fix me to return actual results
-        $csv->append('user_id,google_id,yada,yada,yada,...');
-        $sql = "SELECT * FROM L2_speech_ratings.Users";
+        $csv->append('rater,block,ns,id,language,level,wave,item,task,rating' . "\n");
+        $sql = "SELECT
+re.performed_by_id AS rater,
+rp.csv_value AS block,
+aud.speaker_id AS id,
+aud.language,
+aud.level,
+aud.wave,
+aud.item,
+aud.task,
+rs.score
+FROM
+L2_speech_ratings.RatingEvents AS re
+INNER JOIN
+L2_speech_ratings.AudioSamples AS aud ON re.audio_sample_id = aud.audio_sample_id
+INNER JOIN
+L2_speech_ratings.RatingEventScoreLookup AS resl ON re.rating_event_id = resl.rating_event_id
+INNER JOIN
+L2_speech_ratings.RatingScores AS rs ON resl.rating_score_id = rs.rating_score_id
+INNER JOIN
+L2_speech_ratings.RatingProperties AS rp ON rs.property = rp.rating_property_id
+WHERE
+re.survey_id='$surveyId'";
         $result = $this->link->query($sql);
         while ($row = $result->fetch_row()) {
-            $csv->append($row[0] . ',' . $row[1] . ',' . $row[2] . ',' . $row[3] . ',' . $row[4] .
+            $csv->append($row[0] . ',' . $row[1] . ',,' . $row[2] . ',' . $row[3] . ',' . $row[4] .
                 ',' . $row[5] . ',' . $row[6] . ',' . $row[7] . ',' . $row[8] . "\n");
         }
         mysqli_free_result($result);
+        return array('success' => true);
+    }
+
+    function createCsvFromDemographics($filepath, $filename)
+    {
+        $csv = new CsvCreator($filepath, $filename);
+        if ($csv->hasError()) {
+            return array('success' => false, 'errorMsg' => $csv->errorMsg);
+        }
+
+        // TODO
+//        $csv->append('rater,block,ns,id,language,level,wave,item,task,rating' . "\n");
+//        $sql = "SELECT * FROM ...";
+//        $result = $this->link->query($sql);
+//        while ($row = $result->fetch_row()) {
+//            $csv->append($row[0] . ',' . $row[1] . ',,' . $row[2] . ',' . $row[3] . ',' . $row[4] .
+//                ',' . $row[5] . ',' . $row[6] . ',' . $row[7] . ',' . $row[8] . "\n");
+//        }
+//        mysqli_free_result($result);
         return array('success' => true);
     }
 

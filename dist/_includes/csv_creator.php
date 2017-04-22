@@ -5,16 +5,18 @@ class CsvCreator
     var $file;
     var $errorMsg;
 
-    function __construct($filename)
+    function __construct($filepath, $filename)
     {
+        $fullFilepath = $_SERVER['DOCUMENT_ROOT'] . $filepath . $filename;
         // Make sure file doesn't already exist
-        if (is_file($filename)) {
+        if (is_file($fullFilepath)) {
             $this->errorMsg = "Filename already exists!";
             return;
         }
 
         // Create a new file (implicitly)
-        $this->file = fopen($filename, 'w') or $this->errorMsg = 'Cannot open file:  ' . $filename;
+        $this->file = fopen($fullFilepath, 'w')
+        or $this->errorMsg = 'Cannot open file:  ' . $filepath . $filename;
     }
 
     function append($str)
