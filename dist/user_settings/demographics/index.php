@@ -217,7 +217,7 @@
                                 <label for="inputSpanishAge" class="control-label">At what age did you begin learning
                                     Spanish?</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="inputSpanishAge">
+                                    <input type="number" class="form-control" name="inputSpanishAge">
                                     <span class="input-group-addon">yrs</span>
                                 </div>
                             </div>
@@ -227,13 +227,13 @@
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputSpanishWithFamily" value="A - Yes">
+                                            <input type="radio" name="inputSpanishWithFamily" value="1">
                                             Yes
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputSpanishWithFamily" value="B - No">
+                                            <input type="radio" name="inputSpanishWithFamily" value="0">
                                             No
                                         </label>
                                     </div>
@@ -484,7 +484,7 @@
                                 <label for="inputFrenchAge" class="control-label">At what age did you begin learning
                                     French?</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="inputFrenchAge">
+                                    <input type="number" class="form-control" name="inputFrenchAge">
                                     <span class="input-group-addon">yrs</span>
                                 </div>
                             </div>
@@ -494,13 +494,13 @@
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputFrenchWithFamily" value="A - Yes">
+                                            <input type="radio" name="inputFrenchWithFamily" value="1">
                                             Yes
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputFrenchWithFamily" value="B - No">
+                                            <input type="radio" name="inputFrenchWithFamily" value="0">
                                             No
                                         </label>
                                     </div>
@@ -748,7 +748,7 @@
                                 <label for="inputEnglishAge" class="control-label">At what age did you begin learning
                                     English?</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="inputEnglishAge">
+                                    <input type="number" class="form-control" name="inputEnglishAge">
                                     <span class="input-group-addon">yrs</span>
                                 </div>
                             </div>
@@ -758,13 +758,13 @@
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputEnglishWithFamily" value="A - Yes">
+                                            <input type="radio" name="inputEnglishWithFamily" value="1">
                                             Yes
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputEnglishWithFamily" value="B - No">
+                                            <input type="radio" name="inputEnglishWithFamily" value="0">
                                             No
                                         </label>
                                     </div>
@@ -992,14 +992,14 @@
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputLinguisticsTraining" value="A - Yes"
+                                            <input type="radio" name="inputLinguisticsTraining" value="1"
                                                    required>
                                             Yes
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputLinguisticsTraining" value="B - No">
+                                            <input type="radio" name="inputLinguisticsTraining" value="0">
                                             No
                                         </label>
                                     </div>
@@ -1012,13 +1012,13 @@
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputTaughtLanguage" value="A - Yes" required>
+                                            <input type="radio" name="inputTaughtLanguage" value="1" required>
                                             Yes
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputTaughtLanguage" value="B - No">
+                                            <input type="radio" name="inputTaughtLanguage" value="0">
                                             No
                                         </label>
                                     </div>

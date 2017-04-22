@@ -253,10 +253,82 @@ re.survey_id='$surveyId'";
         return array('success' => true);
     }
 
-    function postDemographicFormData($formData) {
-        // TODO
-
+    function postDemographicFormData($userId, $formData)
+    {
+        $sql = "INSERT INTO L2_speech_ratings.Demographics (user_id, age, gender, birthplace, location_raised, native_languages, education_level, education_level_other, sp_listening, sp_speaking, sp_reading, sp_writing, sp_age, sp_with_family, sp_usage_percent, sp_nn_interaction, sp_interaction_cap, sp_interaction_cap_other, sp_nn_familiarity, fr_listening, fr_speaking, fr_reading, fr_writing, fr_age, fr_with_family, fr_usage_percent, fr_nn_interaction, fr_interaction_cap, fr_interaction_cap_other, fr_nn_familiarity, en_listening, en_speaking, en_reading, en_writing, en_age, en_with_family, en_usage_percent, instr_elementary, instr_secondary, instr_hs, instr_college, instr_graduate, addl_languages, ling_training, taught_language, personal_info)"
+            . " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $query = $this->link->prepare($sql);
+        $query->bind_param(
+            'iissssssiiiiiiisssiiiiiiiisssiiiiiiiissssssiis',
+            $userId,
+            $formData['age'],
+            $formData['gender'],
+            $formData['birthplace'],
+            $formData['locationRaised'],
+            $formData['nativeLanguages'],
+            $formData['educationLevel'],
+            $formData['educationLevelOther'],
+            $formData['spListening'],
+            $formData['spSpeaking'],
+            $formData['spReading'],
+            $formData['spWriting'],
+            $formData['spAge'],
+            $formData['spWithFamily'],
+            $formData['spUsagePercent'],
+            $formData['spNNInteraction'],
+            $formData['spInteractionCap'],
+            $formData['spInteractionCapOther'],
+            $formData['spNNFamiliarity'],
+            $formData['frListening'],
+            $formData['frSpeaking'],
+            $formData['frReading'],
+            $formData['frWriting'],
+            $formData['frAge'],
+            $formData['frWithFamily'],
+            $formData['frUsagePercent'],
+            $formData['frNNInteraction'],
+            $formData['frInteractionCap'],
+            $formData['frInteractionCapOther'],
+            $formData['frNNFamiliarity'],
+            $formData['enListening'],
+            $formData['enSpeaking'],
+            $formData['enReading'],
+            $formData['enWriting'],
+            $formData['enAge'],
+            $formData['enWithFamily'],
+            $formData['enUsagePercent'],
+            $formData['instrElementary'],
+            $formData['instrSecondary'],
+            $formData['instrHS'],
+            $formData['instrCollege'],
+            $formData['instrGraduate'],
+            $formData['addlLanguages'],
+            $formData['lingTraining'],
+            $formData['taughtLanguage'],
+            $formData['personalInfo']
+        );
+        $result = $query->execute();
+        if (!$result) {
+            $this->failureToJson('postDemographicFormData: !$result');
+        }
         return array('success' => true);
+    }
+
+    function getLastDemographicDate($userId)
+    {
+        $sql = "SELECT date_completed FROM L2_speech_ratings.Demographics WHERE user_id = '$userId'"
+            . " ORDER BY date_completed DESC LIMIT 1";
+        $result = $this->link->query($sql);
+        if (!$result) {
+            $this->failureToJson('getLastDemographicDate: !$result');
+        }
+        if (mysqli_num_rows($result) == 0) {
+            return false;
+        }
+        $date_completed = $result->fetch_row()[0];
+        mysqli_free_result($result);
+        return $date_completed;
+
     }
 
     function getAllFiles()
