@@ -14,26 +14,26 @@
     <div class="bs-docs-section">
         <div class="row">
             <div class="col-lg-12">
-                <div class="well bs-component">
-                    <form>
+                <form id="demographics-form">
+                    <div class="well bs-component">
                         <fieldset>
                             <div class="form-group col-sm-4">
                                 <label for="inputAge" class="control-label">What is your current age?</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="inputAge" required>
+                                    <input type="number" class="form-control" name="inputAge" required>
                                     <span class="input-group-addon">yrs</span>
                                 </div>
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="inputGender" class="control-label">What is your gender?</label>
                                 <div>
-                                    <input type="text" class="form-control" id="inputGender" required>
+                                    <input type="text" class="form-control" name="inputGender" required>
                                 </div>
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="inputBirthplace" class="control-label">Where were you born?</label>
                                 <div>
-                                    <input type="text" class="form-control" id="inputBirthplace" required>
+                                    <input type="text" class="form-control" name="inputBirthplace" required>
                                 </div>
                             </div>
                             <div class="col-sm-8">
@@ -41,14 +41,14 @@
                                     <label for="inputLocationRaised" class="control-label">Where did you grow up? You
                                         may list multiple locations if applicable.</label>
                                     <div>
-                                        <input type="text" class="form-control" id="inputLocationRaised" required>
+                                        <input type="text" class="form-control" name="inputLocationRaised" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputNativeLanguages" class="control-label">What is (are) your native
                                         language(s)?</label>
                                     <div>
-                                        <input type="text" class="form-control" id="inputNativeLanguages" required>
+                                        <input type="text" class="form-control" name="inputNativeLanguages" required>
                                     </div>
                                 </div>
                             </div>
@@ -92,17 +92,15 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </form>
-                </div>
+                    </div>
 
-                <!--------------------------------------- SPANISH SECTION ---------------------------------------->
+                    <!--------------------------------------- SPANISH SECTION ---------------------------------------->
 
-                <div class="well bs-component">
-                    <button id="spanish-section-btn" type="button" class="btn btn-primary">
-                        Rating Spanish? Please click here to fill out the Spanish section.
-                    </button>
-                    <form id="spanish-form" hidden>
-                        <fieldset>
+                    <div class="well bs-component">
+                        <button id="spanish-section-btn" type="button" class="btn btn-primary">
+                            Rating Spanish? Please click here to fill out the Spanish section.
+                        </button>
+                        <fieldset id="spanish-fieldset" hidden>
                             <legend>
                                 Please rate your Spanish abilities using the scale provided:
                             </legend>
@@ -219,7 +217,7 @@
                                 <label for="inputSpanishAge" class="control-label">At what age did you begin learning
                                     Spanish?</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="inputSpanishAge">
+                                    <input type="text" class="form-control" name="inputSpanishAge">
                                     <span class="input-group-addon">yrs</span>
                                 </div>
                             </div>
@@ -245,39 +243,39 @@
                                 <label for="inputSpanishUsagePercent" class="control-label">How much Spanish do you use
                                     on a daily basis (please provide a % estimate)?</label>
                                 <div class="input-group col-sm-6">
-                                    <input type="number" class="form-control" id="inputSpanishUsagePercent"
+                                    <input type="number" class="form-control" name="inputSpanishUsagePercent"
                                            placeholder="e.g. 25">
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
-                                <label for="inputNonNativeInteraction" class="control-label">How often do you interact
+                                <label for="inputSpNNInteraction" class="control-label">How often do you interact
                                     with nonnative speakers of Spanish in Spanish? “Nonnative speakers” refers to
                                     individuals who have learned Spanish as a second language.</label>
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputNonNativeInteraction" value="A - Never">
+                                            <input type="radio" name="inputSpNNInteraction" value="A - Never">
                                             Never
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputNonNativeInteraction"
+                                            <input type="radio" name="inputSpNNInteraction"
                                                    value="B - About once a month">
                                             About once a month
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputNonNativeInteraction"
+                                            <input type="radio" name="inputSpNNInteraction"
                                                    value="C - About once a day">
                                             About once a day
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputNonNativeInteraction"
+                                            <input type="radio" name="inputSpNNInteraction"
                                                    value="D - More than once a day">
                                             More than once a day
                                         </label>
@@ -285,19 +283,19 @@
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
-                                <label for="inputInteractionCapacity" class="control-label">In what capacity do you
+                                <label for="inputSpInteractionCapacity" class="control-label">In what capacity do you
                                     interact with nonnative speakers of Spanish in Spanish?</label>
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity"
+                                            <input type="radio" name="inputSpInteractionCapacity"
                                                    value="A - In my professional life">
                                             In my professional life: I interact with nonnative speakers in my work.
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity"
+                                            <input type="radio" name="inputSpInteractionCapacity"
                                                    value="B - In my personal life">
                                             In my personal life: I have many friends who are nonnative speakers of
                                             Spanish.
@@ -305,31 +303,31 @@
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity" value="C - In both">
+                                            <input type="radio" name="inputSpInteractionCapacity" value="C - In both">
                                             In both my personal and professional lives, as described in the options
                                             above.
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity" value="D - NA">
+                                            <input type="radio" name="inputSpInteractionCapacity" value="D - NA">
                                             Not applicable: I do not interact with nonnative speakers of Spanish in
                                             Spanish.
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity" value="E - Other">
+                                            <input type="radio" name="inputSpInteractionCapacity" value="E - Other">
                                             Other
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
-                                <label for="inputInteractionCapacityOther" class="control-label">If other, please
+                                <label for="inputSpInteractionCapacityOther" class="control-label">If other, please
                                     describe:</label>
                                 <div>
-                                    <input type="text" class="form-control" id="inputInteractionCapacityOther">
+                                    <input type="text" class="form-control" name="inputSpInteractionCapacityOther">
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
@@ -361,17 +359,15 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </form>
-                </div>
+                    </div>
 
-                <!--------------------------------------- FRENCH SECTION ---------------------------------------->
+                    <!--------------------------------------- FRENCH SECTION ---------------------------------------->
 
-                <div class="well bs-component">
-                    <button id="french-section-btn" type="button" class="btn btn-primary">
-                        Rating French? Please click here to fill out the French section.
-                    </button>
-                    <form id="french-form" hidden>
-                        <fieldset>
+                    <div class="well bs-component">
+                        <button id="french-section-btn" type="button" class="btn btn-primary">
+                            Rating French? Please click here to fill out the French section.
+                        </button>
+                        <fieldset id="french-fieldset" hidden>
                             <legend>
                                 Please rate your French abilities using the scale provided:
                             </legend>
@@ -488,7 +484,7 @@
                                 <label for="inputFrenchAge" class="control-label">At what age did you begin learning
                                     French?</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="inputFrenchAge">
+                                    <input type="text" class="form-control" name="inputFrenchAge">
                                     <span class="input-group-addon">yrs</span>
                                 </div>
                             </div>
@@ -514,39 +510,39 @@
                                 <label for="inputFrenchUsagePercent" class="control-label">How much French do you use
                                     on a daily basis (please provide a % estimate)?</label>
                                 <div class="input-group col-sm-6">
-                                    <input type="number" class="form-control" id="inputFrenchUsagePercent"
+                                    <input type="number" class="form-control" name="inputFrenchUsagePercent"
                                            placeholder="e.g. 25">
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
-                                <label for="inputNonNativeInteraction" class="control-label">How often do you interact
+                                <label for="inputFrNNInteraction" class="control-label">How often do you interact
                                     with nonnative speakers of French in French? “Nonnative speakers” refers to
                                     individuals who have learned French as a second language.</label>
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputNonNativeInteraction" value="A - Never">
+                                            <input type="radio" name="inputFrNNInteraction" value="A - Never">
                                             Never
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputNonNativeInteraction"
+                                            <input type="radio" name="inputFrNNInteraction"
                                                    value="B - About once a month">
                                             About once a month
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputNonNativeInteraction"
+                                            <input type="radio" name="inputFrNNInteraction"
                                                    value="C - About once a day">
                                             About once a day
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputNonNativeInteraction"
+                                            <input type="radio" name="inputFrNNInteraction"
                                                    value="D - More than once a day">
                                             More than once a day
                                         </label>
@@ -554,19 +550,19 @@
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
-                                <label for="inputInteractionCapacity" class="control-label">In what capacity do you
+                                <label for="inputFrInteractionCapacity" class="control-label">In what capacity do you
                                     interact with nonnative speakers of French in French?</label>
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity"
+                                            <input type="radio" name="inputFrInteractionCapacity"
                                                    value="A - In my professional life">
                                             In my professional life: I interact with nonnative speakers in my work.
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity"
+                                            <input type="radio" name="inputFrInteractionCapacity"
                                                    value="B - In my personal life">
                                             In my personal life: I have many friends who are nonnative speakers of
                                             French.
@@ -574,31 +570,31 @@
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity" value="C - In both">
+                                            <input type="radio" name="inputFrInteractionCapacity" value="C - In both">
                                             In both my personal and professional lives, as described in the options
                                             above.
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity" value="D - NA">
+                                            <input type="radio" name="inputFrInteractionCapacity" value="D - NA">
                                             Not applicable: I do not interact with nonnative speakers of French in
                                             French.
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInteractionCapacity" value="E - Other">
+                                            <input type="radio" name="inputFrInteractionCapacity" value="E - Other">
                                             Other
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
-                                <label for="inputInteractionCapacityOther" class="control-label">If other, please
+                                <label for="inputFrInteractionCapacityOther" class="control-label">If other, please
                                     describe:</label>
                                 <div>
-                                    <input type="text" class="form-control" id="inputInteractionCapacityOther">
+                                    <input type="text" class="form-control" name="inputFrInteractionCapacityOther">
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
@@ -630,13 +626,11 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </form>
-                </div>
+                    </div>
 
-                <!--------------------------------------- ENGLISH SECTION ---------------------------------------->
+                    <!--------------------------------------- ENGLISH SECTION ---------------------------------------->
 
-                <div class="well bs-component">
-                    <form>
+                    <div class="well bs-component">
                         <fieldset>
                             <legend>
                                 Please rate your English abilities using the scale provided:
@@ -754,7 +748,7 @@
                                 <label for="inputEnglishAge" class="control-label">At what age did you begin learning
                                     English?</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="inputEnglishAge">
+                                    <input type="text" class="form-control" name="inputEnglishAge">
                                     <span class="input-group-addon">yrs</span>
                                 </div>
                             </div>
@@ -780,18 +774,16 @@
                                 <label for="inputEnglishUsagePercent" class="control-label">How much English do you use
                                     on a daily basis (please provide a % estimate)?</label>
                                 <div class="input-group col-sm-6">
-                                    <input type="text" class="form-control" id="inputEnglishUsagePercent">
+                                    <input type="text" class="form-control" name="inputEnglishUsagePercent">
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
                         </fieldset>
-                    </form>
-                </div>
+                    </div>
 
-                <!--------------------------------------- SCHOOL SECTION ---------------------------------------->
+                    <!--------------------------------------- SCHOOL SECTION ---------------------------------------->
 
-                <div class="well bs-component">
-                    <form>
+                    <div class="well bs-component">
                         <fieldset>
                             <legend>
                                 For each school level listed below, please indicate whether you received instruction
@@ -821,7 +813,8 @@
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInstructionElementary" value="C - Combination">
+                                            <input type="radio" name="inputInstructionElementary"
+                                                   value="C - Combination">
                                             Combination
                                         </label>
                                     </div>
@@ -856,7 +849,8 @@
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="inputInstructionSecondary" value="C - Combination">
+                                            <input type="radio" name="inputInstructionSecondary"
+                                                   value="C - Combination">
                                             Combination
                                         </label>
                                     </div>
@@ -974,20 +968,18 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </form>
-                </div>
+                    </div>
 
-                <!--------------------------------------- MISC SECTION ---------------------------------------->
+                    <!--------------------------------------- MISC SECTION ---------------------------------------->
 
-                <div class="well bs-component">
-                    <form>
+                    <div class="well bs-component">
                         <fieldset>
                             <div class="form-group col-lg-12">
                                 <label for="inputAdditionalLanguages" class="control-label">Do you speak any additional
                                     languages other than English, French, or Spanish? If YES, then please list each
                                     language and how you learned it. Example responses have been provided.</label>
                                 <div>
-                                    <textarea class="form-control" rows="3" id="inputAdditionalLanguages"></textarea>
+                                    <textarea class="form-control" rows="3" name="inputAdditionalLanguages"></textarea>
                                     <br>Example 1: I took two years of German in high school and two semesters in
                                     college.<br>
                                     Example 2: I lived in China from the ages of 8-12 and attended a Chinese
@@ -1037,7 +1029,7 @@
                                 <label for="inputPersonalInfo" class="control-label">Is there any other personal
                                     information about you that you think would be important for us to know?</label>
                                 <div>
-                                    <textarea class="form-control" rows="3" id="inputPersonalInfo"></textarea>
+                                    <textarea class="form-control" rows="3" name="inputPersonalInfo"></textarea>
                                 </div>
                             </div>
                             <div class="form-group col-lg-12">
@@ -1045,11 +1037,11 @@
                                 <button id="submit-btn" type="button" class="btn btn-primary">Submit</button>
                             </div>
                         </fieldset>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 <script src="/js/demographics.js" type="text/javascript"></script>
 

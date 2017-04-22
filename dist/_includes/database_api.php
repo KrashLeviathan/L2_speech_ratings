@@ -253,6 +253,12 @@ re.survey_id='$surveyId'";
         return array('success' => true);
     }
 
+    function postDemographicFormData($formData) {
+        // TODO
+
+        return array('success' => true);
+    }
+
     function getAllFiles()
     {
         $sql = "SELECT audio_sample_id, filename, duration_ms, upload_date, error_tokens FROM L2_speech_ratings.AudioSamples "

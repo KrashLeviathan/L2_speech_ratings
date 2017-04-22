@@ -1,30 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Attach buttons
     $('#spanish-section-btn').click(function () {
-        $('#spanish-form').show();
+        $('#spanish-fieldset').show();
         $('#spanish-section-btn').hide();
     });
     $('#french-section-btn').click(function () {
-        $('#french-form').show();
+        $('#french-fieldset').show();
         $('#french-section-btn').hide();
     });
     $('#cancel-btn').click(function () {
-        window.location.href = "/user_settings"
+        window.location.href = "/user_settings";
     });
     $('#submit-btn').click(submitForm);
 });
 
 function submitForm() {
-    console.log($('#spanish-form').serialize());
-    return;
     $.ajax({
-        url: '/results/generate_results.php',
+        url: '/user_settings/demographics/post_demographics.php',
         type: 'post',
-        data: $('#spanish-form').serialize(),
+        data: $('#demographics-form').serialize(),
         success: function (data) {
             if (data.success) {
-                // TODO
-                console.log(data);
+                window.location.href = "/user_settings";
             } else {
                 console.log(data);
                 errorAlert(data.errmsg);
