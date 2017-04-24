@@ -19,11 +19,11 @@ class CsvCreator
         or $this->errorMsg = 'Cannot open file:  ' . $filepath . $filename;
     }
 
-    function append($str)
+    function append($fieldArray)
     {
         if (!isset($this->errorMsg)) {
             // Append data to the file
-            fwrite($this->file, $str);
+            fputcsv($this->file, $fieldArray);
         }
     }
 

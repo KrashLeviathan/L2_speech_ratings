@@ -75,6 +75,11 @@ class DatabaseApi
         return substr(mysqli_real_escape_string($this->link, $string), 0, $length);
     }
 
+    function csvEscape($string)
+    {
+
+    }
+
     /**
      * Checks to see if the given access code is valid, and then (if valid) returns the invite
      * email for that access code.
@@ -203,7 +208,8 @@ class DatabaseApi
         }
 
         // Heading
-        $csv->append('rater,block,ns,id,language,level,wave,item,task,rating' . "\n");
+        $headingFields = array('rater', 'block', 'ns', 'id', 'language', 'level', 'wave', 'item', 'task', 'rating');
+        $csv->append($headingFields);
 
         // Data
         $sql = "SELECT
@@ -230,8 +236,7 @@ WHERE
 re.survey_id='$surveyId'";
         $result = $this->link->query($sql);
         while ($row = $result->fetch_row()) {
-            $csv->append($row[0] . ',' . $row[1] . ',,' . $row[2] . ',' . $row[3] . ',' . $row[4] .
-                ',' . $row[5] . ',' . $row[6] . ',' . $row[7] . ',' . $row[8] . "\n");
+            $csv->append($row);
         }
         mysqli_free_result($result);
         return array('success' => true);
@@ -245,25 +250,22 @@ re.survey_id='$surveyId'";
         }
 
         // Heading
-        $csv->append('demographic_id,user_id,date_completed,age,gender,birthplace,location_raised,native_languages,'
-            . 'education_level,education_level_other,'
-            . 'sp_listening,sp_speaking,sp_reading,sp_writing,sp_age,sp_with_family,sp_usage_percent,sp_nn_interaction,'
-            . 'sp_interaction_cap,sp_interaction_cap_other,sp_nn_familiarity'
-            . 'fr_listening,fr_speaking,fr_reading,fr_writing,fr_age,fr_with_family,fr_usage_percent,fr_nn_interaction,'
-            . 'fr_interaction_cap,fr_interaction_cap_other,fr_nn_familiarity'
-            . 'en_listening,en_speaking,en_reading,en_writing,en_age,en_with_family,en_usage_percent,'
-            . 'instr_elementary,instr_secondary,instr_hs,instr_college,instr_graduate,addl_languages,ling_training,'
-            . 'taught_language,personal_info' . "\n");
+        $headingFields = array('demographic_id', 'user_id', 'date_completed', 'age', 'gender', 'birthplace',
+            'location_raised', 'native_languages', 'education_level', 'education_level_other',
+            'sp_listening', 'sp_speaking', 'sp_reading', 'sp_writing', 'sp_age', 'sp_with_family', 'sp_usage_percent',
+            'sp_nn_interaction', 'sp_interaction_cap', 'sp_interaction_cap_other', 'sp_nn_familiarity',
+            'fr_listening', 'fr_speaking', 'fr_reading', 'fr_writing', 'fr_age', 'fr_with_family', 'fr_usage_percent',
+            'fr_nn_interaction', 'fr_interaction_cap', 'fr_interaction_cap_other', 'fr_nn_familiarity',
+            'en_listening', 'en_speaking', 'en_reading', 'en_writing', 'en_age', 'en_with_family', 'en_usage_percent',
+            'instr_elementary', 'instr_secondary', 'instr_hs', 'instr_college', 'instr_graduate', 'addl_languages',
+            'ling_training', 'taught_language', 'personal_info');
+        $csv->append($headingFields);
 
         // Data
         $sql = "SELECT * FROM L2_speech_ratings.Demographics";
         $result = $this->link->query($sql);
         while ($row = $result->fetch_row()) {
-            $line = $row[0];
-            for ($i = 1; $i < 48; $i++) {
-                $line .= ',' . $row[$i];
-            }
-            $csv->append($line . "\n");
+            $csv->append($row);
         }
         mysqli_free_result($result);
         return array('success' => true);
