@@ -30,15 +30,15 @@ mysql -u root -p < "sql/config_initial_values.sql"
 
 # This script is not tracked in git (populates user data
 # for development, which includes Google ID and other PII)
-echo "Configuring additional development data (STOP AND REMOVE IF THIS IS A PRODUCTION BUILD!)"
-mysql -u root -p < "sql/do_not_track.sql" # TODO: Should be removed after development is finished!
+#echo "Configuring additional development data (STOP AND REMOVE IF THIS IS A PRODUCTION BUILD!)"
+#mysql -u root -p < "sql/do_not_track.sql"
 
 # For development, copy a few of the test files onto the server folder
-echo
-echo "[*] Copying test audio files to file_storage folder"
-echo
-cp "test/sample_audios/3_w1_pic14.wav" "dist/file_storage/audio_samples/3_w1_pic14.wav"
-cp "test/sample_audios/3_w1_pic53.wav" "dist/file_storage/audio_samples/3_w1_pic53.wav"
-cp "test/sample_audios/3_w2_pic27.wav" "dist/file_storage/audio_samples/3_w2_pic27.wav"
+#echo
+#echo "[*] Copying test audio files to file_storage folder (STOP AND REMOVE IF THIS IS A PRODUCTION BUILD!)"
+#echo
+#cp "test/sample_audios/3_w1_pic14.wav" "dist/file_storage/audio_samples/3_w1_pic14.wav"
+#cp "test/sample_audios/3_w1_pic53.wav" "dist/file_storage/audio_samples/3_w1_pic53.wav"
+#cp "test/sample_audios/3_w2_pic27.wav" "dist/file_storage/audio_samples/3_w2_pic27.wav"
 
 echo "[*] Done!"

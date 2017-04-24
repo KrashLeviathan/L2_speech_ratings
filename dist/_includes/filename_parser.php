@@ -103,8 +103,10 @@ class FilenameParser
                     }
                 }
 
-                // Not a language
-                array_push($this->errorTokens, $token . ' : Unknown token!');
+                if (!isset($this->language)) {
+                    // Not a language
+                    array_push($this->errorTokens, $token . ' : Unknown token!');
+                }
             } else {
                 array_push($this->errorTokens, $token . ' : Unknown token, or Language already set!');
             }
