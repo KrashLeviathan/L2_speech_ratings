@@ -75,11 +75,6 @@ class DatabaseApi
         return substr(mysqli_real_escape_string($this->link, $string), 0, $length);
     }
 
-    function csvEscape($string)
-    {
-
-    }
-
     /**
      * Checks to see if the given access code is valid, and then (if valid) returns the invite
      * email for that access code.
@@ -236,7 +231,9 @@ WHERE
 re.survey_id='$surveyId'";
         $result = $this->link->query($sql);
         while ($row = $result->fetch_row()) {
-            $csv->append($row);
+            // Need one empty string for now (between 1 and 2) to account for native speaker field
+            $rowFields = array($row[0], $row[1], '', $row[2], $row[3], $row[4], $row[5], $row[6], $row[7], $row[8]);
+            $csv->append($rowFields);
         }
         mysqli_free_result($result);
         return array('success' => true);
