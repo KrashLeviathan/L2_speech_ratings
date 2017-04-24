@@ -18,6 +18,7 @@ function submitForm() {
     $.ajax({
         url: '/user_settings/demographics/post_demographics.php',
         type: 'post',
+        dataType: 'json',
         data: $('#demographics-form').serialize(),
         success: function (data) {
             if (data.success) {
