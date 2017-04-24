@@ -43,7 +43,7 @@ $_SESSION['in_progress_token'] = $randomToken;
 // Get the filename for the current audio sample
 $audioId = $_SESSION['survey_audio_id_order'][$_SESSION['survey_current_id_index']];
 $audioFilename = $databaseApi->getAudioFilename($audioId);
-$audioSample = '/file_storage/' . $audioFilename;
+$audioSample = '/file_storage/audio_samples/' . $audioFilename;
 ?>
 
 <div class="container">

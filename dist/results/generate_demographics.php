@@ -8,7 +8,7 @@ $adminOnlyPage = true;
 
 $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
-$filepath = '/results/files/';
+$filepath = '/file_storage/demographics/';
 $filename = "L2_Speech_Ratings_Demographics__" . date("Y-m-d__H-i-s") . ".csv";
 $response = $databaseApi->createCsvFromDemographics($filepath, $filename);
 

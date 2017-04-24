@@ -10,7 +10,7 @@ $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
 // TODO: In the future, we'll want to specify which survey results to fetch
 $surveyId = 1;
-$filepath = '/results/files/';
+$filepath = '/file_storage/results/';
 $filename = "L2_Speech_Ratings_Results__Survey-" . $surveyId . "__" . date("Y-m-d__H-i-s") . ".csv";
 $response = $databaseApi->createCsvFromResults(1, $filepath, $filename);
 

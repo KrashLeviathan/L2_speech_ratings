@@ -202,7 +202,10 @@ class DatabaseApi
             return array('success' => false, 'errorMsg' => $csv->errorMsg);
         }
 
+        // Heading
         $csv->append('rater,block,ns,id,language,level,wave,item,task,rating' . "\n");
+
+        // Data
         $sql = "SELECT
 re.performed_by_id AS rater,
 rp.csv_value AS block,
@@ -241,15 +244,28 @@ re.survey_id='$surveyId'";
             return array('success' => false, 'errorMsg' => $csv->errorMsg);
         }
 
-        // TODO
-//        $csv->append('rater,block,ns,id,language,level,wave,item,task,rating' . "\n");
-//        $sql = "SELECT * FROM ...";
-//        $result = $this->link->query($sql);
-//        while ($row = $result->fetch_row()) {
-//            $csv->append($row[0] . ',' . $row[1] . ',,' . $row[2] . ',' . $row[3] . ',' . $row[4] .
-//                ',' . $row[5] . ',' . $row[6] . ',' . $row[7] . ',' . $row[8] . "\n");
-//        }
-//        mysqli_free_result($result);
+        // Heading
+        $csv->append('demographic_id,user_id,date_completed,age,gender,birthplace,location_raised,native_languages,'
+            . 'education_level,education_level_other,'
+            . 'sp_listening,sp_speaking,sp_reading,sp_writing,sp_age,sp_with_family,sp_usage_percent,sp_nn_interaction,'
+            . 'sp_interaction_cap,sp_interaction_cap_other,sp_nn_familiarity'
+            . 'fr_listening,fr_speaking,fr_reading,fr_writing,fr_age,fr_with_family,fr_usage_percent,fr_nn_interaction,'
+            . 'fr_interaction_cap,fr_interaction_cap_other,fr_nn_familiarity'
+            . 'en_listening,en_speaking,en_reading,en_writing,en_age,en_with_family,en_usage_percent,'
+            . 'instr_elementary,instr_secondary,instr_hs,instr_college,instr_graduate,addl_languages,ling_training,'
+            . 'taught_language,personal_info' . "\n");
+
+        // Data
+        $sql = "SELECT * FROM L2_speech_ratings.Demographics";
+        $result = $this->link->query($sql);
+        while ($row = $result->fetch_row()) {
+            $line = $row[0];
+            for ($i = 1; $i < 48; $i++) {
+                $line .= ',' . $row[$i];
+            }
+            $csv->append($line . "\n");
+        }
+        mysqli_free_result($result);
         return array('success' => true);
     }
 
@@ -360,7 +376,7 @@ re.survey_id='$surveyId'";
                     'Reload the page to refresh the table.');
             }
             mysqli_free_result($result);
-            unlink("../files/upload_handler/files/" . $sanitizedFile);
+            unlink("../file_storage/audio_samples/" . $sanitizedFile);
         }
     }
 

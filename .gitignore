@@ -121,6 +121,5 @@ composer.phar
 
 .idea
 *.css.map
-/dist/files/upload_handler/files
-/dist/results/files/
+/dist/file_storage/*
 /sql/do_not_track.sql

@@ -9,22 +9,19 @@ if [ "$folder" != "L2_speech_ratings" ]; then
   exit 1;
 fi
 
-# Delete all CSV files from the server
-echo "[*] Deleting all CSV files from the server"
+# Delete all storage files from the server
+echo "[*] Deleting all storage files (results, demographics, audio_samples) from the server"
 echo
-rm -r "dist/results/files"
-mkdir "dist/results/files"
-
-# Delete all audio files from the server
-echo "[*] Deleting all audio files from the server"
-echo
-rm -r "dist/files/upload_handler/files"
-mkdir "dist/files/upload_handler/files"
+rm -r "dist/file_storage"
+mkdir "dist/file_storage"
+mkdir "dist/file_storage/results"
+mkdir "dist/file_storage/demographics"
+mkdir "dist/file_storage/audio_samples"
 
 # Reset database with initial values
 echo "[*] Resetting database with initial values"
 echo
-echo "Droping Tables"
+echo "Dropping Tables"
 mysql -u root -p < "sql/drop_tables.sql"
 echo "Creating Tables"
 mysql -u root -p < "sql/create_tables.sql"
@@ -38,10 +35,10 @@ mysql -u root -p < "sql/do_not_track.sql" # TODO: Should be removed after develo
 
 # For development, copy a few of the test files onto the server folder
 echo
-echo "[*] Copying test audio files to server folder"
+echo "[*] Copying test audio files to file_storage folder"
 echo
-cp "test/sample_audios/3_w1_pic14.wav" "dist/files/upload_handler/files/3_w1_pic14.wav"
-cp "test/sample_audios/3_w1_pic53.wav" "dist/files/upload_handler/files/3_w1_pic53.wav"
-cp "test/sample_audios/3_w2_pic27.wav" "dist/files/upload_handler/files/3_w2_pic27.wav"
+cp "test/sample_audios/3_w1_pic14.wav" "dist/file_storage/audio_samples/3_w1_pic14.wav"
+cp "test/sample_audios/3_w1_pic53.wav" "dist/file_storage/audio_samples/3_w1_pic53.wav"
+cp "test/sample_audios/3_w2_pic27.wav" "dist/file_storage/audio_samples/3_w2_pic27.wav"
 
 echo "[*] Done!"

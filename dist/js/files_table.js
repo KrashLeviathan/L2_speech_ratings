@@ -78,7 +78,7 @@ function onSuccess(json) {
         var duration = json.files[fileIndex][2];
         var dateUploaded = json.files[fileIndex][3];
         var errorTokens = json.files[fileIndex][4];
-        fileTableBody.append('<tr><td><a href="/files/upload_handler/files/' + filename + '" target="_blank">'
+        fileTableBody.append('<tr><td><a href="/file_storage/audio_samples/' + filename + '" target="_blank">'
             + filename + '</a></td><td>' + getMinSec(duration) + '</td><td>' + dateUploaded
             + '</td><td>' + errorTokens + '</td><td class="text-center"><input type="checkbox" data-filename="'
             + filename + '"></td></tr>')
