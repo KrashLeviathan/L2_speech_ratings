@@ -95,8 +95,7 @@ if ($dateDemographicCompleted) {
                                 <button id="cancel-btn" type="reset" class="btn btn-default hidden"
                                         onclick="onCancelClicked()">Cancel
                                 </button>
-                                <button id="submit-btn" type="submit" class="btn btn-primary hidden"
-                                        onclick="onSubmitClicked()">Submit
+                                <button id="submit-btn" type="submit" class="btn btn-primary hidden">Submit
                                 </button>
                             </div>
                         </fieldset>

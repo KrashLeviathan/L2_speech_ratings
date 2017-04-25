@@ -15,7 +15,8 @@ function onEditClicked() {
     cancelButton.removeClass('hidden');
     submitButton.removeClass('hidden');
     editModeActive = true;
-    $('#form-fieldset').removeAttr('disabled');
+    $('#form-user-fieldset').removeAttr('disabled');
+    $('#form-admin-fieldset').removeAttr('disabled');
 }
 
 function onCancelClicked() {
@@ -23,5 +24,6 @@ function onCancelClicked() {
     cancelButton.addClass('hidden');
     submitButton.addClass('hidden');
     editModeActive = false;
-    $('#form-fieldset').prop('disabled', true);
+    $('#form-user-fieldset').prop('disabled', true);
+    $('#form-admin-fieldset').prop('disabled', true);
 }
