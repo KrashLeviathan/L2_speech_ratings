@@ -57,7 +57,7 @@ class DatabaseApi
             "email='$email', phone='$phone' WHERE user_id=$userId";
 
         $result = $this->link->query($sql);
-        if (!$result) {
+        if ($this->link->error) {
             $this->failureToHtml();
         }
         mysqli_free_result($result);
@@ -85,8 +85,8 @@ class DatabaseApi
         $sql = "SELECT email FROM L2_speech_ratings.Invites " .
             "WHERE access_code = '$accessCode' AND (validation <> 'COMPLETE' OR validation IS NULL)";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('accessCodeToInviteEmail: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('accessCodeToInviteEmail: query error');
         }
         if (mysqli_num_rows($result) == 0) {
             $this->failureToJson('accessCodeToInviteEmail: 0 results', 'No such access code!');
@@ -105,7 +105,7 @@ class DatabaseApi
     {
         $sql = "UPDATE L2_speech_ratings.Invites SET validation='$validation' WHERE access_code='$accessCode'";
         $result = $this->link->query($sql);
-        if (!$result) {
+        if ($this->link->error) {
             $this->failureToJson('accessCodeValidation');
         }
         mysqli_free_result($result);
@@ -120,7 +120,7 @@ class DatabaseApi
     {
         $sql = "SELECT email FROM L2_speech_ratings.Invites WHERE validation='$validation'";
         $result = $this->link->query($sql);
-        if (!$result) {
+        if ($this->link->error) {
             $this->failureToJson('checkInviteValidation');
         }
         $isValid = (mysqli_num_rows($result) != 0);
@@ -133,7 +133,7 @@ class DatabaseApi
         $sql = "UPDATE L2_speech_ratings.Invites SET accepted_by=$userId, validation='COMPLETE'" .
             ", accepted_date=NOW() WHERE validation='$validation'";
         $result = $this->link->query($sql);
-        if (!$result) {
+        if ($this->link->error) {
             $this->failureToJson('completeInvite');
         }
         mysqli_free_result($result);
@@ -151,7 +151,7 @@ class DatabaseApi
         $sql = "INSERT INTO L2_speech_ratings.Users (google_id, first_name, last_name, email, date_signed_up) " .
             "VALUES ('$googleId','$firstName','$lastName','$email',NOW())";
         $result = $this->link->query($sql);
-        if (!$result) {
+        if ($this->link->error) {
             $this->failureToJson('createNewUser');
         }
         mysqli_free_result($result);
@@ -166,8 +166,8 @@ class DatabaseApi
     {
         $sql = "SELECT * FROM L2_speech_ratings.Users WHERE google_id='$googleId'";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getUserIdFromGoogleId: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getUserIdFromGoogleId: query error');
         }
         if (mysqli_num_rows($result) == 0) {
             $this->failureToJson('getUserIdFromGoogleId: 0 results', 'No such user! Create a new account first.');
@@ -186,7 +186,7 @@ class DatabaseApi
     {
         $sql = "SELECT * FROM L2_speech_ratings.Admins WHERE user_id = $userId";
         $result = $this->link->query($sql);
-        if (!$result) {
+        if ($this->link->error) {
             $this->failureToJson('isUserAdmin');
         }
         $userIsAdmin = (mysqli_num_rows($result) != 0);
@@ -391,8 +391,8 @@ WHERE re.performed_by_id = dem_max.user_id
             $formData['personalInfo']
         );
         $result = $query->execute();
-        if (!$result) {
-            $this->failureToJson('postDemographicFormData: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('postDemographicFormData: query error');
         }
         return array('success' => true);
     }
@@ -402,8 +402,8 @@ WHERE re.performed_by_id = dem_max.user_id
         $sql = "SELECT date_completed FROM L2_speech_ratings.Demographics WHERE user_id = '$userId'"
             . " ORDER BY date_completed DESC LIMIT 1";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getLastDemographicDate: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getLastDemographicDate: query error');
         }
         if (mysqli_num_rows($result) == 0) {
             return false;
@@ -419,8 +419,8 @@ WHERE re.performed_by_id = dem_max.user_id
         $sql = "SELECT audio_sample_id, filename, duration_ms, upload_date, error_tokens FROM L2_speech_ratings.AudioSamples "
             . "ORDER BY filename";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getAllFiles: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getAllFiles: query error');
         }
         $files = $result->fetch_all();
         mysqli_free_result($result);
@@ -437,8 +437,8 @@ WHERE re.performed_by_id = dem_max.user_id
             }
             $sql = "DELETE FROM L2_speech_ratings.AudioSamples WHERE filename='$sanitizedFile'";
             $result = $this->link->query($sql);
-            if (!$result) {
-                $this->failureToJson('deleteFiles: !$result',
+            if ($this->link->error) {
+                $this->failureToJson('deleteFiles: query error',
                     'Not all files could be deleted! Contact IT if problems persist.',
                     'Reload the page to refresh the table.');
             }
@@ -451,8 +451,8 @@ WHERE re.performed_by_id = dem_max.user_id
     {
         $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up FROM L2_speech_ratings.Users";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getAllUsers: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getAllUsers: query error');
         }
         $users = $result->fetch_all();
         mysqli_free_result($result);
@@ -463,8 +463,8 @@ WHERE re.performed_by_id = dem_max.user_id
     {
         $sql = "SELECT * FROM L2_speech_ratings.Invites";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getAllInvites: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getAllInvites: query error');
         }
         $invites = $result->fetch_all();
         for ($i = 0; $i < sizeof($invites); $i++) {
@@ -481,8 +481,8 @@ WHERE re.performed_by_id = dem_max.user_id
         $sql = "INSERT INTO L2_speech_ratings.Invites (access_code, email)"
             . " VALUES ('$accessCode','$email')";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getAllInvites: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getAllInvites: query error');
         }
         mysqli_free_result($result);
     }
@@ -536,8 +536,8 @@ WHERE re.performed_by_id = dem_max.user_id
     {
         $sql = "SELECT * FROM L2_speech_ratings.Surveys WHERE survey_id='$surveyId'";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getSurvey: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getSurvey: query error');
         }
         if (mysqli_num_rows($result) == 0) {
             $this->failureToJson('getSurvey: 0 results',
@@ -549,14 +549,49 @@ WHERE re.performed_by_id = dem_max.user_id
         return $survey;
     }
 
+    function updateSurvey($surveyId, $surveyProperties)
+    {
+        $sql = "UPDATE L2_speech_ratings.Surveys SET";
+        foreach ($surveyProperties as $property => $value) {
+            $sql .= " $property='$value',";
+        }
+        $sql .= " WHERE survey_id='$surveyId'";
+
+        $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('updateSurvey');
+        }
+    }
+
+    function insertSurvey($name, $description)
+    {
+        // Get defaults
+        $defaultSurvey = $this->getSurvey(1);
+        $numReplaysAllowed = $defaultSurvey['num_replays_allowed'];
+        $totalTimeLimit = $defaultSurvey['total_time_left'];
+        $estimatedLengthMinutes = $defaultSurvey['estimated_length_minutes'];
+        $notificationsEnabled = $defaultSurvey['notifications_enabled'];
+        $notificationEmail = $defaultSurvey['notification_email'];
+        $targetRatingThreshold = $defaultSurvey['target_rating_threshold'];
+
+        // Create new survey
+        $sql = "INSERT INTO L2_speech_ratings.Surveys"
+            . " (name, description, num_replays_allowed, total_time_limit, estimated_length_minutes, notifications_enabled, notification_email, target_rating_threshold)"
+            . " VALUES ('$name', '$description', '$numReplaysAllowed', '$totalTimeLimit', '$estimatedLengthMinutes', '$notificationsEnabled', '$notificationEmail', '$targetRatingThreshold')";
+        $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('insertSurvey');
+        }
+    }
+
     function getAudioIdsFromSurveyBlock($surveyId)
     {
         $sql = "SELECT audioLU.audio_sample_id FROM L2_speech_ratings.SampleBlockAudioLookup AS audioLU"
             . " INNER JOIN L2_speech_ratings.SurveySampleBlockLookup AS surveyLU ON audioLU.sample_block_id = surveyLU.sample_block_id"
             . " WHERE surveyLU.survey_id = '1';";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getAudioIdsFromSurveyBlock: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getAudioIdsFromSurveyBlock: query error');
         }
         if (mysqli_num_rows($result) == 0) {
             $this->failureToJson('getAudioIdsFromSurveyBlock: 0 results',
@@ -572,8 +607,8 @@ WHERE re.performed_by_id = dem_max.user_id
     {
         $sql = "SELECT filename FROM L2_speech_ratings.AudioSamples WHERE audio_sample_id='$audioId'";
         $result = $this->link->query($sql);
-        if (!$result) {
-            $this->failureToJson('getAudioFilename: !$result');
+        if ($this->link->error) {
+            $this->failureToJson('getAudioFilename: query error');
         }
         if (mysqli_num_rows($result) == 0) {
             $this->failureToJson('getAudioFilename: 0 results',

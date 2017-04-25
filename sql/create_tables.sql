@@ -9,8 +9,9 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Surveys (
   total_time_limit         INT(10)                   DEFAULT -1,
   estimated_length_minutes INT(10)                   DEFAULT 60,
   closed                   TINYINT                   DEFAULT 0,
-  notification_settings    VARCHAR(64),
+  notification_email    VARCHAR(64),
   target_rating_threshold  INT(10),
+  notifications_enabled    TINYINT                   DEFAULT 0,
 
   PRIMARY KEY (survey_id)
 )

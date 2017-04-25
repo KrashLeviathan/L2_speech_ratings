@@ -94,14 +94,14 @@ $phone = $user['phone'];
                                 <h3>Survey Defaults</h3>
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="replays_allowed" class="control-label">Replays Allowed</label>
+                                <label for="replays_allowed" class="control-label">Replays Allowed (-1 is UNLIMITED)</label>
                                 <div>
                                     <input type="number" class="form-control" name="replays_allowed"
                                            id="replays_allowed" value="<?= 'TODO' ?>">
                                 </div>
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="survey_time_limit" class="control-label">Survey Time Limit</label>
+                                <label for="survey_time_limit" class="control-label">Survey Time Limit (-1 is NONE)</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="survey_time_limit"
                                            id="survey_time_limit" value="<?= 'TODO' ?>">
