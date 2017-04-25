@@ -91,7 +91,7 @@ if ($dateDemographicCompleted) {
                                 </div>
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="inputPhone" class="control-label">Phone Number</label>
+                                <label for="inputPhone" class="control-label">Phone Number (optional)</label>
                                 <div>
                                     <input type="text" class="form-control" name="phone" id="inputPhone"
                                            value="<?= $phone ?>">
