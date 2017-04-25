@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Users (
   phone           VARCHAR(16),
   date_signed_up  DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   payment_info_id INT(10),
-  university_id   VARCHAR(12),
 
   PRIMARY KEY (user_id)
 )

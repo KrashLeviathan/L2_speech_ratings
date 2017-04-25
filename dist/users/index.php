@@ -22,12 +22,10 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Date Created</th>
-                        <th>University Id</th>
                     </tr>
                     </thead>
                     <tbody id="user-table-body">
                     <tr>
-                        <td>Loading</td>
                         <td>Loading</td>
                         <td>Loading</td>
                         <td>Loading</td>

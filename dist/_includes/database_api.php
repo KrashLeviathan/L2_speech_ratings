@@ -48,13 +48,12 @@ class DatabaseApi
      * @param $userId
      * @param $firstName
      * @param $lastName
-     * @param $universityId
      * @param $email
      * @param $phone
      */
-    function updateUserSettings($userId, $firstName, $lastName, $universityId, $email, $phone)
+    function updateUserSettings($userId, $firstName, $lastName, $email, $phone)
     {
-        $sql = "UPDATE L2_speech_ratings.Users SET first_name='$firstName', last_name='$lastName', university_id='$universityId', " .
+        $sql = "UPDATE L2_speech_ratings.Users SET first_name='$firstName', last_name='$lastName', " .
             "email='$email', phone='$phone' WHERE user_id=$userId";
 
         $result = $this->link->query($sql);
@@ -450,7 +449,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function getAllUsers()
     {
-        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up, university_id FROM L2_speech_ratings.Users";
+        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up FROM L2_speech_ratings.Users";
         $result = $this->link->query($sql);
         if (!$result) {
             $this->failureToJson('getAllUsers: !$result');

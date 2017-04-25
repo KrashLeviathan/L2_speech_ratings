@@ -81,12 +81,10 @@ function onSuccess(json) {
         var email = json.users[userIndex][3];
         var phone = json.users[userIndex][4];
         var date = json.users[userIndex][5];
-        var univId = json.users[userIndex][6];
         userTableBody.append('<tr><td>' + id + '</td><td>' + first + '</td><td>' + last
             + '</td><td>' + email + '</td><td>'
             + ((phone === null) ? '' : phone) + '</td><td>'
-            + date + '</td><td>'
-            + ((univId === null) ? '' : univId) + '</td></tr>')
+            + date + '</td></tr>')
     }
 
     var inviteTableBody = $('#invite-table-body');

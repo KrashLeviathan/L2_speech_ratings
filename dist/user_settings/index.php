@@ -8,18 +8,16 @@ $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName = $databaseApi->escapeAndShorten($_POST['firstName'], 255);
     $lastName = $databaseApi->escapeAndShorten($_POST['lastName'], 255);
-    $univId = $databaseApi->escapeAndShorten($_POST['universityId'], 12);
     $email = $databaseApi->escapeAndShorten($_POST['email'], 255);
     $phone = $databaseApi->escapeAndShorten($_POST['phone'], 16);
 
     $uid = $user['user_id'];
 
-    $databaseApi->updateUserSettings($uid, $firstName, $lastName, $univId, $email, $phone);
+    $databaseApi->updateUserSettings($uid, $firstName, $lastName, $email, $phone);
 
     // Update session variable on success
     $_SESSION['first_name'] = $firstName;
     $_SESSION['last_name'] = $lastName;
-    $_SESSION['university_id'] = $univId;
     $_SESSION['email'] = $email;
     $_SESSION['phone'] = $phone;
 
@@ -30,11 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $firstName = $user['first_name'];
 $lastName = $user['last_name'];
-$univId = $user['university_id'];
 $email = $user['email'];
 $phone = $user['phone'];
-// TODO
-$dateStarted = '2017-04-11';
 
 $dateDemographicCompleted = $databaseApi->getLastDemographicDate($_SESSION['user_id']);
 if ($dateDemographicCompleted) {
@@ -61,47 +56,32 @@ if ($dateDemographicCompleted) {
                 <div class="well bs-component">
                     <form method="post">
                         <fieldset id="form-fieldset" disabled>
-                            <div class="form-group col-sm-4">
+                            <div class="form-group col-sm-6">
                                 <label for="inputFirstName" class="control-label">First Name</label>
                                 <div>
                                     <input type="text" class="form-control" name="firstName" id="inputFirstName"
                                            value="<?= $firstName ?>">
                                 </div>
                             </div>
-                            <div class="form-group col-sm-4">
+                            <div class="form-group col-sm-6">
                                 <label for="inputLastName" class="control-label">Last Name</label>
                                 <div>
                                     <input type="text" class="form-control" name="lastName" id="inputLastName"
                                            value="<?= $lastName ?>">
                                 </div>
                             </div>
-                            <div class="form-group col-sm-4">
-                                <label for="inputUniversityId" class="control-label">University ID (if
-                                    applicable)</label>
-                                <div>
-                                    <input type="text" class="form-control" name="universityId" id="inputUniversityId"
-                                           value="<?= $univId ?>">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-4">
+                            <div class="form-group col-sm-6">
                                 <label for="inputEmail" class="control-label">Email</label>
                                 <div>
                                     <input type="email" class="form-control" name="email" id="inputEmail"
-                                           value="<?= $email ?>">
+                                           value="<?= $email ?>" required>
                                 </div>
                             </div>
-                            <div class="form-group col-sm-4">
+                            <div class="form-group col-sm-6">
                                 <label for="inputPhone" class="control-label">Phone Number (optional)</label>
                                 <div>
                                     <input type="text" class="form-control" name="phone" id="inputPhone"
                                            value="<?= $phone ?>">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label for="inputDateStarted" class="control-label">Date Started</label>
-                                <div>
-                                    <input type="date" class="form-control" id="inputDateStarted"
-                                           value="<?= $dateStarted ?>" readonly>
                                 </div>
                             </div>
                         </fieldset>

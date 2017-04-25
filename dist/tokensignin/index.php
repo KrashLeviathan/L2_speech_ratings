@@ -89,7 +89,6 @@ $_SESSION['first_name'] = $user['first_name'];
 $_SESSION['last_name'] = $user['last_name'];
 $_SESSION['email'] = $user['email'];
 $_SESSION['phone'] = $user['phone'];
-$_SESSION['university_id'] = $user['university_id'];
 $_SESSION['user_is_admin'] = $userIsAdmin;
 
 if ($userIsAdmin) {
