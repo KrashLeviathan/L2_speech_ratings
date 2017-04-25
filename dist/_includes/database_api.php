@@ -203,22 +203,89 @@ class DatabaseApi
         }
 
         // Heading
-        $headingFields = array('rater', 'block', 'ns', 'id', 'language', 'level', 'wave', 'item', 'task', 'rating');
+        $headingFields = array('rater', 'block', 'ns', 'id', 'language', 'level', 'wave', 'item', 'task', 'rating',
+            'demographics_date', 'age', 'gender', 'birthplace',
+            'location_raised', 'native_languages', 'education_level', 'education_level_other',
+            'sp_listening', 'sp_speaking', 'sp_reading', 'sp_writing', 'sp_age', 'sp_with_family', 'sp_usage_percent',
+            'sp_nn_interaction', 'sp_interaction_cap', 'sp_interaction_cap_other', 'sp_nn_familiarity',
+            'fr_listening', 'fr_speaking', 'fr_reading', 'fr_writing', 'fr_age', 'fr_with_family', 'fr_usage_percent',
+            'fr_nn_interaction', 'fr_interaction_cap', 'fr_interaction_cap_other', 'fr_nn_familiarity',
+            'en_listening', 'en_speaking', 'en_reading', 'en_writing', 'en_age', 'en_with_family', 'en_usage_percent',
+            'instr_elementary', 'instr_secondary', 'instr_hs', 'instr_college', 'instr_graduate', 'addl_languages',
+            'ling_training', 'taught_language', 'personal_info');
         $csv->append($headingFields);
 
         // Data
         $sql = "SELECT
 re.performed_by_id AS rater,
+
 rp.csv_value AS block,
+
+aud.native_speaker AS ns,
 aud.speaker_id AS id,
 aud.language,
 aud.level,
 aud.wave,
 aud.item,
 aud.task,
-rs.score
+
+rs.score,
+
+dem.date_completed as demographics_date,
+dem.age,
+dem.gender,
+dem.birthplace,
+dem.location_raised,
+dem.native_languages,
+dem.education_level,
+dem.education_level_other,
+
+dem.sp_listening,
+dem.sp_speaking,
+dem.sp_reading,
+dem.sp_writing,
+dem.sp_age,
+dem.sp_with_family,
+dem.sp_usage_percent,
+dem.sp_nn_interaction,
+dem.sp_interaction_cap,
+dem.sp_interaction_cap_other,
+dem.sp_nn_familiarity,
+
+dem.fr_listening,
+dem.fr_speaking,
+dem.fr_reading,
+dem.fr_writing,
+dem.fr_age,
+dem.fr_with_family,
+dem.fr_usage_percent,
+dem.fr_nn_interaction,
+dem.fr_interaction_cap,
+dem.fr_interaction_cap_other,
+dem.fr_nn_familiarity,
+
+dem.en_listening,
+dem.en_speaking,
+dem.en_reading,
+dem.en_writing,
+dem.en_age,
+dem.en_with_family,
+dem.en_usage_percent,
+
+dem.instr_elementary,
+dem.instr_secondary,
+dem.instr_hs,
+dem.instr_college,
+dem.instr_graduate,
+
+dem.addl_languages,
+dem.ling_training,
+dem.taught_language,
+dem.personal_info
 FROM
 L2_speech_ratings.RatingEvents AS re
+INNER JOIN
+L2_speech_ratings.Demographics AS dem ON re.performed_by_id = dem.user_id
 INNER JOIN
 L2_speech_ratings.AudioSamples AS aud ON re.audio_sample_id = aud.audio_sample_id
 INNER JOIN
@@ -228,12 +295,14 @@ L2_speech_ratings.RatingScores AS rs ON resl.rating_score_id = rs.rating_score_i
 INNER JOIN
 L2_speech_ratings.RatingProperties AS rp ON rs.property = rp.rating_property_id
 WHERE
-re.survey_id='$surveyId'";
+re.survey_id='$surveyId' AND dem.date_completed = (
+SELECT MAX(date_completed)
+FROM L2_speech_ratings.Demographics AS dem_max
+WHERE re.performed_by_id = dem_max.user_id
+)";
         $result = $this->link->query($sql);
         while ($row = $result->fetch_row()) {
-            // Need one empty string for now (between 1 and 2) to account for native speaker field
-            $rowFields = array($row[0], $row[1], '', $row[2], $row[3], $row[4], $row[5], $row[6], $row[7], $row[8]);
-            $csv->append($rowFields);
+            $csv->append($row);
         }
         mysqli_free_result($result);
         return array('success' => true);

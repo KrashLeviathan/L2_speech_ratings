@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.AudioSamples (
   language        VARCHAR(16)                  DEFAULT NULL,
   level           VARCHAR(8)                   DEFAULT NULL,
   speaker_id      INT(10)                      DEFAULT NULL,
+  native_speaker  TINYINT                      DEFAULT NULL,
   wave            INT(10)                      DEFAULT NULL,
   task            INT(10)                      DEFAULT NULL,
   item            INT(10)                      DEFAULT NULL,
