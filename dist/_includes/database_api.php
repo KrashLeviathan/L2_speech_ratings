@@ -549,17 +549,24 @@ WHERE re.performed_by_id = dem_max.user_id
         return $survey;
     }
 
-    function updateSurvey($surveyId, $surveyProperties)
+    function updateSurvey($surveyId, $surveyProperties, $toJson = false)
     {
+        $firstProp = true;
         $sql = "UPDATE L2_speech_ratings.Surveys SET";
         foreach ($surveyProperties as $property => $value) {
-            $sql .= " $property='$value',";
+            $sql .= (($firstProp) ? "" : ",")
+                . " $property='$value'";
+            $firstProp = false;
         }
         $sql .= " WHERE survey_id='$surveyId'";
 
         $this->link->query($sql);
         if ($this->link->error) {
-            $this->failureToJson('updateSurvey');
+            if ($toJson) {
+                $this->failureToJson('updateSurvey');
+            } else {
+                $this->failureToHtml();
+            }
         }
     }
 

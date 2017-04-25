@@ -7,7 +7,15 @@ $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 // Handle POST form data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update admin settings
-    // TODO
+    $surveyProperties = array(
+        'num_replays_allowed' => $databaseApi->escapeAndShorten($_POST['replays_allowed'], 64),
+        'total_time_limit' => $databaseApi->escapeAndShorten($_POST['survey_time_limit'], 64),
+        'estimated_length_minutes' => $databaseApi->escapeAndShorten($_POST['est_length'], 64),
+        'notifications_enabled' => $databaseApi->escapeAndShorten($_POST['notif_enabled'], 64),
+        'notification_email' => $databaseApi->escapeAndShorten($_POST['notif_email'], 64),
+        'target_rating_threshold' => $databaseApi->escapeAndShorten($_POST['rating_threshold'], 64)
+    );
+    $databaseApi->updateSurvey(1, $surveyProperties);
 
     // Update user settings
     $firstName = $databaseApi->escapeAndShorten($_POST['firstName'], 255);
@@ -34,6 +42,9 @@ $firstName = $user['first_name'];
 $lastName = $user['last_name'];
 $email = $user['email'];
 $phone = $user['phone'];
+
+// Survey 1 is the default survey information
+$defaultSurvey = $databaseApi->getSurvey(1);
 ?>
 
 <div class="container">
@@ -94,17 +105,19 @@ $phone = $user['phone'];
                                 <h3>Survey Defaults</h3>
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="replays_allowed" class="control-label">Replays Allowed (-1 is UNLIMITED)</label>
+                                <label for="replays_allowed" class="control-label">Replays Allowed (-1 is
+                                    UNLIMITED)</label>
                                 <div>
                                     <input type="number" class="form-control" name="replays_allowed"
-                                           id="replays_allowed" value="<?= 'TODO' ?>">
+                                           id="replays_allowed" value="<?= $defaultSurvey['num_replays_allowed'] ?>">
                                 </div>
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="survey_time_limit" class="control-label">Survey Time Limit (-1 is NONE)</label>
+                                <label for="survey_time_limit" class="control-label">Survey Time Limit (-1 is
+                                    NONE)</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="survey_time_limit"
-                                           id="survey_time_limit" value="<?= 'TODO' ?>">
+                                           id="survey_time_limit" value="<?= $defaultSurvey['total_time_limit'] ?>">
                                     <span class="input-group-addon">minutes</span>
                                 </div>
                             </div>
@@ -112,7 +125,7 @@ $phone = $user['phone'];
                                 <label for="est_length" class="control-label">Estimated Length</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="est_length"
-                                           id="est_length" value="<?= 'TODO' ?>">
+                                           id="est_length" value="<?= $defaultSurvey['estimated_length_minutes'] ?>">
                                     <span class="input-group-addon">minutes</span>
                                 </div>
                             </div>
@@ -121,13 +134,15 @@ $phone = $user['phone'];
                                 <div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="notif_enabled" value="1">
+                                            <input type="radio" name="notif_enabled"
+                                                   value="1" <?= ($defaultSurvey['notifications_enabled']) ? 'checked' : '' ?>>
                                             Yes
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="notif_enabled" value="0">
+                                            <input type="radio" name="notif_enabled"
+                                                   value="0" <?= (!$defaultSurvey['notifications_enabled']) ? 'checked' : '' ?>>
                                             No
                                         </label>
                                     </div>
@@ -137,14 +152,15 @@ $phone = $user['phone'];
                                 <label for="notif_email" class="control-label">Notification Email</label>
                                 <div>
                                     <input type="email" class="form-control" name="notif_email"
-                                           id="notif_email" value="<?= 'TODO' ?>">
+                                           id="notif_email" value="<?= $defaultSurvey['notification_email'] ?>">
                                 </div>
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="rating_threshold" class="control-label">Target Rating Threshold</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="rating_threshold"
-                                           id="rating_threshold" value="<?= 'TODO' ?>">
+                                           id="rating_threshold"
+                                           value="<?= $defaultSurvey['target_rating_threshold'] ?>">
                                     <span class="input-group-addon">ratings per file</span>
                                 </div>
                             </div>
