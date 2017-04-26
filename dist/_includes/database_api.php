@@ -528,8 +528,26 @@ WHERE re.performed_by_id = dem_max.user_id
     {
         $sql = "INSERT INTO L2_speech_ratings.SampleBlockAudioLookup (`sample_block_id`, `audio_sample_id`)"
             . "VALUES ('$blockId', '$fileId');";
+        $this->link->query($sql);
+    }
+
+    function getOrCreateSurveyByLanguageTask($language, $task)
+    {
+        $name = $language . "_t" . $task;
+        $sql = "SELECT survey_id FROM L2_speech_ratings.Surveys WHERE name='$name'";
         $result = $this->link->query($sql);
-        mysqli_free_result($result);
+        if ($this->link->error) {
+            $this->failureToJson('getOrCreateSurveyByLanguageTask: query error');
+        }
+        if (mysqli_num_rows($result) == 0) {
+            // The survey does not yet exist, so create one and return the survey_id
+            $surveyId = $this->insertSurvey($name,
+                "Contains all samples with the following attributes: Language = $language, Task = $task");
+            return $surveyId;
+        } else {
+            // The survey already exists, so return the survey_id
+            return $result->fetch_row()[0];
+        }
     }
 
     function getSurvey($surveyId)
@@ -547,6 +565,21 @@ WHERE re.performed_by_id = dem_max.user_id
         $survey = $result->fetch_assoc();
         mysqli_free_result($result);
         return $survey;
+    }
+
+    function getSurveyBlockIds($surveyId)
+    {
+        $sql = "SELECT sample_block_id FROM L2_speech_ratings.SurveySampleBlockLookup WHERE survey_id='$surveyId'";
+        $result = $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('getSurveyBlockIds: query error');
+        }
+        $blockIds = array();
+        while ($row = $result->fetch_row()) {
+            array_push($blockIds, $row[0]);
+        }
+        mysqli_free_result($result);
+        return $blockIds;
     }
 
     function updateSurvey($surveyId, $surveyProperties, $toJson = false)
@@ -575,7 +608,7 @@ WHERE re.performed_by_id = dem_max.user_id
         // Get defaults
         $defaultSurvey = $this->getSurvey(1);
         $numReplaysAllowed = $defaultSurvey['num_replays_allowed'];
-        $totalTimeLimit = $defaultSurvey['total_time_left'];
+        $totalTimeLimit = $defaultSurvey['total_time_limit'];
         $estimatedLengthMinutes = $defaultSurvey['estimated_length_minutes'];
         $notificationsEnabled = $defaultSurvey['notifications_enabled'];
         $notificationEmail = $defaultSurvey['notification_email'];
@@ -587,15 +620,34 @@ WHERE re.performed_by_id = dem_max.user_id
             . " VALUES ('$name', '$description', '$numReplaysAllowed', '$totalTimeLimit', '$estimatedLengthMinutes', '$notificationsEnabled', '$notificationEmail', '$targetRatingThreshold')";
         $this->link->query($sql);
         if ($this->link->error) {
-            $this->failureToJson('insertSurvey');
+            $this->failureToJson('insertSurvey: 1');
         }
+        $surveyId = $this->link->insert_id;
+
+        // Create a default block for that survey
+        $sql = "INSERT INTO L2_speech_ratings.SampleBlocks (name) VALUES ('Default Block')";
+        $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('insertSurvey: 2');
+        }
+        $blockId = $this->link->insert_id;
+
+        // Map the block to the survey
+        $sql = "INSERT INTO L2_speech_ratings.SurveySampleBlockLookup (survey_id, sample_block_id)"
+            . " VALUES ('$surveyId','$blockId')";
+        $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('insertSurvey: 3');
+        }
+
+        return $surveyId;
     }
 
     function getAudioIdsFromSurveyBlock($surveyId)
     {
         $sql = "SELECT audioLU.audio_sample_id FROM L2_speech_ratings.SampleBlockAudioLookup AS audioLU"
             . " INNER JOIN L2_speech_ratings.SurveySampleBlockLookup AS surveyLU ON audioLU.sample_block_id = surveyLU.sample_block_id"
-            . " WHERE surveyLU.survey_id = '1';";
+            . " WHERE surveyLU.survey_id = '$surveyId';";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getAudioIdsFromSurveyBlock: query error');
