@@ -1,6 +1,7 @@
 <?php
 if ($_SESSION['survey_in_progress']) {
     $_SESSION['survey_end_time'] = time();
+    $databaseApi->completeSurvey($_SESSION['user_id'], $_SESSION['survey_id']);
 }
 $_SESSION['survey_in_progress'] = false;
 $totalTimeTaken = $_SESSION['survey_end_time'] - $_SESSION['survey_start_time'];

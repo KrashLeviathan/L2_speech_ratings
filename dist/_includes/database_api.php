@@ -643,6 +643,15 @@ WHERE re.performed_by_id = dem_max.user_id
         return $surveyId;
     }
 
+    function completeSurvey($userId, $surveyId)
+    {
+        $sql = "INSERT INTO L2_speech_ratings.SurveyCompletions (survey_id, user_id) VALUES ('$surveyId', '$userId')";
+        $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('completeSurvey: query error');
+        }
+    }
+
     function getAudioIdsFromSurveyBlock($surveyId)
     {
         $sql = "SELECT audioLU.audio_sample_id FROM L2_speech_ratings.SampleBlockAudioLookup AS audioLU"

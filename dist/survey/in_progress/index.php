@@ -5,13 +5,13 @@
 @include '../../_includes/checkSession.php';
 @include '../../_includes/html/head.php';
 
+$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
+
 if ($_SESSION['survey_complete']) {
     @include '../../_includes/html/navbar.php';
-    @include 'end_of_survey.php';
+    @include '../../_includes/end_of_survey.php';
     die();
 }
-
-$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
 // If this is the first item in the survey, we initialize some values
 if (!$_SESSION['survey_in_progress']) {

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Surveys (
   total_time_limit         INT(10)                   DEFAULT -1,
   estimated_length_minutes INT(10)                   DEFAULT 60,
   closed                   TINYINT                   DEFAULT 0,
-  notification_email    VARCHAR(64),
+  notification_email       VARCHAR(64),
   target_rating_threshold  INT(10),
   notifications_enabled    TINYINT                   DEFAULT 0,
 
@@ -28,6 +28,26 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Users (
   payment_info_id INT(10),
 
   PRIMARY KEY (user_id)
+)
+  DEFAULT CHARSET = utf8;
+
+CREATE TABLE IF NOT EXISTS L2_speech_ratings.SurveyCompletions (
+  survey_completion_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  survey_id            INT(10) UNSIGNED NOT NULL,
+  user_id              INT(10) UNSIGNED NOT NULL,
+  date_completed       DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+
+  PRIMARY KEY (survey_completion_id),
+
+  CONSTRAINT fk_SurveyCompletions_1
+  FOREIGN KEY (survey_id)
+  REFERENCES L2_speech_ratings.Surveys (survey_id)
+    ON DELETE CASCADE,
+
+  CONSTRAINT fk_SurveyCompletions_2
+  FOREIGN KEY (user_id)
+  REFERENCES L2_speech_ratings.Users (user_id)
+    ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 

@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS L2_speech_ratings.SampleBlocks;
 DROP TABLE IF EXISTS L2_speech_ratings.CorruptFiles;
 DROP TABLE IF EXISTS L2_speech_ratings.ControlRatings;
 DROP TABLE IF EXISTS L2_speech_ratings.ControlFlags;
+DROP TABLE IF EXISTS L2_speech_ratings.SurveyCompletions;
 DROP TABLE IF EXISTS L2_speech_ratings.Surveys;
 DROP TABLE IF EXISTS L2_speech_ratings.RatingEventScoreLookup;
 DROP TABLE IF EXISTS L2_speech_ratings.RatingEvents;
