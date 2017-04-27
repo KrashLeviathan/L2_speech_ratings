@@ -552,7 +552,11 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function getAllOpenSurveys()
     {
-        $sql = "SELECT * FROM L2_speech_ratings.Surveys WHERE closed = 0";
+        $sql = "SELECT * FROM L2_speech_ratings.Surveys as sv
+WHERE sv.closed = 0 AND sv.survey_id NOT IN (
+SELECT survey_id FROM L2_speech_ratings.SurveyCompletions as sc
+WHERE sc.user_id = '2'
+);";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getAllOpenSurveys: query error');
