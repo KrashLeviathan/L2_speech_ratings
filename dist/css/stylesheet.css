@@ -114,5 +114,10 @@ audio {
     filter: alpha(opacity=0);
     font-size: 100%;
     height: 100%; } }
+.l2sr-select-survey-btn {
+  white-space: normal;
+  border: 1px solid #333333;
+  border-left: none;
+  border-right: none; }
 
 /*# sourceMappingURL=stylesheet.css.map */

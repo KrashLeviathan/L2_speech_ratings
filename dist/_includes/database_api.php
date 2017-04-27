@@ -550,6 +550,21 @@ WHERE re.performed_by_id = dem_max.user_id
         }
     }
 
+    function getAllOpenSurveys()
+    {
+        $sql = "SELECT * FROM L2_speech_ratings.Surveys WHERE closed = 0";
+        $result = $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('getAllOpenSurveys: query error');
+        }
+        $surveys = array();
+        while ($survey = $result->fetch_assoc()) {
+            array_push($surveys, $survey);
+        }
+        mysqli_free_result($result);
+        return $surveys;
+    }
+
     function getSurvey($surveyId)
     {
         $sql = "SELECT * FROM L2_speech_ratings.Surveys WHERE survey_id='$surveyId'";
