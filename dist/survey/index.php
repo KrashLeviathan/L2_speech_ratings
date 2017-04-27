@@ -3,10 +3,11 @@
 @include '../_includes/database_api.php';
 @include '../_includes/pageSetup.php';
 
-// TODO: Will fetch other surveys in future iterations
-$_SESSION['survey_id'] = 1;
-$_SESSION['survey_in_progress'] = false;
-$_SESSION['survey_complete'] = false;
+$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
+
+// TODO
+
+$_SESSION['survey_state'] = 'NO_SURVEY_SELECTED';
 ?>
 
 <div class="container">
@@ -14,34 +15,21 @@ $_SESSION['survey_complete'] = false;
     <div class="page-header" id="banner">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Survey-specific Instructions</h1>
+                <h1>Select a Survey</h1>
             </div>
         </div>
     </div>
 
-    <?php
-    @include '../_includes/html/specific_instructions.php';
-    ?>
-
-    <div class="page-header" id="banner">
+    <div class="bs-docs-section text-justify">
         <div class="row">
             <div class="col-lg-12">
-                <h1>General Instructions</h1>
-            </div>
-        </div>
-    </div>
-
-    <?php @include '../_includes/html/instructions.html' ?>
-
-    <div class="page-header" id="banner">
-        <div class="row">
-            <div class="col-lg-12">
-                <a type="button" class="btn btn-primary center-block l2sr-start-survey-btn" href="/survey/in_progress">
-                    START</a>
+                <form id="select-survey-form">
+                    <button type="button" class="btn btn-primary" onclick="selectSurvey()">Continue</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
+<script src="/js/select_survey.js" type="text/javascript"></script>
 </body>
 </html>

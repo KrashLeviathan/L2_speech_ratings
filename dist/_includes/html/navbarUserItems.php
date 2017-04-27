@@ -5,7 +5,9 @@
     } else {
         print '<li><a href="/instructions">Instructions</a></li>';
     }
-    if ($_SESSION['survey_in_progress']) {
+    if (isset ($_SESSION['survey_state']) && $_SESSION['survey_state'] !== 'NO_SURVEY_SELECTED'
+        && $_SESSION['survey_state'] !== 'POST_COMPLETE'
+    ) {
         if ($_SERVER['REQUEST_URI'] === '/survey/in_progress') {
             print '<li class="active"><a href="#">Survey In Progress <span class="sr-only">(current)</span></a></li>';
         } else {

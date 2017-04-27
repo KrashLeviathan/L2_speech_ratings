@@ -7,15 +7,15 @@
 
 $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
-if ($_SESSION['survey_complete']) {
+if ($_SESSION['survey_state'] === 'COMPLETE' || $_SESSION['survey_state'] === 'POST_COMPLETE') {
     @include '../../_includes/html/navbar.php';
     @include '../../_includes/end_of_survey.php';
     die();
 }
 
 // If this is the first item in the survey, we initialize some values
-if (!$_SESSION['survey_in_progress']) {
-    $_SESSION['survey_in_progress'] = true;
+if ($_SESSION['survey_state'] === 'INSTRUCTIONS_VISITED') {
+    $_SESSION['survey_state'] = 'IN_PROGRESS';
     $_SESSION['survey_current_id_index'] = 0;
     $_SESSION['survey_start_time'] = time();
 
@@ -31,6 +31,12 @@ if (!$_SESSION['survey_in_progress']) {
     foreach ($audioSampleIds as $audioSampleId) {
         array_push($_SESSION['survey_audio_id_order'], $audioSampleId[0]);
     }
+}
+
+// Ensure the proper order of events
+if ($_SESSION['survey_state'] !== 'IN_PROGRESS') {
+    print '<script type="text/javascript">window.location = "' . $domain . '/instructions";</script>';
+    die();
 }
 
 // We put the navbar after setting session_in_progress so that it can change appropriately

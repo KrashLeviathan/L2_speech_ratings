@@ -24,10 +24,20 @@ if ($_POST['token'] !== $_SESSION['in_progress_token']) {
 }
 
 // Check to see if survey is already complete
-if ($_SESSION['survey_complete']) {
+if ($_SESSION['survey_state'] === 'COMPLETE') {
     $response = array(
         'success' => false,
         'errmsg' => 'Survey is already complete',
+        'details' => ''
+    );
+    print json_encode($response);
+    die();
+}
+
+if ($_SESSION['survey_state'] !== 'IN_PROGRESS') {
+    $response = array(
+        'success' => false,
+        'errmsg' => 'The survey hasn\'t been started yet',
         'details' => ''
     );
     print json_encode($response);
@@ -47,13 +57,13 @@ $databaseApi->createRatingEvent($comprehension, $fluency, $accent, $_SESSION['us
 $_SESSION['survey_current_id_index']++;
 if ($_SESSION['survey_current_id_index'] >= sizeof($_SESSION['survey_audio_id_order'])) {
     // It has reached the end of the survey, so we take the user to another page.
-    $_SESSION['survey_complete'] = true;
+    $_SESSION['survey_state'] = 'COMPLETE';
 }
 
 // Successful response
 $response = array(
     'success' => true,
-    'endOfSurvey' => $_SESSION['survey_complete']
+    'endOfSurvey' => ($_SESSION['survey_state'] === 'COMPLETE')
 );
 print json_encode($response);
 die();

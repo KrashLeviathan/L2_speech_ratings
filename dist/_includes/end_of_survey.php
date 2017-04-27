@@ -1,9 +1,9 @@
 <?php
-if ($_SESSION['survey_in_progress']) {
+if ($_SESSION['survey_state'] === 'COMPLETE') {
     $_SESSION['survey_end_time'] = time();
     $databaseApi->completeSurvey($_SESSION['user_id'], $_SESSION['survey_id']);
 }
-$_SESSION['survey_in_progress'] = false;
+$_SESSION['survey_state'] = 'POST_COMPLETE';
 $totalTimeTaken = $_SESSION['survey_end_time'] - $_SESSION['survey_start_time'];
 $minutes = floor($totalTimeTaken / 60);
 $seconds = floor($totalTimeTaken % 60);

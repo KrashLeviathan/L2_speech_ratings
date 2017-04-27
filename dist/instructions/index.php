@@ -6,7 +6,9 @@
 
 <div class="container">
     <?php
-    if ($_SESSION['survey_in_progress']) {
+    if (isset ($_SESSION['survey_state']) && $_SESSION['survey_state'] !== 'NO_SURVEY_SELECTED'
+        && $_SESSION['survey_state'] !== 'POST_COMPLETE'
+    ) {
         // Display the specific instructions if there's a survey in progress
         print '<div class="page-header" id="banner"><div class="row"><div class="col-lg-12">'
             . '<h1>Survey-specific Instructions</h1>'
