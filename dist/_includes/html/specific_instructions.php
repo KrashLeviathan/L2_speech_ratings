@@ -1,7 +1,9 @@
 <?php
 // Make sure the PHP file including this one has included the database API
-$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
-$survey = $databaseApi->getSurvey($_SESSION['survey_id']);
+if (!isset($databaseApi) || !isset($survey)) {
+    $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
+    $survey = $databaseApi->getSurvey($_SESSION['survey_id']);
+}
 ?>
 
 <div class="bs-docs-section text-justify">

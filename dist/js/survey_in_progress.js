@@ -2,6 +2,7 @@ var audioPlayer;
 var pageTimerComplete = false;
 var reachedEndOfClip = false;
 var buttonAttached = false;
+var playCount = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
     // Attach form submission handler
@@ -37,15 +38,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }, ms);
     });
 
-    audioPlayer.addEventListener('pause', function () {
-        if (!reachedEndOfClip) {
-            reachedEndOfClip = audioPlayer.currentTime === audioPlayer.duration;
-            letUserContinue();
+    audioPlayer.addEventListener('ended', function () {
+        playCount++;
+        reachedEndOfClip = true;
+        if (maxNumberReplaysReached()) {
+            $('#audio-player').remove();
         }
+        letUserContinue();
     });
 
     letUserContinue();
 });
+
+function maxNumberReplaysReached() {
+    return numReplaysAllowed !== -1 && playCount > numReplaysAllowed;
+}
 
 function letUserContinue() {
     if (!pageTimerComplete || !reachedEndOfClip || buttonAttached) {

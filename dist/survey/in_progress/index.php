@@ -158,6 +158,9 @@ $audioSample = '/file_storage/audio_samples/' . $audioFilename;
 
     <div id="submit-btn-container"></div>
 </div>
+<script type="text/javascript">
+    var numReplaysAllowed = <?= $_SESSION['survey_num_replays_allowed']?> ;
+</script>
 <script src="/js/survey_in_progress.js" type="text/javascript"></script>
 </body>
 </html>

@@ -9,6 +9,10 @@ if ($_SESSION['survey_state'] !== 'SURVEY_SELECTED' && $_SESSION['survey_state']
     die();
 }
 
+$databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
+$survey = $databaseApi->getSurvey($_SESSION['survey_id']);
+$_SESSION['survey_num_replays_allowed'] = $survey['num_replays_allowed'];
+$_SESSION['survey_total_time_limit'] = $survey['total_time_limit'];
 $_SESSION['survey_state'] = 'INSTRUCTIONS_VISITED';
 
 ?>
