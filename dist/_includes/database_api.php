@@ -688,6 +688,26 @@ WHERE sc.user_id = '$userId'
         }
     }
 
+    function isSurveyCompleted($userId, $surveyId)
+    {
+        $sql = "SELECT * FROM L2_speech_ratings.SurveyCompletions"
+            . " WHERE survey_id = '$surveyId' AND user_id = '$userId'";
+        $result = $this->link->query($sql);
+        if ($result->num_rows == 0) {
+            // Since it hasn't been completed, make sure any previous ratings for this survey
+            // from this user are deleted (because they're going to be re-rated)
+            // This might happen if the user got halfway through the survey, then quit
+            // before completion. So we want to erase all old ratings that were created
+            // during a survey that wasn't completed
+            $sql = "DELETE FROM L2_speech_ratings.RatingEvents"
+                . " WHERE performed_by_id = '$userId' AND survey_id = '$surveyId'";
+            $this->link->query($sql);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     function getAudioIdsFromSurveyBlock($surveyId)
     {
         $sql = "SELECT audioLU.audio_sample_id FROM L2_speech_ratings.SampleBlockAudioLookup AS audioLU"
