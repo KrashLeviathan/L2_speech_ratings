@@ -28,7 +28,9 @@ function fetchFiles() {
         if (responseJson.success) {
             onSuccess(responseJson);
         } else {
-            onFailure(responseJson);
+            $('#file-table-body').children().remove();
+            console.log(responseJson);
+            displayAlert(responseJson.errmsg, true);
         }
     };
     xhr.send('');
@@ -44,7 +46,8 @@ function deleteFiles(fileList) {
             fetchFiles();
             displayAlert("The files were deleted successfully.", false, 5000);
         } else {
-            onFailure(responseJson);
+            console.log(responseJson);
+            displayAlert(responseJson.errmsg, true);
         }
     };
     xhr.send(JSON.stringify(fileList));
@@ -71,12 +74,4 @@ function onSuccess(json) {
             + '</td><td>' + errorTokens + '</td><td class="text-center"><input type="checkbox" data-filename="'
             + filename + '"></td></tr>')
     }
-}
-
-function onFailure(response) {
-    $('#file-table-body').children.remove();
-    $('#invite-table-body').children().remove();
-
-    console.log(response);
-    displayAlert(response.errmsg, true);
 }
