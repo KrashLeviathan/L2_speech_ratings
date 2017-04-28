@@ -36,7 +36,7 @@ $_SESSION['survey_state'] = 'NO_SURVEY_SELECTED';
                             print '<label class="btn btn-default l2sr-select-survey-btn">'
                                 . '<input type="radio" name="surveyIdSelection" value="'
                                 . $survey['survey_id'] . '" required>'
-                                . $survey['survey_id'] . ' - ' . $survey['description'] . '</label>';
+                                . 'Survey ' . $survey['survey_id'] . ' - ' . $survey['description'] . '</label>';
                         }
                         print '</div>';
                     }
