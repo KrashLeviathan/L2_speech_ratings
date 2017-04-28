@@ -174,7 +174,7 @@ $defaultSurvey = $databaseApi->getSurvey(1);
                                 Edit
                             </button>
                             <button id="cancel-btn" type="reset" class="btn btn-default hidden"
-                                    onclick="onCancelClicked()">Cancel
+                                    onclick="backToAdminSettings()">Cancel
                             </button>
                             <button id="submit-btn" type="submit" class="btn btn-primary hidden">Submit
                             </button>

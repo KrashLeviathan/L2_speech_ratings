@@ -27,13 +27,14 @@ $survey = $databaseApi->getSurvey($surveyId);
     <div class="bs-docs-section">
         <div class="row">
             <div class="col-lg-12">
-                <form method="post">
+                <form method="post" id="edit-survey-form">
                     <div class="well bs-component">
 
-                        <fieldset id="form-survey-fieldset">
+                        <fieldset>
                             <div class="col-lg-12">
                                 <h3>Survey #<?= $survey['survey_id'] ?></h3>
                             </div>
+                            <input type="hidden" name="survey_id" value="<?= $survey['survey_id'] ?>">
                             <div class="form-group col-sm-4">
                                 <label for="name" class="control-label">Name</label>
                                 <div>
@@ -108,6 +109,25 @@ $survey = $databaseApi->getSurvey($surveyId);
                                     <span class="input-group-addon">ratings per file</span>
                                 </div>
                             </div>
+                            <div class="form-group col-sm-4">
+                                <label for="closed" class="control-label">Survey Closed</label>
+                                <div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="closed"
+                                                   value="1" <?= ($survey['closed']) ? 'checked' : '' ?>>
+                                            Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="closed"
+                                                   value="0" <?= (!$survey['closed']) ? 'checked' : '' ?>>
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </fieldset>
                     </div>
 
@@ -115,12 +135,12 @@ $survey = $databaseApi->getSurvey($surveyId);
                     <fieldset>
                         <div class="form-group col-lg-12">
                             <button id="cancel-btn" type="reset" class="btn btn-default"
-                                    onclick="onCancelClicked()">Cancel
+                                    onclick="backToAdminSettings()">Cancel
                             </button>
                             <button id="submit-btn" type="submit" class="btn btn-primary">Submit
                             </button>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 l2sr-mtop-sm l2sr-mbot-sm">
                             <p>
                                 <mark><strong>PLEASE NOTE:</strong> Changing the survey name will change
                                     which new file uploads will be placed in this survey.
