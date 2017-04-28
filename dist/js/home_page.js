@@ -1,16 +1,6 @@
 var shouldRedirect = false;
 var validation = 'NONE';
 
-function errorAlert(msg) {
-    $('body').append('<div class="alert alert-danger alert-dismissible bottom-alert" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button>' +
-        '<strong>ERROR:</strong> ' + msg + '</div>');
-    setTimeout(function () {
-        $('.alert').remove();
-    }, 30000);
-}
-
 function onValidAccessCode(v) {
     validation = v;
     var btn = $('#access-code-button');
@@ -21,7 +11,7 @@ function onValidAccessCode(v) {
 
 function onInvalidAccessCode(response) {
     console.log(response);
-    errorAlert('That is not a valid access code!');
+    displayAlert('That is not a valid access code!', true);
 }
 
 function submitAccessCode(event) {
@@ -80,7 +70,7 @@ function onFail(response) {
     } else {
         msg = response.errmsg;
     }
-    errorAlert(msg);
+    displayAlert(msg, true);
 }
 
 function onSignIn(googleUser) {

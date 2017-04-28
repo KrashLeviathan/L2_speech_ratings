@@ -9,20 +9,9 @@ function selectSurvey() {
                 window.location = "/survey/instructions";
             } else {
                 console.log(data);
-                displayAlert(data.errmsg, true, 30000);
+                displayAlert(data.errmsg, true);
             }
         }
     });
 }
 
-function displayAlert(msg, isError, timeout) {
-    var errStrong = (isError) ? '<strong>ERROR:</strong> ' : '';
-    var alertType = (isError) ? 'alert-danger' : 'alert-success';
-    $('body').append('<div class="alert ' + alertType + ' alert-dismissible bottom-alert" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button>' +
-        errStrong + msg + '</div>');
-    setTimeout(function () {
-        $('.alert').remove();
-    }, timeout);
-}

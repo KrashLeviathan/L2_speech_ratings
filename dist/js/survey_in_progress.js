@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     location.reload();
                 } else {
                     console.log(data);
-                    errorAlert(data.errmsg);
+                    displayAlert(data.errmsg, true);
                 }
             }
         });
@@ -55,14 +55,4 @@ function letUserContinue() {
     $('#submit-btn-container')
         .append('<input type="submit" class="btn btn-primary center-block" form="survey-form" style="margin-bottom:4em;">');
     window.scrollTo(0, document.body.scrollHeight);
-}
-
-function errorAlert(msg) {
-    $('body').append('<div class="alert alert-danger alert-dismissible bottom-alert" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button>' +
-        '<strong>ERROR:</strong> ' + msg + '</div>');
-    setTimeout(function () {
-        $('.alert').remove();
-    }, 30000);
 }

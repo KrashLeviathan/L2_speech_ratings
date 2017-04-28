@@ -50,18 +50,6 @@ function deleteFiles(fileList) {
     xhr.send(JSON.stringify(fileList));
 }
 
-function displayAlert(msg, isError, timeout) {
-    var errStrong = (isError) ? '<strong>ERROR:</strong> ' : '';
-    var alertType = (isError) ? 'alert-danger' : 'alert-success';
-    $('body').append('<div class="alert ' + alertType + ' alert-dismissible bottom-alert" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button>' +
-        errStrong + msg + '</div>');
-    setTimeout(function () {
-        $('.alert').remove();
-    }, timeout);
-}
-
 function getMinSec(msTime) {
     var totalSeconds = msTime / 1000;
     var min = Math.floor(totalSeconds / 60);
@@ -90,5 +78,5 @@ function onFailure(response) {
     $('#invite-table-body').children().remove();
 
     console.log(response);
-    displayAlert(response.errmsg, true, 30000);
+    displayAlert(response.errmsg, true);
 }

@@ -54,20 +54,10 @@ function submitInvite(event) {
             // Invite creation was unsuccessful
             $('#send-invite-modal').removeClass('in');
             console.log(responseJson);
-            errorAlert(responseJson.errmsg);
+            displayAlert(responseJson.errmsg, true);
         }
     };
     xhr.send('email=' + encodeURIComponent(values['email']));
-}
-
-function errorAlert(msg) {
-    $('body').append('<div class="alert alert-danger alert-dismissible bottom-alert" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button>' +
-        '<strong>ERROR:</strong> ' + msg + '</div>');
-    setTimeout(function () {
-        $('.alert').remove();
-    }, 30000);
 }
 
 function onSuccess(json) {
@@ -107,5 +97,5 @@ function onFailure(response) {
     $('#invite-table-body').children().remove();
 
     console.log(response);
-    errorAlert(response.errmsg);
+    displayAlert(response.errmsg, true);
 }

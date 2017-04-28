@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 $('#survey-table-body').children().remove();
                 console.log(data);
-                errorAlert(data.errmsg);
+                displayAlert(data.errmsg, true);
             }
         }
     });
@@ -42,16 +42,6 @@ function onCancelClicked() {
     editModeActive = false;
     $('#form-user-fieldset').prop('disabled', true);
     $('#form-admin-fieldset').prop('disabled', true);
-}
-
-function errorAlert(msg) {
-    $('body').append('<div class="alert alert-danger alert-dismissible bottom-alert" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button>' +
-        '<strong>ERROR:</strong> ' + msg + '</div>');
-    setTimeout(function () {
-        $('.alert').remove();
-    }, 30000);
 }
 
 function editSurvey(surveyId) {
