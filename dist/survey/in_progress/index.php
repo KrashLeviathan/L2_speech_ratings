@@ -23,7 +23,6 @@ if ($_SESSION['survey_state'] === 'INSTRUCTIONS_VISITED') {
     $audioSampleIds = $databaseApi->getAudioIdsFromSurveyBlock($_SESSION['survey_id']);
 
     // Randomize order of audio ids
-    // TODO: Check if Dr Nagle actually wants these randomized
     shuffle($audioSampleIds);
 
     // Clean up and put in session variable

@@ -12,9 +12,11 @@ function generateResults() {
         data: '',
         success: function (data) {
             if (data.success) {
-                $('#results-file').append('<p>Click to download:&nbsp;&nbsp; <a href="'
-                    + data.filepath + data.filename + '" download>' + data.filename + '</a></p>'
-                );
+                for (var fIndex in data.filenames) {
+                    $('#results-file').append('<p>Click to download:&nbsp;&nbsp; <a href="'
+                        + data.filepath + data.filenames[fIndex] + '" download>' + data.filenames[fIndex] + '</a></p>'
+                    );
+                }
             } else {
                 console.log(data);
                 displayAlert(data.errmsg, true);

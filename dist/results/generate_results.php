@@ -8,18 +8,20 @@ $adminOnlyPage = true;
 
 $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
 
-// TODO: In the future, we'll want to specify which survey results to fetch
-$surveyId = 1;
+$allSurveys = $databaseApi->adminGetSurveys();
 $filepath = '/file_storage/results/';
-$filename = "L2_Speech_Ratings_Results__Survey-" . $surveyId . "__" . date("Y-m-d__H-i-s") . ".csv";
-$response = $databaseApi->createCsvFromResults(1, $filepath, $filename);
-
-if ($response['success'] === true) {
-    $response = array(
-        'success' => true,
-        'filepath' => $filepath,
-        'filename' => $filename
-    );
+$finalResponse = array('filepath' => $filepath, 'filenames' => array());
+foreach ($allSurveys as $survey) {
+    $surveyId = $survey[0];
+    $filename = "L2_Speech_Ratings_Results__Survey-" . $surveyId . "__" . date("Y-m-d__H-i-s") . ".csv";
+    $response = $databaseApi->createCsvFromResults($surveyId, $filepath, $filename);
+    if ($response['success'] === true) {
+        array_push($finalResponse['filenames'], $filename);
+    } else {
+        print json_encode($response);
+        die();
+    }
 }
-print json_encode($response);
+$finalResponse['success'] = true;
+print json_encode($finalResponse);
 die();
