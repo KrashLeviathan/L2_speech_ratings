@@ -53,7 +53,7 @@ class DatabaseApi
      */
     function updateUserSettings($userId, $firstName, $lastName, $email, $phone)
     {
-        $sql = "UPDATE L2_speech_ratings.Users SET first_name='$firstName', last_name='$lastName', " .
+        $sql = "UPDATE l2speechratings.Users SET first_name='$firstName', last_name='$lastName', " .
             "email='$email', phone='$phone' WHERE user_id=$userId";
 
         $result = $this->link->query($sql);
@@ -82,7 +82,7 @@ class DatabaseApi
      */
     function accessCodeToInviteEmail($accessCode)
     {
-        $sql = "SELECT email FROM L2_speech_ratings.Invites " .
+        $sql = "SELECT email FROM l2speechratings.Invites " .
             "WHERE access_code = '$accessCode' AND (validation <> 'COMPLETE' OR validation IS NULL)";
         $result = $this->link->query($sql);
         if ($this->link->error) {
@@ -103,7 +103,7 @@ class DatabaseApi
      */
     function accessCodeValidation($accessCode, $validation)
     {
-        $sql = "UPDATE L2_speech_ratings.Invites SET validation='$validation' WHERE access_code='$accessCode'";
+        $sql = "UPDATE l2speechratings.Invites SET validation='$validation' WHERE access_code='$accessCode'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('accessCodeValidation');
@@ -118,7 +118,7 @@ class DatabaseApi
      */
     function checkInviteValidation($validation)
     {
-        $sql = "SELECT email FROM L2_speech_ratings.Invites WHERE validation='$validation'";
+        $sql = "SELECT email FROM l2speechratings.Invites WHERE validation='$validation'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('checkInviteValidation');
@@ -130,7 +130,7 @@ class DatabaseApi
 
     function completeInvite($userId, $validation)
     {
-        $sql = "UPDATE L2_speech_ratings.Invites SET accepted_by=$userId, validation='COMPLETE'" .
+        $sql = "UPDATE l2speechratings.Invites SET accepted_by=$userId, validation='COMPLETE'" .
             ", accepted_date=NOW() WHERE validation='$validation'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
@@ -148,7 +148,7 @@ class DatabaseApi
      */
     function createNewUser($googleId, $firstName, $lastName, $email)
     {
-        $sql = "INSERT INTO L2_speech_ratings.Users (google_id, first_name, last_name, email, date_signed_up) " .
+        $sql = "INSERT INTO l2speechratings.Users (google_id, first_name, last_name, email, date_signed_up) " .
             "VALUES ('$googleId','$firstName','$lastName','$email',NOW())";
         $result = $this->link->query($sql);
         if ($this->link->error) {
@@ -164,7 +164,7 @@ class DatabaseApi
      */
     function getUserFromGoogleId($googleId)
     {
-        $sql = "SELECT * FROM L2_speech_ratings.Users WHERE google_id='$googleId'";
+        $sql = "SELECT * FROM l2speechratings.Users WHERE google_id='$googleId'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getUserIdFromGoogleId: query error');
@@ -184,7 +184,7 @@ class DatabaseApi
      */
     function isUserAdmin($userId)
     {
-        $sql = "SELECT * FROM L2_speech_ratings.Admins WHERE user_id = $userId";
+        $sql = "SELECT * FROM l2speechratings.Admins WHERE user_id = $userId";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('isUserAdmin');
@@ -282,21 +282,21 @@ dem.ling_training,
 dem.taught_language,
 dem.personal_info
 FROM
-L2_speech_ratings.RatingEvents AS re
+l2speechratings.RatingEvents AS re
 INNER JOIN
-L2_speech_ratings.Demographics AS dem ON re.performed_by_id = dem.user_id
+l2speechratings.Demographics AS dem ON re.performed_by_id = dem.user_id
 INNER JOIN
-L2_speech_ratings.AudioSamples AS aud ON re.audio_sample_id = aud.audio_sample_id
+l2speechratings.AudioSamples AS aud ON re.audio_sample_id = aud.audio_sample_id
 INNER JOIN
-L2_speech_ratings.RatingEventScoreLookup AS resl ON re.rating_event_id = resl.rating_event_id
+l2speechratings.RatingEventScoreLookup AS resl ON re.rating_event_id = resl.rating_event_id
 INNER JOIN
-L2_speech_ratings.RatingScores AS rs ON resl.rating_score_id = rs.rating_score_id
+l2speechratings.RatingScores AS rs ON resl.rating_score_id = rs.rating_score_id
 INNER JOIN
-L2_speech_ratings.RatingProperties AS rp ON rs.property = rp.rating_property_id
+l2speechratings.RatingProperties AS rp ON rs.property = rp.rating_property_id
 WHERE
 re.survey_id='$surveyId' AND dem.date_completed = (
 SELECT MAX(date_completed)
-FROM L2_speech_ratings.Demographics AS dem_max
+FROM l2speechratings.Demographics AS dem_max
 WHERE re.performed_by_id = dem_max.user_id
 )";
         $result = $this->link->query($sql);
@@ -327,7 +327,7 @@ WHERE re.performed_by_id = dem_max.user_id
         $csv->append($headingFields);
 
         // Data
-        $sql = "SELECT * FROM L2_speech_ratings.Demographics";
+        $sql = "SELECT * FROM l2speechratings.Demographics";
         $result = $this->link->query($sql);
         while ($row = $result->fetch_row()) {
             $csv->append($row);
@@ -338,7 +338,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function postDemographicFormData($userId, $formData)
     {
-        $sql = "INSERT INTO L2_speech_ratings.Demographics (user_id, age, gender, birthplace, location_raised, native_languages, education_level, education_level_other, sp_listening, sp_speaking, sp_reading, sp_writing, sp_age, sp_with_family, sp_usage_percent, sp_nn_interaction, sp_interaction_cap, sp_interaction_cap_other, sp_nn_familiarity, fr_listening, fr_speaking, fr_reading, fr_writing, fr_age, fr_with_family, fr_usage_percent, fr_nn_interaction, fr_interaction_cap, fr_interaction_cap_other, fr_nn_familiarity, en_listening, en_speaking, en_reading, en_writing, en_age, en_with_family, en_usage_percent, instr_elementary, instr_secondary, instr_hs, instr_college, instr_graduate, addl_languages, ling_training, taught_language, personal_info)"
+        $sql = "INSERT INTO l2speechratings.Demographics (user_id, age, gender, birthplace, location_raised, native_languages, education_level, education_level_other, sp_listening, sp_speaking, sp_reading, sp_writing, sp_age, sp_with_family, sp_usage_percent, sp_nn_interaction, sp_interaction_cap, sp_interaction_cap_other, sp_nn_familiarity, fr_listening, fr_speaking, fr_reading, fr_writing, fr_age, fr_with_family, fr_usage_percent, fr_nn_interaction, fr_interaction_cap, fr_interaction_cap_other, fr_nn_familiarity, en_listening, en_speaking, en_reading, en_writing, en_age, en_with_family, en_usage_percent, instr_elementary, instr_secondary, instr_hs, instr_college, instr_graduate, addl_languages, ling_training, taught_language, personal_info)"
             . " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $query = $this->link->prepare($sql);
         $query->bind_param(
@@ -399,7 +399,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function getLastDemographicDate($userId)
     {
-        $sql = "SELECT date_completed FROM L2_speech_ratings.Demographics WHERE user_id = '$userId'"
+        $sql = "SELECT date_completed FROM l2speechratings.Demographics WHERE user_id = '$userId'"
             . " ORDER BY date_completed DESC LIMIT 1";
         $result = $this->link->query($sql);
         if ($this->link->error) {
@@ -416,7 +416,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function getAllFiles()
     {
-        $sql = "SELECT audio_sample_id, filename, duration_ms, upload_date, error_tokens FROM L2_speech_ratings.AudioSamples "
+        $sql = "SELECT audio_sample_id, filename, duration_ms, upload_date, error_tokens FROM l2speechratings.AudioSamples "
             . "ORDER BY filename";
         $result = $this->link->query($sql);
         if ($this->link->error) {
@@ -435,7 +435,7 @@ WHERE re.performed_by_id = dem_max.user_id
                 $this->failureToJson('deleteFiles: invalid filename',
                     $file . ' is not a valid filename!');
             }
-            $sql = "DELETE FROM L2_speech_ratings.AudioSamples WHERE filename='$sanitizedFile'";
+            $sql = "DELETE FROM l2speechratings.AudioSamples WHERE filename='$sanitizedFile'";
             $result = $this->link->query($sql);
             if ($this->link->error) {
                 $this->failureToJson('deleteFiles: query error',
@@ -449,7 +449,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function getAllUsers()
     {
-        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up FROM L2_speech_ratings.Users";
+        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up FROM l2speechratings.Users";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getAllUsers: query error');
@@ -461,7 +461,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function getAllInvites()
     {
-        $sql = "SELECT * FROM L2_speech_ratings.Invites";
+        $sql = "SELECT * FROM l2speechratings.Invites";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getAllInvites: query error');
@@ -478,7 +478,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function addInvite($accessCode, $email)
     {
-        $sql = "INSERT INTO L2_speech_ratings.Invites (access_code, email)"
+        $sql = "INSERT INTO l2speechratings.Invites (access_code, email)"
             . " VALUES ('$accessCode','$email')";
         $result = $this->link->query($sql);
         if ($this->link->error) {
@@ -489,7 +489,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function addAudioSample($jq_file, $duration, $parser, $errorTokens)
     {
-        $sql = 'INSERT INTO L2_speech_ratings.AudioSamples'
+        $sql = 'INSERT INTO l2speechratings.AudioSamples'
             . ' (`filename`,`size`,`duration_ms`,`type`,`language`,`level`,`speaker_id`,`wave`,`task`,`item`,`error_tokens`)'
             . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             . ' ON DUPLICATE KEY UPDATE'
@@ -526,7 +526,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function addAudioSampleToSurveyBlock($fileId, $blockId = 1)
     {
-        $sql = "INSERT INTO L2_speech_ratings.SampleBlockAudioLookup (`sample_block_id`, `audio_sample_id`)"
+        $sql = "INSERT INTO l2speechratings.SampleBlockAudioLookup (`sample_block_id`, `audio_sample_id`)"
             . "VALUES ('$blockId', '$fileId');";
         $this->link->query($sql);
     }
@@ -534,7 +534,7 @@ WHERE re.performed_by_id = dem_max.user_id
     function getOrCreateSurveyByLanguageTask($language, $task)
     {
         $name = $language . "_t" . $task;
-        $sql = "SELECT survey_id FROM L2_speech_ratings.Surveys WHERE name='$name'";
+        $sql = "SELECT survey_id FROM l2speechratings.Surveys WHERE name='$name'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getOrCreateSurveyByLanguageTask: query error');
@@ -552,9 +552,9 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function getAllOpenSurveys($userId)
     {
-        $sql = "SELECT * FROM L2_speech_ratings.Surveys as sv
+        $sql = "SELECT * FROM l2speechratings.Surveys as sv
 WHERE sv.closed = 0 AND sv.survey_id NOT IN (
-SELECT survey_id FROM L2_speech_ratings.SurveyCompletions as sc
+SELECT survey_id FROM l2speechratings.SurveyCompletions as sc
 WHERE sc.user_id = '$userId'
 );";
         $result = $this->link->query($sql);
@@ -573,7 +573,7 @@ WHERE sc.user_id = '$userId'
     {
         $sql = "SELECT survey_id, name, description, start_date, end_date, num_replays_allowed, total_time_limit,
     estimated_length_minutes, notification_email, target_rating_threshold, closed, notifications_enabled
-    FROM L2_speech_ratings.Surveys WHERE survey_id != '1'";
+    FROM l2speechratings.Surveys WHERE survey_id != '1'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('adminGetSurveys: query error');
@@ -588,7 +588,7 @@ WHERE sc.user_id = '$userId'
 
     function getSurvey($surveyId)
     {
-        $sql = "SELECT * FROM L2_speech_ratings.Surveys WHERE survey_id='$surveyId'";
+        $sql = "SELECT * FROM l2speechratings.Surveys WHERE survey_id='$surveyId'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getSurvey: query error');
@@ -605,7 +605,7 @@ WHERE sc.user_id = '$userId'
 
     function getSurveyBlockIds($surveyId)
     {
-        $sql = "SELECT sample_block_id FROM L2_speech_ratings.SurveySampleBlockLookup WHERE survey_id='$surveyId'";
+        $sql = "SELECT sample_block_id FROM l2speechratings.SurveySampleBlockLookup WHERE survey_id='$surveyId'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getSurveyBlockIds: query error');
@@ -621,7 +621,7 @@ WHERE sc.user_id = '$userId'
     function updateSurvey($surveyId, $surveyProperties, $toJson = false)
     {
         $firstProp = true;
-        $sql = "UPDATE L2_speech_ratings.Surveys SET";
+        $sql = "UPDATE l2speechratings.Surveys SET";
         foreach ($surveyProperties as $property => $value) {
             $sql .= (($firstProp) ? "" : ",")
                 . " $property='$value'";
@@ -651,7 +651,7 @@ WHERE sc.user_id = '$userId'
         $targetRatingThreshold = $defaultSurvey['target_rating_threshold'];
 
         // Create new survey
-        $sql = "INSERT INTO L2_speech_ratings.Surveys"
+        $sql = "INSERT INTO l2speechratings.Surveys"
             . " (name, description, num_replays_allowed, total_time_limit, estimated_length_minutes, notifications_enabled, notification_email, target_rating_threshold)"
             . " VALUES ('$name', '$description', '$numReplaysAllowed', '$totalTimeLimit', '$estimatedLengthMinutes', '$notificationsEnabled', '$notificationEmail', '$targetRatingThreshold')";
         $this->link->query($sql);
@@ -661,7 +661,7 @@ WHERE sc.user_id = '$userId'
         $surveyId = $this->link->insert_id;
 
         // Create a default block for that survey
-        $sql = "INSERT INTO L2_speech_ratings.SampleBlocks (name) VALUES ('Default Block')";
+        $sql = "INSERT INTO l2speechratings.SampleBlocks (name) VALUES ('Default Block')";
         $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('insertSurvey: 2');
@@ -669,7 +669,7 @@ WHERE sc.user_id = '$userId'
         $blockId = $this->link->insert_id;
 
         // Map the block to the survey
-        $sql = "INSERT INTO L2_speech_ratings.SurveySampleBlockLookup (survey_id, sample_block_id)"
+        $sql = "INSERT INTO l2speechratings.SurveySampleBlockLookup (survey_id, sample_block_id)"
             . " VALUES ('$surveyId','$blockId')";
         $this->link->query($sql);
         if ($this->link->error) {
@@ -681,7 +681,7 @@ WHERE sc.user_id = '$userId'
 
     function completeSurvey($userId, $surveyId)
     {
-        $sql = "INSERT INTO L2_speech_ratings.SurveyCompletions (survey_id, user_id) VALUES ('$surveyId', '$userId')";
+        $sql = "INSERT INTO l2speechratings.SurveyCompletions (survey_id, user_id) VALUES ('$surveyId', '$userId')";
         $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('completeSurvey: query error');
@@ -690,7 +690,7 @@ WHERE sc.user_id = '$userId'
 
     function isSurveyCompleted($userId, $surveyId)
     {
-        $sql = "SELECT * FROM L2_speech_ratings.SurveyCompletions"
+        $sql = "SELECT * FROM l2speechratings.SurveyCompletions"
             . " WHERE survey_id = '$surveyId' AND user_id = '$userId'";
         $result = $this->link->query($sql);
         if ($result->num_rows == 0) {
@@ -699,7 +699,7 @@ WHERE sc.user_id = '$userId'
             // This might happen if the user got halfway through the survey, then quit
             // before completion. So we want to erase all old ratings that were created
             // during a survey that wasn't completed
-            $sql = "DELETE FROM L2_speech_ratings.RatingEvents"
+            $sql = "DELETE FROM l2speechratings.RatingEvents"
                 . " WHERE performed_by_id = '$userId' AND survey_id = '$surveyId'";
             $this->link->query($sql);
             return false;
@@ -710,8 +710,8 @@ WHERE sc.user_id = '$userId'
 
     function getAudioIdsFromSurveyBlock($surveyId)
     {
-        $sql = "SELECT audioLU.audio_sample_id FROM L2_speech_ratings.SampleBlockAudioLookup AS audioLU"
-            . " INNER JOIN L2_speech_ratings.SurveySampleBlockLookup AS surveyLU ON audioLU.sample_block_id = surveyLU.sample_block_id"
+        $sql = "SELECT audioLU.audio_sample_id FROM l2speechratings.SampleBlockAudioLookup AS audioLU"
+            . " INNER JOIN l2speechratings.SurveySampleBlockLookup AS surveyLU ON audioLU.sample_block_id = surveyLU.sample_block_id"
             . " WHERE surveyLU.survey_id = '$surveyId';";
         $result = $this->link->query($sql);
         if ($this->link->error) {
@@ -729,7 +729,7 @@ WHERE sc.user_id = '$userId'
 
     function getAudioFilename($audioId)
     {
-        $sql = "SELECT filename FROM L2_speech_ratings.AudioSamples WHERE audio_sample_id='$audioId'";
+        $sql = "SELECT filename FROM l2speechratings.AudioSamples WHERE audio_sample_id='$audioId'";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getAudioFilename: query error');
@@ -748,30 +748,30 @@ WHERE sc.user_id = '$userId'
     function createRatingEvent($comprehension, $fluency, $accent, $userId, $audioId, $surveyId)
     {
         // Create the rating event
-        $sql = "INSERT INTO L2_speech_ratings.RatingEvents (performed_by_id, audio_sample_id, survey_id)"
+        $sql = "INSERT INTO l2speechratings.RatingEvents (performed_by_id, audio_sample_id, survey_id)"
             . " VALUES ('$userId', '$audioId', '$surveyId')";
         $this->link->query($sql);
         $eventId = $this->link->insert_id;
 
         // Create the scores
-        $sql = "INSERT INTO L2_speech_ratings.RatingScores (score, property) VALUES ('$comprehension','1')";
+        $sql = "INSERT INTO l2speechratings.RatingScores (score, property) VALUES ('$comprehension','1')";
         $this->link->query($sql);
         $scoreId1 = $this->link->insert_id;
-        $sql = "INSERT INTO L2_speech_ratings.RatingScores (score, property) VALUES ('$fluency','2')";
+        $sql = "INSERT INTO l2speechratings.RatingScores (score, property) VALUES ('$fluency','2')";
         $this->link->query($sql);
         $scoreId2 = $this->link->insert_id;
-        $sql = "INSERT INTO L2_speech_ratings.RatingScores (score, property) VALUES ('$accent','3')";
+        $sql = "INSERT INTO l2speechratings.RatingScores (score, property) VALUES ('$accent','3')";
         $this->link->query($sql);
         $scoreId3 = $this->link->insert_id;
 
         // Map the scores to the event
-        $sql = "INSERT INTO L2_speech_ratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
+        $sql = "INSERT INTO l2speechratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
             . " VALUES ('$eventId', '$scoreId1')";
         $this->link->query($sql);
-        $sql = "INSERT INTO L2_speech_ratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
+        $sql = "INSERT INTO l2speechratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
             . " VALUES ('$eventId', '$scoreId2')";
         $this->link->query($sql);
-        $sql = "INSERT INTO L2_speech_ratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
+        $sql = "INSERT INTO l2speechratings.RatingEventScoreLookup (rating_event_id, rating_score_id)"
             . " VALUES ('$eventId', '$scoreId3')";
         $this->link->query($sql);
     }

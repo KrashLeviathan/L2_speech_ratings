@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.Surveys (
+CREATE TABLE IF NOT EXISTS l2speechratings.Surveys (
   survey_id                INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   name                     VARCHAR(64)      NOT NULL,
   description              VARCHAR(1024),
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Surveys (
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.Users (
+CREATE TABLE IF NOT EXISTS l2speechratings.Users (
   user_id         INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   google_id       VARCHAR(255)     NOT NULL UNIQUE KEY,
   first_name      VARCHAR(255)     NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Users (
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.SurveyCompletions (
+CREATE TABLE IF NOT EXISTS l2speechratings.SurveyCompletions (
   survey_completion_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   survey_id            INT(10) UNSIGNED NOT NULL,
   user_id              INT(10) UNSIGNED NOT NULL,
@@ -41,17 +41,17 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.SurveyCompletions (
 
   CONSTRAINT fk_SurveyCompletions_1
   FOREIGN KEY (survey_id)
-  REFERENCES L2_speech_ratings.Surveys (survey_id)
+  REFERENCES l2speechratings.Surveys (survey_id)
     ON DELETE CASCADE,
 
   CONSTRAINT fk_SurveyCompletions_2
   FOREIGN KEY (user_id)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.Demographics (
+CREATE TABLE IF NOT EXISTS l2speechratings.Demographics (
   demographic_id           INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id                  INT(10) UNSIGNED NOT NULL,
   date_completed           DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP(),
@@ -105,12 +105,12 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Demographics (
 
   CONSTRAINT fk_Demographics_1
   FOREIGN KEY (user_id)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.PaymentInformation (
+CREATE TABLE IF NOT EXISTS l2speechratings.PaymentInformation (
   payment_info_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id         INT(10) UNSIGNED NOT NULL,
   payment_info    VARCHAR(255),
@@ -119,12 +119,12 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.PaymentInformation (
 
   CONSTRAINT fk_PaymentInformation_1
   FOREIGN KEY (user_id)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.AudioCategories (
+CREATE TABLE IF NOT EXISTS l2speechratings.AudioCategories (
   audio_category_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   name              VARCHAR(64)      NOT NULL,
   description       VARCHAR(255),
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.AudioCategories (
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.AudioSamples (
+CREATE TABLE IF NOT EXISTS l2speechratings.AudioSamples (
   audio_sample_id INT(10) UNSIGNED    NOT NULL AUTO_INCREMENT,
   filename        VARCHAR(255) UNIQUE NOT NULL,
   size            INT(10)                      DEFAULT NULL,
@@ -155,12 +155,12 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.AudioSamples (
 
   CONSTRAINT fk_AudioSamples_1
   FOREIGN KEY (category_id)
-  REFERENCES L2_speech_ratings.AudioCategories (audio_category_id)
+  REFERENCES l2speechratings.AudioCategories (audio_category_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.RatingProperties (
+CREATE TABLE IF NOT EXISTS l2speechratings.RatingProperties (
   rating_property_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   name               VARCHAR(64)      NOT NULL,
   definition         VARCHAR(255),
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.RatingProperties (
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.RatingScores (
+CREATE TABLE IF NOT EXISTS l2speechratings.RatingScores (
   rating_score_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   score           INT(10)          NOT NULL,
   property        INT(10) UNSIGNED NOT NULL,
@@ -179,12 +179,12 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.RatingScores (
 
   CONSTRAINT fk_RatingScores_1
   FOREIGN KEY (property)
-  REFERENCES L2_speech_ratings.RatingProperties (rating_property_id)
+  REFERENCES l2speechratings.RatingProperties (rating_property_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.RatingEvents (
+CREATE TABLE IF NOT EXISTS l2speechratings.RatingEvents (
   rating_event_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   date_time       DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
   performed_by_id INT(10) UNSIGNED NOT NULL,
@@ -195,17 +195,17 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.RatingEvents (
 
   CONSTRAINT fk_RatingEvents_1
   FOREIGN KEY (performed_by_id)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE CASCADE,
 
   CONSTRAINT fk_RatingEvents_2
   FOREIGN KEY (audio_sample_id)
-  REFERENCES L2_speech_ratings.AudioSamples (audio_sample_id)
+  REFERENCES l2speechratings.AudioSamples (audio_sample_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.ControlFlags (
+CREATE TABLE IF NOT EXISTS l2speechratings.ControlFlags (
   control_flag_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id         INT(10) UNSIGNED NOT NULL,
   rating_event_id INT(10) UNSIGNED NOT NULL,
@@ -214,18 +214,18 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.ControlFlags (
 
   CONSTRAINT fk_ControlFlags_1
   FOREIGN KEY (user_id)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE CASCADE,
 
   CONSTRAINT fk_ControlFlags_2
   FOREIGN KEY (rating_event_id)
-  REFERENCES L2_speech_ratings.RatingEvents (rating_event_id)
+  REFERENCES l2speechratings.RatingEvents (rating_event_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.ControlRatings (
+CREATE TABLE IF NOT EXISTS l2speechratings.ControlRatings (
   control_rating_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   expected_score_id INT(10) UNSIGNED NOT NULL,
   audio_sample_id   INT(10) UNSIGNED NOT NULL,
@@ -234,17 +234,17 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.ControlRatings (
 
   CONSTRAINT fk_ControlRatings_1
   FOREIGN KEY (expected_score_id)
-  REFERENCES L2_speech_ratings.RatingScores (rating_score_id)
+  REFERENCES l2speechratings.RatingScores (rating_score_id)
     ON DELETE CASCADE,
 
   CONSTRAINT fk_ControlRatings_2
   FOREIGN KEY (audio_sample_id)
-  REFERENCES L2_speech_ratings.AudioSamples (audio_sample_id)
+  REFERENCES l2speechratings.AudioSamples (audio_sample_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.CorruptFiles (
+CREATE TABLE IF NOT EXISTS l2speechratings.CorruptFiles (
   corrupt_file_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   reported_by     INT(10) UNSIGNED NOT NULL,
   date_reported   DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
@@ -255,17 +255,17 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.CorruptFiles (
 
   CONSTRAINT fk_CorruptFiles_1
   FOREIGN KEY (reported_by)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE CASCADE,
 
   CONSTRAINT fk_CorruptFiles_2
   FOREIGN KEY (audio_sample_id)
-  REFERENCES L2_speech_ratings.AudioSamples (audio_sample_id)
+  REFERENCES l2speechratings.AudioSamples (audio_sample_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.SampleBlocks (
+CREATE TABLE IF NOT EXISTS l2speechratings.SampleBlocks (
   sample_block_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   name            VARCHAR(64)      NOT NULL,
   date_created    DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
@@ -274,7 +274,7 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.SampleBlocks (
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.SurveySampleBlockLookup (
+CREATE TABLE IF NOT EXISTS l2speechratings.SurveySampleBlockLookup (
   lookup_id       INT(10) UNSIGNED UNIQUE NOT NULL AUTO_INCREMENT,
   survey_id       INT(10) UNSIGNED        NOT NULL,
   sample_block_id INT(10) UNSIGNED        NOT NULL,
@@ -283,17 +283,17 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.SurveySampleBlockLookup (
 
   CONSTRAINT fk_SurveySampleBlockLookup_1
   FOREIGN KEY (survey_id)
-  REFERENCES L2_speech_ratings.Surveys (survey_id)
+  REFERENCES l2speechratings.Surveys (survey_id)
     ON DELETE CASCADE,
 
   CONSTRAINT fk_SurveySampleBlockLookup_2
   FOREIGN KEY (sample_block_id)
-  REFERENCES L2_speech_ratings.SampleBlocks (sample_block_id)
+  REFERENCES l2speechratings.SampleBlocks (sample_block_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.SampleBlockAudioLookup (
+CREATE TABLE IF NOT EXISTS l2speechratings.SampleBlockAudioLookup (
   lookup_id       INT(10) UNSIGNED UNIQUE NOT NULL AUTO_INCREMENT,
   sample_block_id INT(10) UNSIGNED        NOT NULL,
   audio_sample_id INT(10) UNSIGNED        NOT NULL,
@@ -302,17 +302,17 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.SampleBlockAudioLookup (
 
   CONSTRAINT fk_SampleBlockAudioLookup_1
   FOREIGN KEY (sample_block_id)
-  REFERENCES L2_speech_ratings.SampleBlocks (sample_block_id)
+  REFERENCES l2speechratings.SampleBlocks (sample_block_id)
     ON DELETE CASCADE,
 
   CONSTRAINT fk_SampleBlockAudioLookup_2
   FOREIGN KEY (audio_sample_id)
-  REFERENCES L2_speech_ratings.AudioSamples (audio_sample_id)
+  REFERENCES l2speechratings.AudioSamples (audio_sample_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.Invites (
+CREATE TABLE IF NOT EXISTS l2speechratings.Invites (
   invite_id     INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   access_code   VARCHAR(255)     NOT NULL,
   email         VARCHAR(255)     NOT NULL,
@@ -323,12 +323,12 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Invites (
   PRIMARY KEY (invite_id),
   CONSTRAINT fk_Invites_1
   FOREIGN KEY (accepted_by)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE SET NULL
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.Sessions (
+CREATE TABLE IF NOT EXISTS l2speechratings.Sessions (
   session_id   INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   date_created DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
   date_expires DATETIME,
@@ -338,12 +338,12 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Sessions (
 
   CONSTRAINT fk_Sessions_1
   FOREIGN KEY (user_id)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.Admins (
+CREATE TABLE IF NOT EXISTS l2speechratings.Admins (
   admin_id   INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id    INT(10) UNSIGNED NOT NULL,
   privileges VARCHAR(16)               DEFAULT 'NONE',
@@ -352,12 +352,12 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.Admins (
 
   CONSTRAINT fk_Admins_1
   FOREIGN KEY (user_id)
-  REFERENCES L2_speech_ratings.Users (user_id)
+  REFERENCES l2speechratings.Users (user_id)
     ON DELETE CASCADE
 )
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS L2_speech_ratings.RatingEventScoreLookup (
+CREATE TABLE IF NOT EXISTS l2speechratings.RatingEventScoreLookup (
   lookup_id       INT(10) UNSIGNED UNIQUE NOT NULL AUTO_INCREMENT,
   rating_event_id INT(10) UNSIGNED        NOT NULL,
   rating_score_id INT(10) UNSIGNED        NOT NULL,
@@ -366,22 +366,22 @@ CREATE TABLE IF NOT EXISTS L2_speech_ratings.RatingEventScoreLookup (
 
   CONSTRAINT fk_RatingEventScoreLookup_1
   FOREIGN KEY (rating_event_id)
-  REFERENCES L2_speech_ratings.RatingEvents (rating_event_id)
+  REFERENCES l2speechratings.RatingEvents (rating_event_id)
     ON DELETE CASCADE,
 
   CONSTRAINT fk_RatingEventScoreLookup_2
   FOREIGN KEY (rating_score_id)
-  REFERENCES L2_speech_ratings.RatingScores (rating_score_id)
+  REFERENCES l2speechratings.RatingScores (rating_score_id)
     ON DELETE CASCADE
 );
 
 # Automatically set expiration date on sessions table before any attempted insert
 DELIMITER $$
 
-DROP TRIGGER IF EXISTS L2_speech_ratings.tr_b_ins_sessions $$
+DROP TRIGGER IF EXISTS l2speechratings.tr_b_ins_sessions $$
 
-CREATE TRIGGER L2_speech_ratings.tr_b_ins_sessions
-BEFORE INSERT ON L2_speech_ratings.Sessions
+CREATE TRIGGER l2speechratings.tr_b_ins_sessions
+BEFORE INSERT ON l2speechratings.Sessions
 FOR EACH ROW
   BEGIN
     SET NEW.date_expires = CURRENT_TIMESTAMP() + INTERVAL 7 DAY;

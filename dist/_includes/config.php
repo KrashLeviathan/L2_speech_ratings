@@ -2,7 +2,7 @@
 // Load up configuration info for connecting to the database
 
 $this_file = str_replace('dist', '', $_SERVER['DOCUMENT_ROOT']);
-//$this_file = str_replace('L2_speech_ratings.iastate.edu', '', $_SERVER['DOCUMENT_ROOT']);
+//$this_file = str_replace('html/l2speechratings', '', $_SERVER['DOCUMENT_ROOT']);
 
 $sql_file = $this_file . 'config.txt';
 
@@ -17,7 +17,7 @@ $json = json_decode($json);
 /**
  * Most places that make URL references should access the domain name here
  */
-$domain = 'https://L2_speech_ratings.iastate.edu';
+$domain = 'http://l2speechratings-dev.las.iastate.edu';
 $dbHost = $json->{'mysql_database'}->{'host'};
 $dbName = $json->{'mysql_database'}->{'database'};
 $dbUser = $json->{'mysql_database'}->{'username'};
@@ -39,7 +39,7 @@ if (isset($injectedHeadElements)) {
 // #############################################
 $domain = 'http://localhost:5000';
 $dbHost = 'localhost';
-$dbName = 'L2_speech_ratings';
+$dbName = 'l2speechratings';
 $dbUser = 'root';
 $dbPass = 'root';
 $port = 3306;
