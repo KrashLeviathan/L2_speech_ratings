@@ -7,7 +7,7 @@ class FilenameParser
     // only deal with Spanish, or Spanish and French, so at this stage it could simply
     // be 'sp' and 'fr')
     var $language;
-    const LANGUAGES = array('sp', 'fr');
+    const LANGUAGES = array('sp' => 'Spanish', 'fr' => 'French');
 
     // Level (refers to the course in which the participant is enrolled at the outset of
     // the study): 101, 102, 201, 202, 300, 400
@@ -96,7 +96,7 @@ class FilenameParser
             } else if (!isset($this->language)) {
 
                 // Language
-                foreach (self::LANGUAGES as $LANGUAGE) {
+                foreach (self::LANGUAGES as $LANGUAGE => $_) {
                     if (strtolower($token) === $LANGUAGE) {
                         $this->language = $LANGUAGE;
                         break;

@@ -184,6 +184,58 @@ $defaultSurvey = $databaseApi->getSurvey(1);
             </div>
         </div>
     </div>
+
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Surveys</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="bs-docs-section">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Click on a survey to edit the settings for that survey.</p>
+            </div>
+        </div>
+        <div class="row l2sr-mbot-md">
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-hover table-striped l2sr-table">
+                    <thead class="font-weight-bold">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th># Replays</th>
+                        <th>Time Limit</th>
+                        <th>Est. Length</th>
+                        <th>Notif. Email</th>
+                        <th>Notif. Threshold</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="survey-table-body">
+                    <tr>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                        <td>Loading</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="/js/admin_settings.js" type="text/javascript" defer>

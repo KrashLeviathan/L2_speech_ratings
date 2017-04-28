@@ -541,8 +541,8 @@ WHERE re.performed_by_id = dem_max.user_id
         }
         if (mysqli_num_rows($result) == 0) {
             // The survey does not yet exist, so create one and return the survey_id
-            $surveyId = $this->insertSurvey($name,
-                "Contains all samples with the following attributes: Language = $language, Task = $task");
+            $surveyId = $this->insertSurvey($name, 'Language: ' . FilenameParser::LANGUAGES[$language] .
+                " / Task: $task");
             return $surveyId;
         } else {
             // The survey already exists, so return the survey_id
@@ -550,12 +550,12 @@ WHERE re.performed_by_id = dem_max.user_id
         }
     }
 
-    function getAllOpenSurveys()
+    function getAllOpenSurveys($userId)
     {
         $sql = "SELECT * FROM L2_speech_ratings.Surveys as sv
 WHERE sv.closed = 0 AND sv.survey_id NOT IN (
 SELECT survey_id FROM L2_speech_ratings.SurveyCompletions as sc
-WHERE sc.user_id = '2'
+WHERE sc.user_id = '$userId'
 );";
         $result = $this->link->query($sql);
         if ($this->link->error) {
@@ -564,6 +564,23 @@ WHERE sc.user_id = '2'
         $surveys = array();
         while ($survey = $result->fetch_assoc()) {
             array_push($surveys, $survey);
+        }
+        mysqli_free_result($result);
+        return $surveys;
+    }
+
+    function adminGetSurveys()
+    {
+        $sql = "SELECT survey_id, name, description, start_date, end_date, num_replays_allowed, total_time_limit,
+    estimated_length_minutes, notification_email, target_rating_threshold, closed, notifications_enabled
+    FROM L2_speech_ratings.Surveys WHERE survey_id != '1'";
+        $result = $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('adminGetSurveys: query error');
+        }
+        $surveys = array();
+        while ($row = $result->fetch_row()) {
+            array_push($surveys, $row);
         }
         mysqli_free_result($result);
         return $surveys;

@@ -4,7 +4,7 @@
 @include '../_includes/pageSetup.php';
 
 $databaseApi = new DatabaseApi($dbHost, $dbUser, $dbPass, $dbName);
-$surveys = $databaseApi->getAllOpenSurveys();
+$surveys = $databaseApi->getAllOpenSurveys($_SESSION['user_id']);
 
 $_SESSION['survey_state'] = 'NO_SURVEY_SELECTED';
 ?>
