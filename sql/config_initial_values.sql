@@ -19,16 +19,16 @@ VALUES ('INITIAL-INVITE', 'cnagle@iastate.edu', NULL);
 
 ######### Default Survey Information (until more sophisticated survey creation tools are implemented)
 
-INSERT INTO l2speechratings.Surveys (`survey_id`, `name`, `description`, `end_date`,
+INSERT INTO l2speechratings.Surveys (`survey_id`, `name`, `description`, `start_date`, `end_date`,
                                      `instructional_info`, `notification_email`, `target_rating_threshold`,
                                      `notifications_enabled`, `closed`)
 VALUES
-  ('1', 'Default', 'Contains all audio samples and survey defaults', NULL,
+  ('1', 'Default', 'Contains all audio samples and survey defaults', NOW(), NULL,
    '', 'cnagle@iastate.edu', '10',
    '0', '1');
 
-INSERT INTO l2speechratings.SampleBlocks (`sample_block_id`, `name`)
-VALUES ('1', 'Initial Block');
+INSERT INTO l2speechratings.SampleBlocks (`sample_block_id`, `name`, `date_created`)
+VALUES ('1', 'Initial Block', NOW());
 
 INSERT INTO l2speechratings.SurveySampleBlockLookup (`lookup_id`, `survey_id`, `sample_block_id`)
 VALUES ('1', '1', '1');

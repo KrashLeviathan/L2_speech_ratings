@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.Surveys (
   survey_id                INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   name                     VARCHAR(64)      NOT NULL,
   description              VARCHAR(1024),
-  start_date               DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
+  start_date               DATETIME,
   end_date                 DATETIME,
   instructional_info       VARCHAR(8192),
   num_replays_allowed      INT(10)                   DEFAULT -1,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.Users (
   last_name       VARCHAR(255)     NOT NULL,
   email           VARCHAR(255)     NOT NULL,
   phone           VARCHAR(16),
-  date_signed_up  DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  date_signed_up  DATETIME,
   payment_info_id INT(10),
 
   PRIMARY KEY (user_id)
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.SurveyCompletions (
   survey_completion_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   survey_id            INT(10) UNSIGNED NOT NULL,
   user_id              INT(10) UNSIGNED NOT NULL,
-  date_completed       DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  date_completed       DATETIME         NOT NULL,
 
   PRIMARY KEY (survey_completion_id),
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.SurveyCompletions (
 CREATE TABLE IF NOT EXISTS l2speechratings.Demographics (
   demographic_id           INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id                  INT(10) UNSIGNED NOT NULL,
-  date_completed           DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  date_completed           DATETIME         NOT NULL,
   age                      INT(10) UNSIGNED,
   gender                   VARCHAR(16),
   birthplace               VARCHAR(255),
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.AudioSamples (
   duration_ms     LONG                         DEFAULT NULL,
   type            VARCHAR(255)                 DEFAULT NULL,
   url             VARCHAR(255)                 DEFAULT NULL,
-  upload_date     DATETIME                     DEFAULT CURRENT_TIMESTAMP(),
+  upload_date     DATETIME                     DEFAULT NULL,
   language        VARCHAR(16)                  DEFAULT NULL,
   level           VARCHAR(8)                   DEFAULT NULL,
   speaker_id      INT(10)                      DEFAULT NULL,
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.RatingScores (
 
 CREATE TABLE IF NOT EXISTS l2speechratings.RatingEvents (
   rating_event_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  date_time       DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
+  date_time       DATETIME,
   performed_by_id INT(10) UNSIGNED NOT NULL,
   audio_sample_id INT(10) UNSIGNED NOT NULL,
   survey_id       INT(10) UNSIGNED NOT NULL,
@@ -247,7 +247,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.ControlRatings (
 CREATE TABLE IF NOT EXISTS l2speechratings.CorruptFiles (
   corrupt_file_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   reported_by     INT(10) UNSIGNED NOT NULL,
-  date_reported   DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
+  date_reported   DATETIME,
   description     VARCHAR(1024),
   audio_sample_id INT(10) UNSIGNED NOT NULL,
 
@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.CorruptFiles (
 CREATE TABLE IF NOT EXISTS l2speechratings.SampleBlocks (
   sample_block_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   name            VARCHAR(64)      NOT NULL,
-  date_created    DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
+  date_created    DATETIME,
 
   PRIMARY KEY (sample_block_id)
 )
@@ -330,7 +330,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.Invites (
 
 CREATE TABLE IF NOT EXISTS l2speechratings.Sessions (
   session_id   INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  date_created DATETIME                  DEFAULT CURRENT_TIMESTAMP(),
+  date_created DATETIME,
   date_expires DATETIME,
   user_id      INT(10) UNSIGNED NOT NULL,
 

@@ -338,8 +338,8 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function postDemographicFormData($userId, $formData)
     {
-        $sql = "INSERT INTO l2speechratings.Demographics (user_id, age, gender, birthplace, location_raised, native_languages, education_level, education_level_other, sp_listening, sp_speaking, sp_reading, sp_writing, sp_age, sp_with_family, sp_usage_percent, sp_nn_interaction, sp_interaction_cap, sp_interaction_cap_other, sp_nn_familiarity, fr_listening, fr_speaking, fr_reading, fr_writing, fr_age, fr_with_family, fr_usage_percent, fr_nn_interaction, fr_interaction_cap, fr_interaction_cap_other, fr_nn_familiarity, en_listening, en_speaking, en_reading, en_writing, en_age, en_with_family, en_usage_percent, instr_elementary, instr_secondary, instr_hs, instr_college, instr_graduate, addl_languages, ling_training, taught_language, personal_info)"
-            . " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO l2speechratings.Demographics (date_completed, user_id, age, gender, birthplace, location_raised, native_languages, education_level, education_level_other, sp_listening, sp_speaking, sp_reading, sp_writing, sp_age, sp_with_family, sp_usage_percent, sp_nn_interaction, sp_interaction_cap, sp_interaction_cap_other, sp_nn_familiarity, fr_listening, fr_speaking, fr_reading, fr_writing, fr_age, fr_with_family, fr_usage_percent, fr_nn_interaction, fr_interaction_cap, fr_interaction_cap_other, fr_nn_familiarity, en_listening, en_speaking, en_reading, en_writing, en_age, en_with_family, en_usage_percent, instr_elementary, instr_secondary, instr_hs, instr_college, instr_graduate, addl_languages, ling_training, taught_language, personal_info)"
+            . " VALUES (NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $query = $this->link->prepare($sql);
         $query->bind_param(
             'iissssssiiiiiiisssiiiiiiiisssiiiiiiiissssssiis',
@@ -490,8 +490,8 @@ WHERE re.performed_by_id = dem_max.user_id
     function addAudioSample($jq_file, $duration, $parser, $errorTokens)
     {
         $sql = 'INSERT INTO l2speechratings.AudioSamples'
-            . ' (`filename`,`size`,`duration_ms`,`type`,`language`,`level`,`speaker_id`,`wave`,`task`,`item`,`error_tokens`)'
-            . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            . ' (`filename`,`size`,`duration_ms`,`type`,`language`,`level`,`speaker_id`,`wave`,`task`,`item`,`error_tokens`,`upload_date`)'
+            . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())'
             . ' ON DUPLICATE KEY UPDATE'
             . ' size=?, duration_ms=?, type=?, language=?, level=?, speaker_id=?, wave=?, task=?, item=?, error_tokens=?,'
             . ' upload_date=NOW()';
@@ -652,8 +652,8 @@ WHERE sc.user_id = '$userId'
 
         // Create new survey
         $sql = "INSERT INTO l2speechratings.Surveys"
-            . " (name, description, num_replays_allowed, total_time_limit, estimated_length_minutes, notifications_enabled, notification_email, target_rating_threshold)"
-            . " VALUES ('$name', '$description', '$numReplaysAllowed', '$totalTimeLimit', '$estimatedLengthMinutes', '$notificationsEnabled', '$notificationEmail', '$targetRatingThreshold')";
+            . " (name, description, start_date, num_replays_allowed, total_time_limit, estimated_length_minutes, notifications_enabled, notification_email, target_rating_threshold)"
+            . " VALUES ('$name', '$description', NOW(), '$numReplaysAllowed', '$totalTimeLimit', '$estimatedLengthMinutes', '$notificationsEnabled', '$notificationEmail', '$targetRatingThreshold')";
         $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('insertSurvey: 1');
@@ -661,7 +661,7 @@ WHERE sc.user_id = '$userId'
         $surveyId = $this->link->insert_id;
 
         // Create a default block for that survey
-        $sql = "INSERT INTO l2speechratings.SampleBlocks (name) VALUES ('Default Block')";
+        $sql = "INSERT INTO l2speechratings.SampleBlocks (name, date_created) VALUES ('Default Block', NOW())";
         $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('insertSurvey: 2');
@@ -681,7 +681,8 @@ WHERE sc.user_id = '$userId'
 
     function completeSurvey($userId, $surveyId)
     {
-        $sql = "INSERT INTO l2speechratings.SurveyCompletions (survey_id, user_id) VALUES ('$surveyId', '$userId')";
+        $sql = "INSERT INTO l2speechratings.SurveyCompletions (survey_id, user_id, date_completed)"
+            . " VALUES ('$surveyId', '$userId', NOW())";
         $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('completeSurvey: query error');
@@ -748,8 +749,8 @@ WHERE sc.user_id = '$userId'
     function createRatingEvent($comprehension, $fluency, $accent, $userId, $audioId, $surveyId)
     {
         // Create the rating event
-        $sql = "INSERT INTO l2speechratings.RatingEvents (performed_by_id, audio_sample_id, survey_id)"
-            . " VALUES ('$userId', '$audioId', '$surveyId')";
+        $sql = "INSERT INTO l2speechratings.RatingEvents (performed_by_id, audio_sample_id, survey_id, date_time)"
+            . " VALUES ('$userId', '$audioId', '$surveyId', NOW())";
         $this->link->query($sql);
         $eventId = $this->link->insert_id;
 
