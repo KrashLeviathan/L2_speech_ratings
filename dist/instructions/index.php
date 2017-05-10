@@ -17,10 +17,26 @@
     }
     ?>
 
-    <div class="page-header" id="banner">
+    <div class="page-header">
         <div class="row">
             <div class="col-lg-12">
-                <h1>General Instructions</h1>
+                <h1>Research Information</h1>
+            </div>
+        </div>
+    </div>
+    <?php @include '../_includes/html/research_information.php'; ?>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <a type="button" class="btn btn-primary center-block l2sr-start-survey-btn">
+                I CONSENT TO PARTICIPATE IN THIS RESEARCH</a>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Survey Instructions</h1>
             </div>
         </div>
     </div>
