@@ -90,6 +90,7 @@ $_SESSION['last_name'] = $user['last_name'];
 $_SESSION['email'] = $user['email'];
 $_SESSION['phone'] = $user['phone'];
 $_SESSION['user_is_admin'] = $userIsAdmin;
+$_SESSION['consent'] = $user['consent'];
 
 if ($userIsAdmin) {
     // User is admin.

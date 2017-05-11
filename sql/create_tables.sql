@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS l2speechratings.Users (
   phone           VARCHAR(16),
   date_signed_up  DATETIME,
   payment_info_id INT(10),
+  consent         TINYINT          NOT NULL DEFAULT '0',
 
   PRIMARY KEY (user_id)
 )

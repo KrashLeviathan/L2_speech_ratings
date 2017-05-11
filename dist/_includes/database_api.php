@@ -63,6 +63,16 @@ class DatabaseApi
         mysqli_free_result($result);
     }
 
+    function updateUserConsent($userId, $consentInt)
+    {
+        $sql = "UPDATE l2speechratings.Users SET consent='$consentInt' WHERE user_id='$userId'";
+        $result = $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('updateUserConsent: query error');
+        }
+        mysqli_free_result($result);
+    }
+
     /**
      * Escapes dangerous characters from the string and shortens it to the desired length.
      * @param $string
@@ -148,8 +158,8 @@ class DatabaseApi
      */
     function createNewUser($googleId, $firstName, $lastName, $email)
     {
-        $sql = "INSERT INTO l2speechratings.Users (google_id, first_name, last_name, email, date_signed_up) " .
-            "VALUES ('$googleId','$firstName','$lastName','$email',NOW())";
+        $sql = "INSERT INTO l2speechratings.Users (google_id, first_name, last_name, email, date_signed_up, consent) " .
+            "VALUES ('$googleId','$firstName','$lastName','$email',NOW(), '0')";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('createNewUser');
@@ -449,7 +459,7 @@ WHERE re.performed_by_id = dem_max.user_id
 
     function getAllUsers()
     {
-        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up FROM l2speechratings.Users";
+        $sql = "SELECT user_id, first_name, last_name, email, phone, date_signed_up, consent FROM l2speechratings.Users";
         $result = $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getAllUsers: query error');

@@ -16,7 +16,8 @@ if (isset($_SESSION['user_id'])) {
         'last_name' => $_SESSION['last_name'],
         'email' => $_SESSION['email'],
         'phone' => $_SESSION['phone'],
-        'user_is_admin' => $_SESSION['user_is_admin']
+        'user_is_admin' => $_SESSION['user_is_admin'],
+        'consent' => $_SESSION['consent']
     );
 
     // NOTE: For admin-only pages, make sure to set $adminOnlyPage = true.
