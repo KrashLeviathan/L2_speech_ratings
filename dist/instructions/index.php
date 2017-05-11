@@ -24,14 +24,18 @@
             </div>
         </div>
     </div>
-    <?php @include '../_includes/html/research_information.php'; ?>
+    <?php
+    @include '../_includes/html/research_information.php';
 
-    <div class="row">
-        <div class="col-lg-12">
-            <a type="button" class="btn btn-primary center-block l2sr-start-survey-btn">
-                I CONSENT TO PARTICIPATE IN THIS RESEARCH</a>
-        </div>
-    </div>
+    if ($_SESSION['consent'] == 0) {
+        @include '../_includes/html/consent_button.html';
+    } else {
+        print '<div class="row"><div class="col-lg-12">';
+        // This should match the html appended in consent.js
+        print '<p class="text-center well" style="font-size:1.5em;">Thank you for your participation!</p>';
+        print '</div></div>';
+    }
+    ?>
 
     <div class="page-header">
         <div class="row">
