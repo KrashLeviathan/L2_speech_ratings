@@ -81,7 +81,12 @@ class DatabaseApi
      */
     function escapeAndShorten($string, $length)
     {
-        return substr(mysqli_real_escape_string($this->link, $string), 0, $length);
+        return substr(
+            mysqli_real_escape_string(
+                $this->link, htmlspecialchars($string)
+            ),
+            0, $length
+        );
     }
 
     /**
