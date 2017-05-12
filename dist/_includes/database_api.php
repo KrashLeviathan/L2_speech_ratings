@@ -330,6 +330,7 @@ WHERE re.performed_by_id = dem_max.user_id
         }
 
         // Heading
+        // TODO: See if it's possible to add headings directly from the mysqli result instead of manually
         $headingFields = array('demographic_id', 'user_id', 'date_completed', 'age', 'gender', 'birthplace',
             'location_raised', 'native_languages', 'education_level', 'education_level_other',
             'sp_listening', 'sp_speaking', 'sp_reading', 'sp_writing', 'sp_age', 'sp_with_family', 'sp_usage_percent',
@@ -343,6 +344,35 @@ WHERE re.performed_by_id = dem_max.user_id
 
         // Data
         $sql = "SELECT * FROM l2speechratings.Demographics";
+        $result = $this->link->query($sql);
+        while ($row = $result->fetch_row()) {
+            $csv->append($row);
+        }
+        mysqli_free_result($result);
+        return array('success' => true);
+    }
+
+    function createCsvFromCompletions($filepath, $filename)
+    {
+        $csv = new CsvCreator($filepath, $filename);
+        if ($csv->hasError()) {
+            return array('success' => false, 'errorMsg' => $csv->errorMsg);
+        }
+
+        // Heading
+        $headingFields = array('survey_id', 'survey_name', 'user_id', 'user_native_lang', 'date_completed');
+        $csv->append($headingFields);
+
+        // Data
+        $sql = "SELECT
+sc.survey_id,
+surv.name AS survey_name,
+sc.user_id,
+dem.native_languages AS user_native_lang,
+sc.date_completed
+FROM l2speechratings.SurveyCompletions AS sc
+INNER JOIN l2speechratings.Surveys AS surv ON sc.survey_id = surv.survey_id
+INNER JOIN l2speechratings.Demographics AS dem ON sc.user_id = dem.user_id";
         $result = $this->link->query($sql);
         while ($row = $result->fetch_row()) {
             $csv->append($row);

@@ -17,6 +17,7 @@ mkdir "dist/file_storage"
 mkdir "dist/file_storage/results"
 mkdir "dist/file_storage/demographics"
 mkdir "dist/file_storage/audio_samples"
+mkdir "dist/file_storage/survey_completions"
 
 # Reset database with initial values
 echo "[*] Resetting database with initial values"
