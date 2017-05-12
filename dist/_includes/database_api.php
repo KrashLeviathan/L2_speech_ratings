@@ -601,6 +601,18 @@ WHERE sc.user_id = '$userId'
         return $surveys;
     }
 
+    function getSurveyFileCount($surveyId)
+    {
+        $sql = "SELECT COUNT(DISTINCT sbal.audio_sample_id) FROM l2speechratings.SampleBlockAudioLookup AS sbal
+INNER JOIN l2speechratings.SurveySampleBlockLookup AS ssbl ON sbal.sample_block_id = ssbl.sample_block_id
+WHERE ssbl.survey_id = '$surveyId'";
+        $result = $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('getSurveyFileCount: query error');
+        }
+        return $result->fetch_row()[0];
+    }
+
     function getSurvey($surveyId)
     {
         $sql = "SELECT * FROM l2speechratings.Surveys WHERE survey_id='$surveyId'";

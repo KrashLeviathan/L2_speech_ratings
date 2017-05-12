@@ -209,7 +209,8 @@ $defaultSurvey = $databaseApi->getSurvey(1);
                         <th>Description</th>
                         <th>Start</th>
                         <th>End</th>
-                        <th># Replays</th>
+                        <th>Files</th>
+                        <th>Replays</th>
                         <th>Time Limit</th>
                         <th>Est. Length</th>
                         <th>Notif. Email</th>
@@ -219,6 +220,7 @@ $defaultSurvey = $databaseApi->getSurvey(1);
                     </thead>
                     <tbody id="survey-table-body">
                     <tr>
+                        <td>Loading</td>
                         <td>Loading</td>
                         <td>Loading</td>
                         <td>Loading</td>

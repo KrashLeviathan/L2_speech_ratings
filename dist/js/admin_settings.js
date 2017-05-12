@@ -68,6 +68,9 @@ function onSuccess(json) {
             tableRowString += '<td>' + dateString + '</td>';
         }
 
+        // Number of files
+        tableRowString += '<td>' + json.surveys[surveyIndex][12] + '</td>';
+
         // # Replays, Time Limit, Est. Length
         for (i = 5; i < 8; i++) {
             tableRowString += '<td>' + json.surveys[surveyIndex][i] + '</td>';
