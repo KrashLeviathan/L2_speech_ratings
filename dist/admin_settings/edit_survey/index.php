@@ -128,6 +128,16 @@ $survey = $databaseApi->getSurvey($surveyId);
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group col-lg-12">
+                                <label for="addl_instructions" class="control-label">
+                                    Additional Instructions (~8000 characters max)
+                                </label>
+                                <div>
+                                    <textarea class="form-control" name="addl_instructions"
+                                              id="addl_instructions"
+                                              rows="4"><?= $survey['instructional_info'] ?></textarea>
+                                </div>
+                            </div>
                         </fieldset>
                     </div>
 

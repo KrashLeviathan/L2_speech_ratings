@@ -17,7 +17,8 @@ $surveyProperties = array(
     'notifications_enabled' => $databaseApi->escapeAndShorten($_POST['notif_enabled'], 64),
     'notification_email' => $databaseApi->escapeAndShorten($_POST['notif_email'], 64),
     'target_rating_threshold' => $databaseApi->escapeAndShorten($_POST['rating_threshold'], 64),
-    'closed' => $databaseApi->escapeAndShorten($_POST['closed'], 64)
+    'closed' => $databaseApi->escapeAndShorten($_POST['closed'], 64),
+    'instructional_info' => $databaseApi->escapeAndShorten($_POST['addl_instructions'], 8192)
 );
 $surveyId = $databaseApi->escapeAndShorten($_POST['survey_id'], 10);
 $databaseApi->updateSurvey($surveyId, $surveyProperties);
