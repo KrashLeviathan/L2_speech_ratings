@@ -130,7 +130,10 @@ $defaultSurvey = $databaseApi->getSurvey(1);
                                 </div>
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="notif_enabled" class="control-label">Notifications Enabled</label>
+                                <label for="notif_enabled" class="control-label">Notifications Enabled
+                                    <span class="badge"
+                                          style="color:white;background:#d9534f;">NOT YET IMPLEMENTED</span>
+                                </label>
                                 <div>
                                     <div class="radio">
                                         <label>
@@ -174,7 +177,7 @@ $defaultSurvey = $databaseApi->getSurvey(1);
                                 Edit
                             </button>
                             <button id="cancel-btn" type="reset" class="btn btn-default hidden"
-                                    onclick="backToAdminSettings()">Cancel
+                                    onclick="onCancelClicked()">Cancel
                             </button>
                             <button id="submit-btn" type="submit" class="btn btn-primary hidden">Submit
                             </button>
