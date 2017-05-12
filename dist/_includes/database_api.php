@@ -638,8 +638,10 @@ WHERE sc.user_id = '$userId'
         $firstProp = true;
         $sql = "UPDATE l2speechratings.Surveys SET";
         foreach ($surveyProperties as $property => $value) {
+            // Add quotes around everything that's not NOW() or NULL
+            $adjustedValue = ($value === 'NOW()' || $value === 'NULL') ? $value : "'$value'";
             $sql .= (($firstProp) ? "" : ",")
-                . " $property='$value'";
+                . " $property=$adjustedValue";
             $firstProp = false;
         }
         $sql .= " WHERE survey_id='$surveyId'";

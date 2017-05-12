@@ -18,10 +18,12 @@ $surveyProperties = array(
     'notification_email' => $databaseApi->escapeAndShorten($_POST['notif_email'], 64),
     'target_rating_threshold' => $databaseApi->escapeAndShorten($_POST['rating_threshold'], 64),
     'closed' => $databaseApi->escapeAndShorten($_POST['closed'], 64),
-    'instructional_info' => $databaseApi->escapeAndShorten($_POST['addl_instructions'], 8192)
+    'instructional_info' => $databaseApi->escapeAndShorten($_POST['addl_instructions'], 8192),
+    'end_date' => ($_POST['closed'] == 1) ? 'NOW()' : 'NULL'
 );
+// TODO: Possibly revisit 'end_date', since it will update every time the form is submitted if closed
 $surveyId = $databaseApi->escapeAndShorten($_POST['survey_id'], 10);
-$databaseApi->updateSurvey($surveyId, $surveyProperties);
+$databaseApi->updateSurvey($surveyId, $surveyProperties, true);
 
 $response = array(
     'success' => true
