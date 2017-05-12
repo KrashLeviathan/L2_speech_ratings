@@ -114,7 +114,7 @@ $defaultSurvey = $databaseApi->getSurvey(1);
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="survey_time_limit" class="control-label">Survey Time Limit (-1 is
-                                    NONE)</label>
+                                    NONE) <span class="badge" style="color:white;background:#d9534f;">NOT YET IMPLEMENTED</span></label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="survey_time_limit"
                                            id="survey_time_limit" value="<?= $defaultSurvey['total_time_limit'] ?>">
