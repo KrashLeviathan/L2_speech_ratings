@@ -21,7 +21,7 @@
             ?>
             <ul class="nav navbar-nav navbar-right">
                 <?php
-                if ($_SERVER['REQUEST_URI'] == '/about') {
+                if (preg_match('/\/about\/?$/', $_SERVER['REQUEST_URI'])) {
                     print '<li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>';
                 } else {
                     print '<li><a href="/about">About</a></li>';
