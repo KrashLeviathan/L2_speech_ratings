@@ -10,6 +10,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+// Keeps unauthorized users out in the checkSession.php script
+$adminOnlyPage = true;
+
 class UploadHandler
 {
 

@@ -1,4 +1,8 @@
-<?php @include '../_includes/pageSetup.php'; ?>
+<?php
+// Keeps unauthorized users out in the checkSession.php script
+$adminOnlyPage = true;
+@include '../_includes/pageSetup.php';
+?>
 
 <div class="container">
     <div class="page-header" id="banner">

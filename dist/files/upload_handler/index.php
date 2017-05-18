@@ -10,6 +10,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+// Keeps unauthorized users out in the checkSession.php script
 $adminOnlyPage = true;
 @include '../../_includes/database_api.php';
 @include '../../_includes/checkSession.php';

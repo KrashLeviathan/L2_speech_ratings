@@ -21,7 +21,7 @@ if (isset($_SESSION['user_id'])) {
     );
 
     // NOTE: For admin-only pages, make sure to set $adminOnlyPage = true.
-    if ($_SERVER['REQUEST_URI'] === '/' || (!$user['user_is_admin']) && $adminOnlyPage) {
+    if ($_SERVER['REQUEST_URI'] == '/' || (!$user['user_is_admin']) && $adminOnlyPage) {
         // If a user is signed in and tried to go back to the home page,
         // OR if a non-admin user is trying to access a restricted page,
         // redirect them to the about page. $domain is loaded
@@ -29,7 +29,7 @@ if (isset($_SESSION['user_id'])) {
         header('Location: ' . $domain . '/about');
         die();
     }
-} else if ($_SERVER['REQUEST_URI'] !== '/' && $_SERVER['REQUEST_URI'] !== '/about') {
+} else if ($_SERVER['REQUEST_URI'] != '/' && !preg_match('/\/about\/?$/', $_SERVER['REQUEST_URI'])) {
     // User can only visit the homepage and the about page when logged out
     session_abort();
     header('Location: ' . $domain);

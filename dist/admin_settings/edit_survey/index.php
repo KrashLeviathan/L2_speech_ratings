@@ -1,4 +1,6 @@
 <?php
+// Keeps unauthorized users out in the checkSession.php script
+$adminOnlyPage = true;
 @include '../../_includes/database_api.php';
 @include '../../_includes/pageSetup.php';
 
