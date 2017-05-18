@@ -11,29 +11,53 @@ administrator for use in language research.
 
 ## Development Notes
 
+The following commands are for your local copy:
+
+```
+# Start the server
+tools/serve.sh
+
+# Re-initialize the database
+tools/reinitialize_database.sh
+
+# MySql server commands
+/etc/init.d/mysql start
+/etc/init.d/mysql stop
+/etc/init.d/mysql restart
+/etc/init.d/mysql status
+```
+
 ### Dev Server
 
-`l2speechratings-dev.las.iastate.edu`
+The dev server is `l2speechratings-dev.las.iastate.edu`. To access, you'll
+need to VPN into `iastate.edu` first. The following commands/directories
+are for the dev server:
 
-### Start the PHP Server:
+```
+# Apache server commands
+systemctl start   httpd
+systemctl stop    httpd
+systemctl restart httpd
+systemctl status  httpd
 
-`cd dist; php7.0 -S localhost:8000`
+# Git repository clone is located at
+/var/www/html/L2_speech_ratings
 
-### To start MySql server:
+# Files are served from:
+/opt/rh/httpd24/root/var/www/html/
+# which contains symlinks to:
+/var/www/html/config.txt
+/var/www/html/l2speechratings
 
-`/etc/init.d/mysql start`
+# Logs are stored at (???)
+/var/log/httpd
 
-### To stop MySql server:
+# PHP logs (???)
+/var/opt/rh/rh-php70/log/php-fpm/
 
-`/etc/init.d/mysql stop`
-
-### To restart MySql server:
-
-`/etc/init.d/mysql restart`
-
-### To check the status of  MySql server:
-
-`/etc/init.d/mysql status`
+# MySQL Client
+mariadb
+```
 
 ## Deployment
 
