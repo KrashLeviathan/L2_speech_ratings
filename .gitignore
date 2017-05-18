@@ -120,6 +120,5 @@ composer.phar
 ### CUSTOM ###
 
 .idea
-*.css.map
 /dist/file_storage/*
 /sql/do_not_track.sql
