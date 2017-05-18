@@ -56,21 +56,19 @@ class DatabaseApi
         $sql = "UPDATE l2speechratings.Users SET first_name='$firstName', last_name='$lastName', " .
             "email='$email', phone='$phone' WHERE user_id=$userId";
 
-        $result = $this->link->query($sql);
+        $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToHtml();
         }
-        mysqli_free_result($result);
     }
 
     function updateUserConsent($userId, $consentInt)
     {
         $sql = "UPDATE l2speechratings.Users SET consent='$consentInt' WHERE user_id='$userId'";
-        $result = $this->link->query($sql);
+        $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('updateUserConsent: query error');
         }
-        mysqli_free_result($result);
     }
 
     /**
@@ -119,11 +117,10 @@ class DatabaseApi
     function accessCodeValidation($accessCode, $validation)
     {
         $sql = "UPDATE l2speechratings.Invites SET validation='$validation' WHERE access_code='$accessCode'";
-        $result = $this->link->query($sql);
+        $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('accessCodeValidation');
         }
-        mysqli_free_result($result);
     }
 
     /**
@@ -147,11 +144,10 @@ class DatabaseApi
     {
         $sql = "UPDATE l2speechratings.Invites SET accepted_by=$userId, validation='COMPLETE'" .
             ", accepted_date=NOW() WHERE validation='$validation'";
-        $result = $this->link->query($sql);
+        $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('completeInvite');
         }
-        mysqli_free_result($result);
     }
 
     /**
@@ -165,11 +161,10 @@ class DatabaseApi
     {
         $sql = "INSERT INTO l2speechratings.Users (google_id, first_name, last_name, email, date_signed_up, consent) " .
             "VALUES ('$googleId','$firstName','$lastName','$email',NOW(), '0')";
-        $result = $this->link->query($sql);
+        $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('createNewUser');
         }
-        mysqli_free_result($result);
     }
 
     /**
@@ -315,6 +310,9 @@ FROM l2speechratings.Demographics AS dem_max
 WHERE re.performed_by_id = dem_max.user_id
 )";
         $result = $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('createCsvFromResults');
+        }
         while ($row = $result->fetch_row()) {
             $csv->append($row);
         }
@@ -345,6 +343,9 @@ WHERE re.performed_by_id = dem_max.user_id
         // Data
         $sql = "SELECT * FROM l2speechratings.Demographics";
         $result = $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('createCsvFromDemographics');
+        }
         while ($row = $result->fetch_row()) {
             $csv->append($row);
         }
@@ -374,6 +375,9 @@ FROM l2speechratings.SurveyCompletions AS sc
 INNER JOIN l2speechratings.Surveys AS surv ON sc.survey_id = surv.survey_id
 INNER JOIN l2speechratings.Demographics AS dem ON sc.user_id = dem.user_id";
         $result = $this->link->query($sql);
+        if ($this->link->error) {
+            $this->failureToJson('createCsvFromCompletions');
+        }
         while ($row = $result->fetch_row()) {
             $csv->append($row);
         }
@@ -435,7 +439,7 @@ INNER JOIN l2speechratings.Demographics AS dem ON sc.user_id = dem.user_id";
             $formData['taughtLanguage'],
             $formData['personalInfo']
         );
-        $result = $query->execute();
+        $query->execute();
         if ($this->link->error) {
             $this->failureToJson('postDemographicFormData: query error');
         }
@@ -481,13 +485,12 @@ INNER JOIN l2speechratings.Demographics AS dem ON sc.user_id = dem.user_id";
                     $file . ' is not a valid filename!');
             }
             $sql = "DELETE FROM l2speechratings.AudioSamples WHERE filename='$sanitizedFile'";
-            $result = $this->link->query($sql);
+            $this->link->query($sql);
             if ($this->link->error) {
                 $this->failureToJson('deleteFiles: query error',
                     'Not all files could be deleted! Contact IT if problems persist.',
                     'Reload the page to refresh the table.');
             }
-            mysqli_free_result($result);
             unlink("../file_storage/audio_samples/" . $sanitizedFile);
         }
     }
@@ -525,11 +528,10 @@ INNER JOIN l2speechratings.Demographics AS dem ON sc.user_id = dem.user_id";
     {
         $sql = "INSERT INTO l2speechratings.Invites (access_code, email)"
             . " VALUES ('$accessCode','$email')";
-        $result = $this->link->query($sql);
+        $this->link->query($sql);
         if ($this->link->error) {
             $this->failureToJson('getAllInvites: query error');
         }
-        mysqli_free_result($result);
     }
 
     function addAudioSample($jq_file, $duration, $parser, $errorTokens)
@@ -640,6 +642,7 @@ WHERE ssbl.survey_id = '$surveyId'";
         if ($this->link->error) {
             $this->failureToJson('getSurveyFileCount: query error');
         }
+        mysqli_free_result($result);
         return $result->fetch_row()[0];
     }
 
