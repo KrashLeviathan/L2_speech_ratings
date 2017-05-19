@@ -28,6 +28,7 @@ function submitAccessCode(event) {
         dataType: 'json',
         data: $('#access-code-form').serialize(),
         success: function (data) {
+            spinner.hide();
             if (data.success) {
                 // Access code is valid
                 onValidAccessCode(data.validation);
