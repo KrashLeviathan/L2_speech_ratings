@@ -5,18 +5,18 @@ document.addEventListener("DOMContentLoaded", function () {
     $('#invite-form').submit(submitInvite);
 
     // Get users from the database
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/users/get_users.php');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
-        var responseJson = JSON.parse(xhr.response);
-        if (responseJson.success) {
-            onSuccess(responseJson);
-        } else {
-            onFailure(responseJson);
+    $.ajax({
+        url: '/users/get_users.php',
+        type: 'post',
+        dataType: 'json',
+        success: function (data) {
+            if (data.success) {
+                onSuccess(data);
+            } else {
+                onFailure(data);
+            }
         }
-    };
-    xhr.send('');
+    });
 });
 
 function sendInvite() {
@@ -39,25 +39,26 @@ function submitInvite(event) {
     });
 
     // Send invite to server
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/users/create_invite.php');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
-        var responseJson = JSON.parse(xhr.response);
-        if (responseJson.success) {
-            // Invite creation was successful
-            $('#send-invite-modal').removeClass('in');
-            setTimeout(function () {
-                location.reload();
-            }, 1000);
-        } else {
-            // Invite creation was unsuccessful
-            $('#send-invite-modal').removeClass('in');
-            console.log(responseJson);
-            displayAlert(responseJson.errmsg, true);
+    $.ajax({
+        url: '/users/create_invite.php',
+        type: 'post',
+        dataType: 'json',
+        data: 'email=' + encodeURIComponent(values['email']),
+        success: function (data) {
+            if (data.success) {
+                // Invite creation was successful
+                $('#send-invite-modal').removeClass('in');
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            } else {
+                // Invite creation was unsuccessful
+                $('#send-invite-modal').removeClass('in');
+                console.log(data);
+                displayAlert(data.errmsg, true);
+            }
         }
-    };
-    xhr.send('email=' + encodeURIComponent(values['email']));
+    });
 }
 
 function onSuccess(json) {

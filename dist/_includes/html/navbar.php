@@ -74,13 +74,14 @@
         }
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/logout');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                window.location = '/';
-            };
-            xhr.send('logout=true');
+            $.ajax({
+                url: '/logout/index.php',
+                type: 'post',
+                data: 'logout=true',
+                success: function (_) {
+                    window.location = '/';
+                }
+            });
         });
     }
 </script>

@@ -22,22 +22,21 @@ function submitAccessCode(event) {
     spinner.show();
 
     // Check if access code is valid
-    var data = $('#access-code-form').serialize();
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/tokensignin/check_access_code.php');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
-        spinner.hide();
-        var responseJson = JSON.parse(xhr.response);
-        if (responseJson.success) {
-            // Access code is valid
-            onValidAccessCode(responseJson.validation);
-        } else {
-            // Access code is NOT valid. Display an alert message.
-            onInvalidAccessCode(responseJson);
+    $.ajax({
+        url: '/tokensignin/check_access_code.php',
+        type: 'post',
+        dataType: 'json',
+        data: $('#access-code-form').serialize(),
+        success: function (data) {
+            if (data.success) {
+                // Access code is valid
+                onValidAccessCode(data.validation);
+            } else {
+                // Access code is NOT valid. Display an alert message.
+                onInvalidAccessCode(data);
+            }
         }
-    };
-    xhr.send(data);
+    });
 }
 
 function initialSignIn() {
@@ -55,13 +54,10 @@ function onFail(response) {
     // he should be logged back out
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/logout');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            // This just makes sure the session is destroyed (if there was one)
-        };
-        xhr.send();
+        $.ajax({
+            url: '/logout/index.php',
+            type: 'post'
+        });
     });
 
     // Display an error message alert
@@ -76,17 +72,19 @@ function onFail(response) {
 function onSignIn(googleUser) {
     if (shouldRedirect) {
         var id_token = googleUser.getAuthResponse().id_token;
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/tokensignin');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            var responseJson = JSON.parse(xhr.response);
-            if (responseJson.success) {
-                onSuccess(responseJson.redirectTo);
-            } else {
-                onFail(responseJson);
+
+        $.ajax({
+            url: '/tokensignin/index.php',
+            type: 'post',
+            dataType: 'json',
+            data: 'idtoken=' + id_token + '&validation=' + validation,
+            success: function (data) {
+                if (data.success) {
+                    onSuccess(data.redirectTo);
+                } else {
+                    onFail(data);
+                }
             }
-        };
-        xhr.send('idtoken=' + id_token + '&validation=' + validation);
+        });
     }
 }

@@ -20,37 +20,39 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchFiles() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/files/get_files.php');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
-        var responseJson = JSON.parse(xhr.response);
-        if (responseJson.success) {
-            onSuccess(responseJson);
-        } else {
-            $('#file-table-body').children().remove();
-            console.log(responseJson);
-            displayAlert(responseJson.errmsg, true);
+    $.ajax({
+        url: '/files/get_files.php',
+        type: 'post',
+        dataType: 'json',
+        success: function (data) {
+            if (data.success) {
+                onSuccess(data);
+            } else {
+                $('#file-table-body').children().remove();
+                console.log(data);
+                displayAlert(data.errmsg, true);
+            }
         }
-    };
-    xhr.send('');
+    });
 }
 
 function deleteFiles(fileList) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/files/delete_files.php');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function () {
-        var responseJson = JSON.parse(xhr.response);
-        if (responseJson.success) {
-            fetchFiles();
-            displayAlert("The files were deleted successfully.", false, 5000);
-        } else {
-            console.log(responseJson);
-            displayAlert(responseJson.errmsg, true);
+    $.ajax({
+        url: '/files/delete_files.php',
+        type: 'post',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(fileList),
+        success: function (data) {
+            if (data.success) {
+                fetchFiles();
+                displayAlert("The files were deleted successfully.", false, 5000);
+            } else {
+                console.log(data);
+                displayAlert(data.errmsg, true);
+            }
         }
-    };
-    xhr.send(JSON.stringify(fileList));
+    });
 }
 
 function getMinSec(msTime) {
