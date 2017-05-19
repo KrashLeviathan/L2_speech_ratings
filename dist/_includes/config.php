@@ -2,7 +2,7 @@
 // Load up configuration info for connecting to the database
 
 $this_file = str_replace('dist', '', $_SERVER['DOCUMENT_ROOT']);
-//$this_file = str_replace('html/l2speechratings', '', $_SERVER['DOCUMENT_ROOT']);
+//$this_file = str_replace('l2speechratings', '', $_SERVER['DOCUMENT_ROOT']);
 
 $sql_file = $this_file . 'config.txt';
 
