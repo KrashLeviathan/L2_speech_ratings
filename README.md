@@ -13,7 +13,7 @@ administrator for use in language research.
 
 The following commands are for your local copy:
 
-```
+```bash
 # Start the server
 tools/serve.sh
 
@@ -33,12 +33,18 @@ The dev server is `l2speechratings-dev.las.iastate.edu`. To access, you'll
 need to VPN into `iastate.edu` first. The following commands/directories
 are for the dev server:
 
-```
+```bash
 # Apache server commands
-systemctl start   httpd
-systemctl stop    httpd
-systemctl restart httpd
-systemctl status  httpd
+systemctl restart httpd24-httpd
+
+# php-fpm commands
+systemctl restart rh-php70-php-fpm
+
+# httpd.conf location
+/opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
+
+# VirtualHost location
+/opt/rh/httpd24/root/etc/httpd/sites-enabled/l2speechratings-dev.las.iastate.edu.80.conf
 
 # Git repository clone is located at
 /var/www/html/L2_speech_ratings
@@ -49,11 +55,14 @@ systemctl status  httpd
 /var/www/html/config.txt
 /var/www/html/l2speechratings
 
-# Logs are stored at (???)
-/var/log/httpd
+# LOGS
+#   httpd error log
+/var/log/httpd24/error_log
+#   php error log
+/var/opt/rh/rh-php70/log/php-fpm/www-error.log
 
-# PHP logs (???)
-/var/opt/rh/rh-php70/log/php-fpm/
+# PHP Info
+http://l2speechratings-dev.las.iastate.edu/phpinfo.php
 
 # MySQL Client
 mariadb
