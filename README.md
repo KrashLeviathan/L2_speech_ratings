@@ -54,6 +54,7 @@ systemctl restart rh-php70-php-fpm
 # which contains symlinks to:
 /var/www/html/config.txt
 /var/www/html/l2speechratings
+/var/www/html/vendor
 
 # LOGS
 #   httpd error log
@@ -70,6 +71,9 @@ mariadb
 
 ## Deployment
 
+I'd like to eventually make a build script or something that does all this, but until it's all
+figured out, it will have to be done manually.
+
 1. VPN into the ISU network
 2. SSH into the server
 3. Become superuser to make changes: `sudo su`
@@ -80,9 +84,21 @@ mariadb
 7. Copy the dist folder to the serve location: `cd l2speechratings; cp -r ../L2_speech_ratings/dist/* .`
 8. Open `l2speechratings/_includes/config.php` and comment/uncomment the
    appropriate lines (at the top and bottom)
-9. If config.txt has been changed:
+9. Make sure to create the following folders in `l2speechratings`:
+   ```bash
+   mkdir file_storage
+   mkdir file_storage/audio_samples
+   mkdir file_storage/demographics
+   mkdir file_storage/results
+   mkdir file_storage/survey_completions
+   ```
+10. If config.txt has been changed:
    - `cd /var/www/html; cp L2_speech_ratings/config.txt .` (NOTE: This file
      is actually pointed to by a symbolic link at /opt/rh/httpd24/root/var/www/html)
-10. If php.ini has been changed:
+11. If php.ini has been changed:
     - Copy the `php.ini` file into the appropriate location
     - Restart the PHP server
+12. If `composer.lock` has changed since the last release:
+    - Right now, since composer isn't working correctly on the server, you need to use `scp` to
+      copy the vendor folder to the server. `scp -r nkarasch@l2speechratings-dev.las.iastate.edu:/home/nkarasch`
+    - Then ssh into the server and copy `/home/nkarasch/vendor` to `/var/www/html/vendor`
