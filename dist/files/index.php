@@ -93,7 +93,7 @@ $adminOnlyPage = true;
     $(function () {
         'use strict';
         // Change this to the location of your server-side upload handler:
-        var url = '/files/upload_handler';
+        var url = '/files/upload_handler/';
         $('#fileupload').fileupload({
             url: url,
             dataType: 'json',

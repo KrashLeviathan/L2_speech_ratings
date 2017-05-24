@@ -92,13 +92,15 @@ figured out, it will have to be done manually.
    mkdir file_storage/results
    mkdir file_storage/survey_completions
    ```
-10. If config.txt has been changed:
+10. Change permissions so the apache server can create/modify/delete files:
+   - `chown -hR apache:apache l2speechratings`
+11. If config.txt has been changed:
    - `cd /var/www/html; cp L2_speech_ratings/config.txt .` (NOTE: This file
      is actually pointed to by a symbolic link at /opt/rh/httpd24/root/var/www/html)
-11. If php.ini has been changed:
+12. If php.ini has been changed:
     - Copy the `php.ini` file into the appropriate location
     - Restart the PHP server
-12. If `composer.lock` has changed since the last release:
+13. If `composer.lock` has changed since the last release:
     - Right now, since composer isn't working correctly on the server, you need to use `scp` to
       copy the vendor folder to the server. `scp -r nkarasch@l2speechratings-dev.las.iastate.edu:/home/nkarasch`
     - Then ssh into the server and copy `/home/nkarasch/vendor` to `/var/www/html/vendor`
