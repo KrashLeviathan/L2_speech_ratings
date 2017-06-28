@@ -17,7 +17,7 @@ $json = json_decode($json);
 /**
  * Most places that make URL references should access the domain name here
  */
-$domain = 'http://l2speechratings-dev.las.iastate.edu';
+$domain = 'https://l2speechratings.lang.iastate.edu';
 $dbHost = $json->{'mysql_database'}->{'host'};
 $dbName = $json->{'mysql_database'}->{'database'};
 $dbUser = $json->{'mysql_database'}->{'username'};
