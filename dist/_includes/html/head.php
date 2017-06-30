@@ -30,10 +30,10 @@
     }
     ?>
     <!-- END INJECTS-->
+    <script src="/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=onLoad" async defer></script>
+    <script src="/js/tether.min.js" type="text/javascript" defer></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript" defer></script>
 </head>
 <body>
-<script src="https://apis.google.com/js/client:platform.js?onload=onLoad" async defer></script>
-<script src="/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="/js/display_alert.js" type="text/javascript"></script>
-<script src="/js/tether.min.js" type="text/javascript" defer></script>
-<script src="/js/bootstrap.min.js" type="text/javascript" defer></script>
