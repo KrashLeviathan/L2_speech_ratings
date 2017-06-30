@@ -32,7 +32,7 @@
     <!-- END INJECTS-->
 </head>
 <body>
-<script src="/js/gapi_platform.js" type="text/javascript" defer></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=onLoad" async defer></script>
 <script src="/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="/js/display_alert.js" type="text/javascript"></script>
 <script src="/js/tether.min.js" type="text/javascript" defer></script>
