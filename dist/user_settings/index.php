@@ -106,7 +106,7 @@ if ($dateDemographicCompleted) {
                 if ($demographicFormAvailable) {
                     print '<p>If you haven\'t already filled out the demographics form, please click the button below
 and complete before taking a survey.</p><a type="button" class="btn btn-primary demographics-btn" 
-href="/user_settings/demographics">Complete Demographics Form</a>';
+href="/user_settings/demographics/">Complete Demographics Form</a>';
                 } else {
                     print '<p>The demographics form has already been completed recently.</p>';
                 }

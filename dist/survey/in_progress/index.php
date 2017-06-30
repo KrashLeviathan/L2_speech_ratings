@@ -57,7 +57,7 @@ $audioSample = '/file_storage/audio_samples/' . $audioFilename;
         <div class="row">
             <div class="col-lg-12">
                 <p>To open the instructions in a new window,
-                    <a href="/instructions" target="_blank">please click here</a>.
+                    <a href="/instructions/" target="_blank">please click here</a>.
                 </p>
             </div>
         </div>
