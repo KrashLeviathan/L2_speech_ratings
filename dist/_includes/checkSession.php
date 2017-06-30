@@ -26,10 +26,10 @@ if (isset($_SESSION['user_id'])) {
         // OR if a non-admin user is trying to access a restricted page,
         // redirect them to the about page. $domain is loaded
         // from the config file.
-        header('Location: ' . $domain . '/about');
+        header('Location: ' . $domain . '/about/');
         die();
     }
-} else if ($_SERVER['REQUEST_URI'] != '/' && !preg_match('/\/about\/?$/', $_SERVER['REQUEST_URI'])) {
+} else if ($_SERVER['REQUEST_URI'] != '/' && !preg_match('/\/about\/?(index\.php)?$/', $_SERVER['REQUEST_URI'])) {
     // User can only visit the homepage and the about page when logged out
     session_abort();
     header('Location: ' . $domain);
